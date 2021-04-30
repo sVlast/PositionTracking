@@ -8,7 +8,7 @@ namespace PositionTracking.Data
         public int KeywordEntryId { get;private set; }
         public string Language { get; set; }
         public string Location { get; set; }
-        public IList<KeywordRating> Ratings { get; set; }
+        public ICollection<KeywordRating> Ratings { get; set; }
 
         public KeywordEntry()
         {

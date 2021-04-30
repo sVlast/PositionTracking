@@ -7,9 +7,9 @@ namespace PositionTracking.Data
     {
         public Guid ProjectId { get; private set; }
         public string Name { get; set; }
-        public IList<Uri> Paths { get; set; }
-        public IList<Keyword> Keywords { get; set; }
-        public IList<UserPermission> UserPermissions { get; set; }
+        public string Paths { get; set; } //odvajati patheve sa Space
+        public ICollection<Keyword> Keywords { get; set; }
+        public ICollection<UserPermission> UserPermissions { get; set; }
 
 
         
