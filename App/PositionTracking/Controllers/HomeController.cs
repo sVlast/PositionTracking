@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PositionTracking.Models;
-
+using Microsoft.AspNetCore.Authentication;
 namespace PositionTracking.Controllers
 {
     public class HomeController : Controller
@@ -23,6 +23,7 @@ namespace PositionTracking.Controllers
             return View();
         }
 
+        
         public IActionResult Privacy()
         {
             return View();

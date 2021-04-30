@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PositionTracking.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Project> Projects { get; set; }
 
