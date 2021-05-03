@@ -3,6 +3,8 @@ using AngleSharp;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using System.Linq;
+using System.Net.Http;
+using AngleSharp.Io;
 
 namespace PositionTracking.Test
 {
@@ -10,21 +12,20 @@ namespace PositionTracking.Test
     {
         static void Main(string[] args)
         {
-            var source = @"
-<!DOCTYPE html>
-<html lang=en>
-  <meta charset=utf-8>
-  <meta name=viewport content=""initial-scale=1, minimum-scale=1, width=device-width"">
-  <title>Error 404 (Not Found)!!1</title>
-  <style>
-    *{margin:0;padding:0}html,code{font:15px/22px arial,sans-serif}html{background:#fff;color:#222;padding:15px}body{margin:7% auto 0;max-width:390px;min-height:180px;padding:30px 0 15px}* > body{background:url(//www.google.com/images/errors/robot.png) 100% 5px no-repeat;padding-right:205px}p{margin:11px 0 22px;overflow:hidden}ins{color:#777;text-decoration:none}a img{border:0}@media screen and (max-width:772px){body{background:none;margin-top:0;max-width:none;padding-right:0}}#logo{background:url(//www.google.com/images/errors/logo_sm_2.png) no-repeat}@media only screen and (min-resolution:192dpi){#logo{background:url(//www.google.com/images/errors/logo_sm_2_hr.png) no-repeat 0% 0%/100% 100%;-moz-border-image:url(//www.google.com/images/errors/logo_sm_2_hr.png) 0}}@media only screen and (-webkit-min-device-pixel-ratio:2){#logo{background:url(//www.google.com/images/errors/logo_sm_2_hr.png) no-repeat;-webkit-background-size:100% 100%}}#logo{display:inline-block;height:55px;width:150px}
-  </style>
-  <a href=//www.google.com/><span id=logo aria-label=Google></span></a>
-  <p><b>404.</b> <ins>That’s an error.</ins>
-  <p>The requested URL <code>/error</code> was not found on this server.  <ins>That’s all we know.</ins>";
+        //var source = @"
+        //<!DOCTYPE html>
+        //<html lang=en>
+        //  <meta charset=utf-8>
+        //  <meta name=viewport content=""initial-scale=1, minimum-scale=1, width=device-width"">
+        //  <title>Error 404 (Not Found)!!1</title>
+        //  <style>
+        //    *{margin:0;padding:0}html,code{font:15px/22px arial,sans-serif}html{background:#fff;color:#222;padding:15px}body{margin:7% auto 0;max-width:390px;min-height:180px;padding:30px 0 15px}* > body{background:url(//www.google.com/images/errors/robot.png) 100% 5px no-repeat;padding-right:205px}p{margin:11px 0 22px;overflow:hidden}ins{color:#777;text-decoration:none}a img{border:0}@media screen and (max-width:772px){body{background:none;margin-top:0;max-width:none;padding-right:0}}#logo{background:url(//www.google.com/images/errors/logo_sm_2.png) no-repeat}@media only screen and (min-resolution:192dpi){#logo{background:url(//www.google.com/images/errors/logo_sm_2_hr.png) no-repeat 0% 0%/100% 100%;-moz-border-image:url(//www.google.com/images/errors/logo_sm_2_hr.png) 0}}@media only screen and (-webkit-min-device-pixel-ratio:2){#logo{background:url(//www.google.com/images/errors/logo_sm_2_hr.png) no-repeat;-webkit-background-size:100% 100%}}#logo{display:inline-block;height:55px;width:150px}
+        //  </style>
+        //  <a href=//www.google.com/><span id=logo aria-label=Google></span></a>
+        //  <p><b>404.</b> <ins>That’s an error.</ins>
+        //  <p>The requested URL <code>/error</code> was not found on this server.  <ins>That’s all we know.</ins>";
 
             //Use the default configuration for AngleSharp
-            var config = Configuration.Default;
 
             //IBrowsingContext context = null;
             //try
@@ -35,8 +36,6 @@ namespace PositionTracking.Test
 
             //    //Just get the DOM representation
             //    var document = context.OpenAsync(req => req.Content(source)).Result;
-
-
 
             //    var elemlist = document.All.Where(m => m.LocalName == "ins");
 
@@ -56,23 +55,47 @@ namespace PositionTracking.Test
 
             //}
 
-            using (var context = BrowsingContext.New(config))
-            {
-                
+
+            using (var client = new HttpClient()) {
+
+                var config = Configuration.Default;
 
 
-                //Just get the DOM representation
-                var document = context.OpenAsync(req => req.Content(source)).Result;
+                //var testUri = new Uri("https://www.google.com/");
+                var testString = "https://www.google.com/";
+                //client.GetAsync(testUri);
+                HttpResponseMessage httpResponse = client.GetAsync(testString).Result;
 
 
-
-                var elemlist = document.All.Where(m => m.LocalName == "ins");
-
-                foreach (var item in elemlist)
+                using (var context = BrowsingContext.New(config))
                 {
-                    Console.WriteLine(item.Text());
+                    //Just get the DOM representation
+                    //var document = context.OpenAsync(req => req.Content(source)).Result;
+
+                    //var http = new Url("https://www.google.com/search?q=Best+races&sxsrf=ALeKk03S_R7mYO5z5kGjBVMzobdsdNinNg%3A1620051027482&source=hp&ei=UwSQYLGlG46GjLsPwZibiAQ&iflsig=AINFCbYAAAAAYJASY6l679y_90zG1A0DBXERexnoZGN9&oq=Best+races&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEMsBMgUIABDLATIFCAAQywEyBQgAEMsBMgUIABDLATIFCAAQywEyBQgAEMsBMgUIABDLATIFCAAQywEyBQgAEMsBOgcIIxDqAhAnOgkIIxDqAhAnEBM6BAgjECc6BQgAELEDOggIABCxAxCDAToICC4QsQMQgwE6CwgAELEDEMcBEKMCOgYIIxAnEBM6BQguELEDOgIIADoCCC46CAgAEMcBEK8BUIpCWIGMAmC9lwJoB3AAeACAAZ4BiAHkC5IBBDQuMTCYAQCgAQGqAQdnd3Mtd2l6sAEK&sclient=gws-wiz&ved=0ahUKEwjxmomw2K3wAhUOA2MBHUHMBkEQ4dUDCAY&uact=5");
+                    //var t = context.OpenAsync(http);
+                    //t.Wait();
+
+                    var response = new DefaultResponse() {
+                        Content = httpResponse.Content.ReadAsStreamAsync().Result,
+                        Address = new Url(testString)
+                    };
+                    
+                    var document = context.OpenAsync(response).Result;
+
+                    Console.WriteLine(document.DocumentElement.OuterHtml);
+
+                    var elemlist = document.All.Where(m => m.LocalName == "ins");
+
+                    foreach (var item in elemlist)
+                    {
+                        Console.WriteLine(item.Text());
+                    }
+                    //Console.ReadLine();
                 }
             }
+
+            
 
             //Serialize it back to the console
             //Console.WriteLine(document.DocumentElement.OuterHtml);
