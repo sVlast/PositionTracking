@@ -23,16 +23,38 @@ namespace PositionTracking.Controllers
             return View();
         }
 
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
-
         public IActionResult Privacy()
         {
             return View();
         }
+
+
+        public IActionResult Projects()
+        {
+            return View();
+        }
+
+        public IActionResult Keywords()
+        {
+            return View();
+        }
+
+
+        public IActionResult Members()
+        {
+            return View();
+        }
+
+        public IActionResult ProjectSettings()
+        {
+            return View();
+        }
+        public IActionResult AccountSettings()
+        {
+            return View();
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
