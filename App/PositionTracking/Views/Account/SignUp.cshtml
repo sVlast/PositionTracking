@@ -4,8 +4,8 @@
  }
 
 
-<div>
-    <form>
+<div class="container-fluid container-form">
+    <form method="post" asp-controller="Account" asp-action="SignUp" asp-antiforgery="true" asp-route-returnurl="@Model.ReturnUrl">
         <div class="form-group">
             <label asp-for="Email"></label>
             <input asp-for="Email" class="form-control" placeholder="@Html.DisplayNameFor(m => m.Email)" />

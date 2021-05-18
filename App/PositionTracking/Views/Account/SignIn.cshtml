@@ -1,14 +1,11 @@
-﻿using System;
-
-
-@model SignInModel
+﻿@model SignInModel
 
 @{
     ViewData["Title"] = "Sign in";
 }
 
 
-<div class="container-fluid registermobile" id="registerform" style="min-height:300px">
+<div class="container-fluid container-form">
     <form method="post" asp-antiforgery="true" asp-route-returnurl="@Model.ReturnUrl">
 
         <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
@@ -28,7 +25,11 @@
                 <input asp-for="RememberMe" class="form-check-input" />
                 <label asp-for="RememberMe" class="form-check-label"></label>
             </div>
+
         </div>
+
+        <div class="container-error">@Html.ValidationMessage("CustomError")</div>
+        
         <button type="submit" class="btn btn-primary">SIGN IN</button>
     </form>
 
