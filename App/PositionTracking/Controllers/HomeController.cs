@@ -36,7 +36,16 @@ namespace PositionTracking.Controllers
 
         public IActionResult Keywords()
         {
-            return View();
+            var model = new KeywordsViewModel();
+            model.ProjectName = "Test 01";
+            model.Keywords = new KeywordsViewModel.Keyword[]
+            {
+                new KeywordsViewModel.Keyword() { Value="Hotels", LanguageLocation="HR-HR", Rating=3},
+                new KeywordsViewModel.Keyword() { Value="Pools", LanguageLocation="EN-HR", Rating=5},
+                new KeywordsViewModel.Keyword() { Value="Cars", LanguageLocation="DE-DE", Rating=1}
+            };
+
+            return View(model);
         }
 
 

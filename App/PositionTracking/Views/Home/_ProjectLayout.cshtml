@@ -1,20 +1,31 @@
-﻿@{
+﻿@model ProjectModel
+@{
     Layout = "_Layout";
 }
 
-<nav>
-    <ul>
-        <li>
-            keywords
-        </li>
-        <li>
-            members
-        </li>
-        <li>
-            settings
-        </li>
-    </ul>
 
-</nav>
+<div class="row">
+    <div class="col-md-3 col-lg-2 side-menu">
+        <h2>@Model.ProjectName</h2>
+        <nav>
+            <ul>
+                <li @if (Model is KeywordsViewModel) {<text> class="active"</text>}>
+                    keywords
+                </li>
+                <li>
+                    members
+                </li>
+                <li>
+                    settings
+                </li>
+            </ul>
 
-@RenderBody()
+        </nav>
+
+    </div>
+
+
+
+
+    <div class="col-md-9 col-lg-10">    @RenderBody()</div>
+</div>
