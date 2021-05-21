@@ -2,9 +2,9 @@
 
 namespace PositionTracking.Engine
 {
-
-    public class Class1
+    public static class Resolver
     {
-        
+
     }
+    
 }

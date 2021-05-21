@@ -59,6 +59,7 @@ namespace PositionTracking.Test
 
             using (var client = new HttpClient()) {
 
+                //anglesharp configuration
                 var config = Configuration.Default;
 
 
@@ -69,7 +70,7 @@ namespace PositionTracking.Test
 
                 //Check UserAgent
                 //client.DefaultRequestHeaders.UserAgent
-
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
                 HttpResponseMessage httpResponse = client.GetAsync(testString2).Result;
 
 
@@ -82,9 +83,17 @@ namespace PositionTracking.Test
                     //var t = context.OpenAsync(http);
                     //t.Wait();
 
+                    var responseStream = httpResponse.Content.ReadAsStreamAsync().Result;
+
+                    using (var fileStream = File.Create("D:\\_Repos\\Testgrounds\\test"+".html")) {
+                        responseStream.Seek(0, SeekOrigin.Begin);
+                        responseStream.CopyTo(fileStream);
+                        responseStream.Seek(0, SeekOrigin.Begin);
+                    }
+
                     var response = new DefaultResponse() {
                         //
-                        Content = httpResponse.Content.ReadAsStreamAsync().Result,
+                        Content = responseStream,
                         Address = new Url(testString)
                     };
 
@@ -94,19 +103,25 @@ namespace PositionTracking.Test
                     //ABBOT
                     var document = context.OpenAsync(response).Result;
 
-                   Console.WriteLine(document.DocumentElement.OuterHtml);
+                    //Console.WriteLine(document.DocumentElement.OuterHtml);
 
                     //var elemlist = document.All.Where(m => m.Id == "search");
-                    var elem = document.QuerySelector("div#search");
+                    //var elem = document.All.Where(m => m.LocalName == "div" && m.ClassList.Contains("g"));
+                    var elem = document.QuerySelectorAll("div.g a");
 
                     Console.WriteLine("#search found");
                     
                     Console.WriteLine("");
 
-                    //foreach (var item in elemlist)
-                    //{
-                    //    Console.WriteLine(item.Text());
-                    //}
+                    var i = 0;
+
+                    foreach (var item in elem)
+                    {
+                        i++;
+                        Console.WriteLine(i+":");
+                        Console.WriteLine("Text:"+item.Text());
+                        Console.WriteLine("href:"+item.GetAttribute("href"));
+                    }
                     Console.ReadLine();
                 }
             }
