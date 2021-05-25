@@ -28,6 +28,7 @@ a {
 -------------------------------------------------- */
 html {
   font-size: 14px;
+  height:100%;
 }
 @media (min-width: 768px) {
   html {
@@ -52,19 +53,27 @@ button.accept-policy {
 }
 
 /* Sticky footer styles
--------------------------------------------------- */
+-------------------------------------------------- 
 html {
   position: relative;
   min-height: 100%;
 }
+    */
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  align-items:center;
+}
+
+main{
+    flex:1;
+    height:100%;
+
 }
 .footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
@@ -79,4 +88,91 @@ body {
 .container-form button{
     display:block;
     margin:auto;
+}
+
+/* ----------- */
+
+.sidebar-container {
+   /* position: fixed;
+    width: 25%; */
+    height: 100%;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: gray;
+    color: rgb(255, 255, 255);
+}
+
+.content-container {
+    padding-top: 20px;
+}
+
+.sidebar-logo {
+    padding: 10px 15px 10px 30px;
+    font-size: 20px;
+    background-color: #2574A9;
+}
+
+.sidebar-navigation {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    position: relative;
+    color:black;
+}
+
+    .sidebar-navigation li {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        line-height: 20px;
+    }
+
+        .sidebar-navigation li a {
+            padding: 10px 15px 10px 30px;
+            display: block;
+            color: black;
+        }
+
+        .sidebar-navigation li .fa {
+            margin-right: 10px;
+        }
+
+        .sidebar-navigation li a:active,
+        .sidebar-navigation li a:hover,
+        .sidebar-navigation li a:focus {
+            text-decoration: none;
+            outline: none;
+        }
+
+        .sidebar-navigation li::before {
+            background-color: #2574A9;
+            position: absolute;
+            content: '';
+            height: 100%;
+            left: 0;
+            top: 0;
+            -webkit-transition: width 0.2s ease-in;
+            transition: width 0.2s ease-in;
+            width: 3px;
+            z-index: -1;
+        }
+
+        .sidebar-navigation li:hover::before {
+            width: 100%;
+        }
+
+    .sidebar-navigation .header {
+        font-size: 12px;
+        text-transform: uppercase;
+        background-color: #151515;
+        padding: 10px 15px 10px 30px;
+    }
+
+        .sidebar-navigation .header::before {
+            background-color: transparent;
+        }
+
+.navbar-brand{
+    font-weight:bold;
 }

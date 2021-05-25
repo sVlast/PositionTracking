@@ -51,7 +51,15 @@ namespace PositionTracking.Controllers
 
         public IActionResult Members()
         {
-            return View();
+            var model = new MembersViewModel();
+            model.ProjectName = "Test02";
+            model.Members = new MembersViewModel.Member[]
+            {
+                new MembersViewModel.Member() {MemberName="Mihovil",Email="mihovil@miho.com",PermissionType="Admin"},
+                new MembersViewModel.Member() {MemberName="Ivan",Email="hrvoje@miho.com",PermissionType="Edit"},
+                new MembersViewModel.Member() {MemberName="Hrvoje",Email="ivan@miho.com",PermissionType="View"}
+            };
+            return View(model);
         }
 
         public IActionResult ProjectSettings()
