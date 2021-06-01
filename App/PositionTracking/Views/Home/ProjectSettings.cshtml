@@ -1,7 +1,8 @@
 ﻿@model KeywordsViewModel
 @{
-    Layout = "_ProjectLayout";
+
     ViewData["Title"] = "ProjectSettings";
+    Layout = "_ProjectLayout";
 }
 
 <div class="text-center">
@@ -20,7 +21,7 @@
 
     <h2> Change Domain </h2>
     <form> <input size="30" type="text" /> <br /> </form>
-    <button> Update Domain </button>
+    <button id="update"> Update Domain </button>
 </div>
 
 <br>
@@ -28,5 +29,9 @@
 <div class="deleteProject">
 
     <h3>Deleting an account has the following effects: ...</h3>
-    <button> Delete Project </button>
+    <button id="delete"> Delete Project </button>
 </div>
+
+
+
+

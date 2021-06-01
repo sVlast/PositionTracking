@@ -17,10 +17,10 @@
                     </li>
 
 
-                    <li @if (Model is KeywordsViewModel) {<text> class="active" </text> }>
+                    <li @if (Model is MembersViewModel) {<text> class="active" </text> }>
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Members">Members</a>
                     </li>
-                    <li>
+                    <li @if (Model is SettingsViewModel) {<text> class="active" </text> }>
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="ProjectSettings">Settings</a>
                     </li>
                 </ul>
