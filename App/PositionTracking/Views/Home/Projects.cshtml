@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ProjectsViewModel
+@{
     ViewData["Title"] = "Projects";
 }
 
@@ -11,7 +12,6 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Project Name</th>
             <th scope="col">Number of Keywords</th>
             <th scope="col">Rating Change</th>
@@ -19,5 +19,14 @@
         </tr>
     </thead>
     <tbody>
+        @foreach(var project in Model.Projects)
+            {
+                <tr>
+                    <td>@project.Name</td>
+                    <td>@project.NumerOfKeywords</td>
+                    <td> </td>
+                    <td>@project.Role</td>
+                </tr>
+            }
     </tbody>
 </table>

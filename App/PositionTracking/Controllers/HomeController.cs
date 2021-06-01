@@ -31,7 +31,13 @@ namespace PositionTracking.Controllers
 
         public IActionResult Projects()
         {
-            return View();
+            var model = new ProjectsViewModel();
+            model.Projects = new ProjectsViewModel.Project[]
+            {
+                new ProjectsViewModel.Project() {Name="School Work", NumerOfKeywords = 4, Role="Admin"}
+
+            };
+            return View(model);
         }
 
         public IActionResult Keywords()
