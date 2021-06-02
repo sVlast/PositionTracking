@@ -5,33 +5,36 @@
     Layout = "_ProjectLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">{Project} Settings</h1>
-</div>
+<div class="container-fluid">
 
-<br>
-
-<h2> {Project name}</h2>
-<div class="projectName">
-    <h2> Change project name </h2>
-    <form> <input size="30" type="text" /> </form>
-    <button> Update Project Name </button>
+    <div class="text-center">
+        <h1 class="display-4">{Project} Settings</h1>
+    </div>
 
     <br>
 
-    <h2> Change Domain </h2>
-    <form> <input size="30" type="text" /> <br /> </form>
-    <button id="update"> Update Domain </button>
+    <h2> {Project name}</h2>
+    <div class="projectName">
+         Project name 
+        <form> <input size="30" type="text" /> </form>
+        <button> Update Project Name </button>
+
+        <br>
+
+        <h2> Change Domain </h2>
+        <form> <input size="30" type="text" /> <br /> </form>
+        <button id="update"> Update Domain </button>
+    </div>
+
+    <br>
+
+    <div class="deleteProject">
+
+        <h3>Deleting a project will have the following effects: ...</h3>
+        <button id="delete"> Delete Project </button>
+    </div>
+
 </div>
-
-<br>
-
-<div class="deleteProject">
-
-    <h3>Deleting an account has the following effects: ...</h3>
-    <button id="delete"> Delete Project </button>
-</div>
-
 
 
 

@@ -70,7 +70,13 @@ namespace PositionTracking.Controllers
 
         public IActionResult ProjectSettings()
         {
-            return View();
+            var model = new ProjectSettingsViewModel();
+            model.ProjectName = "Test 03";
+            model.Domain = "https://www.example.com";
+
+
+
+            return View(model);
         }
         public IActionResult AccountSettings()
         {

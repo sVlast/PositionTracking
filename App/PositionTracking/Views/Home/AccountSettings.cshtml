@@ -1,30 +1,39 @@
-﻿@{
+﻿@model KeywordsViewModel
+@{
+
+    Layout = "_AccountLayout";
     ViewData["Title"] = "AccountSettings";
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Account Settings</h1>
+
+<div class="container-fluid">
+
+    <div class="text-center">
+        <h1 class="display-4">Account Settings</h1>
+    </div>
+
+    <br>
+
+    <h2> E-mail </h2>
+    <div class="projectName">
+        <form> <input size="30" type="text" /> </form>
+
+        <br>
+
+        <h2> Change password </h2>
+        <form> <input size="30" type="text" /> <br /> </form>
+        <button id="update"> Update password </button>
+    </div>
+
+    <br>
+
+    <div class="deleteAccount">
+        <h2>Delete your account</h2>
+        <h5>Deleting an account has the following effects: ...</h5>
+        <button id="delete"> Delete Account </button>
+
+    </div>
+
 </div>
 
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Projects</th>
-            <th scope="col">Role</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Programelo</td>
-            <td>Admin</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Automehanicar</td>
-            <td>Edit</td>
-        </tr>
-    </tbody>
-</table>
