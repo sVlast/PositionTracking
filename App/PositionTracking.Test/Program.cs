@@ -6,28 +6,68 @@ using System.Linq;
 using System.Net.Http;
 using AngleSharp.Io;
 using System.IO;
+using System.Collections.Generic;
 
 namespace PositionTracking.Test
 {
+
+    class SearchContext
+    {
+
+        public int CurrentPage { get; set; }
+        public int MaxPage { get; set; }
+        public string[] Pages { get; }
+        public string Keyword { get; set; }
+        public string Language { get; set; }
+        public string Location { get; set; }
+        public string Path { get; set; }
+
+        public SearchContext(string keyword,string language,string location,string path ) {
+            MaxPage = 10;
+            Pages = new string[MaxPage];
+            Keyword = keyword;
+            Language = language;
+            Location = location;
+            Path = path;
+
+        }
+    }
+
     class Program
     {
+
+        static IEnumerable<string> ParseSearchPage(IDocument document)
+        {
+            return document.QuerySelectorAll("div.g a:not(a[class])").Select(e => e.GetAttribute("href")) ;
+            
+        }
+        static Stream getSearchPage(SearchContext context)
+        {
+            string url;
+            
+            if(context.CurrentPage == 0)
+            {
+                url = "http://www.google.com/search?q="+context.Keyword+"&cr=country"+context.Location+"&hl=lang_" ;
+            }
+            else
+            {
+
+            }
+
+            using (var client = new HttpClient())
+            { 
+                
+            }
+            return 
+        }
+        static int GetRating(string keyword,string language, string location,string path) {
+            var context = new SearchContext(keyword,language,location,path);
+            var page = getSearchPage(context);
+        }
+
+
         static void Main(string[] args)
         {
-        //var source = @"
-        //<!DOCTYPE html>
-        //<html lang=en>
-        //  <meta charset=utf-8>
-        //  <meta name=viewport content=""initial-scale=1, minimum-scale=1, width=device-width"">
-        //  <title>Error 404 (Not Found)!!1</title>
-        //  <style>
-        //    *{margin:0;padding:0}html,code{font:15px/22px arial,sans-serif}html{background:#fff;color:#222;padding:15px}body{margin:7% auto 0;max-width:390px;min-height:180px;padding:30px 0 15px}* > body{background:url(//www.google.com/images/errors/robot.png) 100% 5px no-repeat;padding-right:205px}p{margin:11px 0 22px;overflow:hidden}ins{color:#777;text-decoration:none}a img{border:0}@media screen and (max-width:772px){body{background:none;margin-top:0;max-width:none;padding-right:0}}#logo{background:url(//www.google.com/images/errors/logo_sm_2.png) no-repeat}@media only screen and (min-resolution:192dpi){#logo{background:url(//www.google.com/images/errors/logo_sm_2_hr.png) no-repeat 0% 0%/100% 100%;-moz-border-image:url(//www.google.com/images/errors/logo_sm_2_hr.png) 0}}@media only screen and (-webkit-min-device-pixel-ratio:2){#logo{background:url(//www.google.com/images/errors/logo_sm_2_hr.png) no-repeat;-webkit-background-size:100% 100%}}#logo{display:inline-block;height:55px;width:150px}
-        //  </style>
-        //  <a href=//www.google.com/><span id=logo aria-label=Google></span></a>
-        //  <p><b>404.</b> <ins>That’s an error.</ins>
-        //  <p>The requested URL <code>/error</code> was not found on this server.  <ins>That’s all we know.</ins>";
-
-            //Use the default configuration for AngleSharp
-
             //IBrowsingContext context = null;
             //try
             //{
@@ -66,7 +106,6 @@ namespace PositionTracking.Test
                 //var testUri = new Uri("https://www.google.com/");
                 var testString = "https://www.google.com/";
                 var testString2 = "https://www.google.com/search?q=mobilna+klima&client=firefox-b-d&sxsrf=ALeKk01fcsE1S-hayuHbMGF4Yy0Ej-bebg%3A1620910417371&ei=USGdYM_uFdOJ9u8P5-efkAs&oq=mobilna+klima&gs_lcp=Cgdnd3Mtd2l6EAMyAggAMgIIADICCAAyAggAMgIIADICCAAyBQgAEMsBMgUIABDLATIFCAAQywEyAggAOgcIABBHELADOgcIABCwAxBDOgQIIxAnOgQIABBDOggIABDHARCvAToICAAQsQMQgwE6CwgAELEDEMcBEK8BOgoIABDHARCjAhBDOgUIABCxAzoECAAQCjoCCC46BwgAELEDEAo6CggAEMcBEK8BEAo6CggAELEDEIMBEAo6BwgAEAoQywE6BQgAEMkDOgUIABCSA1DChRBY3KUQYKSoEGgGcAJ4AIABbogBiw6SAQQxNC41mAEAoAEBqgEHZ3dzLXdpesgBCsABAQ&sclient=gws-wiz&ved=0ahUKEwiP247t2cbwAhXThP0HHefzB7IQ4dUDCA0&uact=5";
-                //client.GetAsync(testUri);
 
                 //Check UserAgent
                 //client.DefaultRequestHeaders.UserAgent
@@ -107,7 +146,7 @@ namespace PositionTracking.Test
 
                     //var elemlist = document.All.Where(m => m.Id == "search");
                     //var elem = document.All.Where(m => m.LocalName == "div" && m.ClassList.Contains("g"));
-                    var elem = document.QuerySelectorAll("div.g a");
+                    var elem = ParseSearchPage(document);
 
                     Console.WriteLine("#search found");
                     
@@ -119,8 +158,8 @@ namespace PositionTracking.Test
                     {
                         i++;
                         Console.WriteLine(i+":");
-                        Console.WriteLine("Text:"+item.Text());
-                        Console.WriteLine("href:"+item.GetAttribute("href"));
+                        Console.WriteLine("Text:"+item);
+                        Console.WriteLine("href:"+item);
                     }
                     Console.ReadLine();
                 }
