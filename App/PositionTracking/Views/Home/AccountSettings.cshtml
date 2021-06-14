@@ -3,7 +3,6 @@
 
     Layout = "_AccountLayout";
     ViewData["Title"] = "AccountSettings";
-
 }
 
 
@@ -16,16 +15,31 @@
     <br>
 
     <h2> E-mail </h2>
-    <div class="projectName">
-        <form> <input size="30" type="text" /> </form>
 
-        <br>
-
-        <h2> Change password </h2>
-        <form> <input size="30" type="text" /> <br /> </form>
-        <button id="update"> Update password </button>
+    <div>
+        @User.Identity.Name
     </div>
+    <br>
+    <br />
+    <br />
+    <form>
 
+        <h4> Old Password</h4>
+        <input value="" size="25" type="text" /> <br />
+
+        <h4> New password </h4>
+        <input value="" size="25" type="text" /> <br />
+
+        <h4>Confirm New Password</h4>
+
+        <input value="" size="25" type="text" /> <br />
+        <button id="update"> Update password </button>
+    </form>
+
+
+
+
+    <br>
     <br>
 
     <div class="deleteAccount">
