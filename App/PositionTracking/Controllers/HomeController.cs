@@ -9,6 +9,8 @@ using PositionTracking.Models;
 using Microsoft.AspNetCore.Authentication;
 namespace PositionTracking.Controllers
 {
+
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -43,7 +45,7 @@ namespace PositionTracking.Controllers
         public IActionResult Keywords()
         {
             var model = new KeywordsViewModel();
-            model.ProjectName = "Test 01";
+            model.ProjectName = "Projekt";
             model.Keywords = new KeywordsViewModel.Keyword[]
             {
                 new KeywordsViewModel.Keyword() { Value="Hotels", LanguageLocation="HR-HR", Rating=3},
@@ -57,8 +59,9 @@ namespace PositionTracking.Controllers
 
         public IActionResult Members()
         {
+            
             var model = new MembersViewModel();
-            model.ProjectName = "Test02";
+            model.ProjectName = "Projekt";
             model.Members = new MembersViewModel.Member[]
             {
                 new MembersViewModel.Member() {MemberName="Mihovil",Email="mihovil@miho.com",PermissionType="Admin"},
@@ -71,7 +74,8 @@ namespace PositionTracking.Controllers
         public IActionResult ProjectSettings()
         {
             var model = new ProjectSettingsViewModel();
-            model.ProjectName = "Test 03";
+            model.ProjectName = "Projekt";
+
             model.Domain = "https://www.example.com";
 
 
