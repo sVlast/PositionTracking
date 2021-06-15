@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace PositionTracking.Data
@@ -9,15 +10,22 @@ namespace PositionTracking.Data
         public string Name { get; set; }
         public string Paths { get; set; } //odvajati patheve sa Space
         public ICollection<Keyword> Keywords { get; set; }
-        public ICollection<UserPermission> UserPermissions { get; set; }
+        public IEnumerable<UserPermission> UserPermissions { get; private set; }
 
 
-        
 
+        private Project()
+        { }
 
-        public Project()
+        public Project(IdentityUser user, byte permissionType)
         {
-           // ProjectId = Guid.NewGuid() ;     
+            UserPermissions = new List<UserPermission>();
+            AddUserPermission(user, permissionType);
+        }
+
+        public void AddUserPermission(IdentityUser user, byte permissionType)
+        {
+            ((ICollection<UserPermission>)UserPermissions).Add(new UserPermission(user, permissionType, this));
         }
     }
 }

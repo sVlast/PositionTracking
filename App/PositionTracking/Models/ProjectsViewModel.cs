@@ -12,6 +12,7 @@ namespace PositionTracking.Models
 
         public class Project
         {
+            public Guid Id { get; set; }
             public string Name { get; set; }
             public int NumerOfKeywords { get; set; }
             public string Role { get; set; }

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using PositionTracking.Extensions;
 using PositionTracking.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -20,7 +22,7 @@ namespace PositionTracking.Controllers
         {
             _signInManager = signInManager;
         }
-       
+
 
         [AllowAnonymous]
         [HttpGet]
@@ -31,13 +33,39 @@ namespace PositionTracking.Controllers
 
 
 
+
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpModel model)
+
         {
+            if (ModelState.IsValid)
+                if ((await _signInManager.UserManager.FindByEmailAsync(model.Email)) != null)
+                {
+                    ModelState.AddModelError(nameof(SignUpModel.Email), $"Email '{model.Email}' is already registered.");
+                }
+
+                else
+                {
+                    var user = new IdentityUser(model.Email) { Email = model.Email, EmailConfirmed = true };
+                    var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
+
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddIdentityError(nameof(SignUpModel.Password), result);
+                    }
+                    else
+                    {
+
+                        return View(nameof(SignIn));
+                    }
+                }
+
             return View(model);
-             }
+        }
+
+
 
 
         [AllowAnonymous]
@@ -47,7 +75,7 @@ namespace PositionTracking.Controllers
             return View(new SignInModel() { ReturnUrl = returnUrl });
         }
 
-        
+
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -71,13 +99,13 @@ namespace PositionTracking.Controllers
             }
 
             return View(model);
-            
+
         }
 
         [HttpPost]
         public async Task<IActionResult> SignOut()
         {
-           await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("SignIn");
         }
 

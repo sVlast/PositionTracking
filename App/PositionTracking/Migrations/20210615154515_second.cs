@@ -2,7 +2,7 @@
 
 namespace PositionTracking.Migrations
 {
-    public partial class UserRevert : Migration
+    public partial class second : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

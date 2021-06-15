@@ -7,17 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PositionTracking.Models;
 using Microsoft.AspNetCore.Authentication;
-namespace PositionTracking.Controllers
-{
+using PositionTracking.Data;
+using Microsoft.EntityFrameworkCore;
 
+namespace PositionTracking.Controllers
+
+{
 
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ApplicationDbContext _dbContext;
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _dbContext = context;
         }
 
         public IActionResult Index()
@@ -33,16 +39,32 @@ namespace PositionTracking.Controllers
 
         public IActionResult Projects()
         {
-            var model = new ProjectsViewModel();
-            model.Projects = new ProjectsViewModel.Project[]
-            {
-                new ProjectsViewModel.Project() {Name="School Work", NumerOfKeywords = 4, Role="Admin"}
+            var user = _dbContext.Users
+                .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-            };
-            return View(model);
+            var permissions = _dbContext.Projects
+                .SelectMany(p => p.UserPermissions)
+                .Where(up => up.User == user)
+                .Include(up => up.Project)
+                .ThenInclude(p => p.Keywords);
+                
+
+            var viewProjects = new List<ProjectsViewModel.Project>();
+
+            foreach (var p in permissions)
+            {
+                viewProjects.Add(new ProjectsViewModel.Project()
+                {
+                    Name = p.Project.Name,
+                    NumerOfKeywords = p.Project.Keywords.Count,
+                    Role = p.PermissionType.ToString()
+                });
+            }
+
+            return View(new ProjectsViewModel() { Projects = viewProjects });
         }
 
-        public IActionResult Keywords()
+        public IActionResult Keywords(Guid projectId)
         {
             var model = new KeywordsViewModel();
             model.ProjectName = "Projekt";
@@ -53,13 +75,14 @@ namespace PositionTracking.Controllers
                 new KeywordsViewModel.Keyword() { Value="Cars", LanguageLocation="DE-DE", Rating=1}
             };
 
+
             return View(model);
         }
 
 
         public IActionResult Members()
         {
-            
+
             var model = new MembersViewModel();
             model.ProjectName = "Projekt";
             model.Members = new MembersViewModel.Member[]

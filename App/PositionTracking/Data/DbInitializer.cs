@@ -1,4 +1,5 @@
-﻿using PositionTracking.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using PositionTracking.Models;
 using System;
 using System.Linq;
 
@@ -6,22 +7,46 @@ namespace PositionTracking.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext context)
+        public static void Initialize(IServiceProvider services)
         {
+
+            var context = (ApplicationDbContext)services.GetService(typeof(ApplicationDbContext));
+            var signInManager = (SignInManager<IdentityUser>)services.GetService(typeof(SignInManager<IdentityUser>));
             //look for any keywords
+
+            if (!context.Users.Any())
+            {
+                var result = signInManager.UserManager.CreateAsync(new IdentityUser
+                {
+                    UserName = "dino@position.com",
+                    Email = "dino@position.com",
+                    EmailConfirmed = true
+                }, "1234").Result;
+
+                if (result != IdentityResult.Success)
+                    throw new InvalidOperationException("User creation failed. " + result.ToString());
+
+                result = signInManager.UserManager.CreateAsync(new IdentityUser
+                {
+                    UserName = "sandro@position.com",
+                    Email = "sandro@position.com",
+                    EmailConfirmed = true
+                }, "5678").Result;
+
+            }
 
             if (context.Projects.Any())
             {
                 return;
             }
 
+            var dino = signInManager.UserManager.FindByEmailAsync("dino@position.com").Result;
+            var sandro = signInManager.UserManager.FindByEmailAsync("sandro@position.com").Result;
 
-            var projects = new Project[]
+            context.Projects.Add(new Project(dino, UserPermission.Admin)
             {
-                new Project
-                {
-                    Name = "Auto dijelovi",
-                    Keywords = new Keyword[]
+                Name = "Auto dijelovi",
+                Keywords = new Keyword[]
                     {
                         new Keyword
                         {
@@ -42,14 +67,68 @@ namespace PositionTracking.Data
                                 }
 
                             }
-                            
+
+                        },
+
+                        new Keyword
+                        {
+                            Value= "Car parts",
+                            Entries = new KeywordEntry[]
+                            {
+                                new KeywordEntry
+                                {
+                                    Language = "EN",
+                                    Location = "HR",
+                                    Ratings = new KeywordRating[]
+                                    {
+                                        new KeywordRating { SearchEngine = "Google", TimeStamp = DateTime.Now.AddDays(-4), Rank = 4 },
+                                        new KeywordRating { SearchEngine = "Google", TimeStamp = DateTime.Now.AddDays(-3), Rank = 3 },
+                                        new KeywordRating { SearchEngine = "Google", TimeStamp = DateTime.Now.AddDays(-1), Rank = 2 }
+
+                                    }
+                                }
+
+                            }
                         }
+
 
                     }
 
 
-                }
-            };
+            });
+            context.SaveChanges();
+
+
+            context.Projects.Add(new Project(sandro, UserPermission.Admin)
+            {
+                Name = "Ljetovanje",
+                Keywords = new Keyword[]
+                    {
+
+                        new Keyword
+                        {
+                            Value="Ljetovanje", Entries= new KeywordEntry[]
+                            {
+                                new KeywordEntry
+                                {
+                                    Language = "HR",
+                                    Location = "HR",
+                                    Ratings = new KeywordRating[]
+                                    {
+                                        new KeywordRating { SearchEngine = "Google", TimeStamp = DateTime.Now.AddDays(-4), Rank = 5 },
+                                        new KeywordRating { SearchEngine = "Google", TimeStamp = DateTime.Now.AddDays(-2), Rank = 6 },
+                                        new KeywordRating { SearchEngine = "Google", TimeStamp = DateTime.Now.AddDays(-1), Rank = 7 }
+
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+            });
+
+            context.SaveChanges();
+
         }
     }
 }
