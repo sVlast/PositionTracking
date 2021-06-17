@@ -1,15 +1,14 @@
 ﻿using System;
-using AngleSharp;
-using System.Threading.Tasks;
-using AngleSharp.Dom;
 using System.Linq;
-using System.Net.Http;
-using AngleSharp.Io;
 using System.IO;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Diagnostics;
 using System.Web;
+using AngleSharp;
+using AngleSharp.Io;
+using AngleSharp.Dom;
 
 namespace PositionTracking.Test
 {
@@ -55,9 +54,9 @@ namespace PositionTracking.Test
                 .Select(e => e.GetAttribute("href"));
         }
 
-        static void SetNextPage(IDocument document,SearchContext context)
+        static void SetNextPage(IDocument document, SearchContext context)
         {
-            if(document == null)
+            if (document == null)
             {
                 context.NextPage = $"https://www.google.com/search?q={HttpUtility.UrlEncode(context.Keyword)}&cr=country{context.Location}&lr=lang_{context.Language}&pws=0";
             }
@@ -71,8 +70,8 @@ namespace PositionTracking.Test
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
-                
-                
+
+
 
                 HttpResponseMessage httpResponse = client.GetAsync(context.NextPage).Result;
                 var responseStream = httpResponse.Content.ReadAsStreamAsync().Result;
@@ -101,7 +100,7 @@ namespace PositionTracking.Test
 
             while (searchContext.CurrentPage < searchContext.MaxPage)
             {
-                
+
                 var page = GetSearchPage(searchContext);
 
                 using (var browsingContext = BrowsingContext.New(config))
@@ -133,13 +132,13 @@ namespace PositionTracking.Test
                     }
                     if (rating == 0)
                     {
-                        
+
                     };
                     searchContext.CurrentPage++;
                     Debug.WriteLine(searchContext.CurrentPage);
                     SetNextPage(document, searchContext);
                 }
-                
+
                 Thread.Sleep(rnd.Next(3000, 7000));
             }
 
