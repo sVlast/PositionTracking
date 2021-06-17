@@ -7,6 +7,9 @@ using System.Net.Http;
 using AngleSharp.Io;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading;
+using System.Diagnostics;
+using System.Web;
 
 namespace PositionTracking.Test
 {
@@ -40,36 +43,43 @@ namespace PositionTracking.Test
     class Program
     {
 
+        private static readonly Random rnd = new Random();
+
         static IEnumerable<string> ParseSearchPage(IDocument document)
         {
 
             //document.querySelectorAll("div#rso div.g")
             //find first <a> from div.g with angle sharp
-            return document.QuerySelectorAll("div#rso div.g").Select(d => d.GetElementsByTagName("a").First()).Select(e => e.GetAttribute("href"));
+            return document.QuerySelectorAll("div#rso div.g")
+                .Select(d => d.GetElementsByTagName("a").First())
+                .Select(e => e.GetAttribute("href"));
+        }
 
+        static void SetNextPage(IDocument document,SearchContext context)
+        {
+            if(document == null)
+            {
+                context.NextPage = $"https://www.google.com/search?q={HttpUtility.UrlEncode(context.Keyword)}&cr=country{context.Location}&lr=lang_{context.Language}&pws=0";
+            }
+            else
+            {
+                context.NextPage = "https://www.google.com" + document.QuerySelector("a#pnnext").GetAttribute("href");
+            }
         }
         static Stream GetSearchPage(SearchContext context)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
-                string url = "";
+                
+                
 
-                if (context.CurrentPage == 0)
-                {
-                    //cr za lokaciju, lr za jezik dokumenta
-                    url = "http://www.google.com/search?q=" + context.Keyword + "&cr=country" + context.Location + "&lr=lang_" + context.Language + "&pws=0";
-                }
-                else
-                {
-                    url = "http://www.google.com/search?q=" + context.Keyword + "&cr=country" + context.Location + "&lr=lang_" + context.Language + "&pws=0" + "&start=" + context.CurrentPage*10 ;
-                }
-                HttpResponseMessage httpResponse = client.GetAsync(url).Result;
+                HttpResponseMessage httpResponse = client.GetAsync(context.NextPage).Result;
                 var responseStream = httpResponse.Content.ReadAsStreamAsync().Result;
 
 
 
-                using (var fileStream = File.Create("D:\\_Repos\\Testgrounds\\page" + context.CurrentPage + ".html"))
+                using (var fileStream = File.Create("D:\\_Repos\\Testgrounds\\PositionTracking\\testpage" + context.CurrentPage + ".html"))
                 {
                     responseStream.Seek(0, SeekOrigin.Begin);
                     responseStream.CopyTo(fileStream);
@@ -86,8 +96,12 @@ namespace PositionTracking.Test
             var searchContext = new SearchContext(keyword, language, location, path);
             var config = Configuration.Default;
             int rating = 0;
-            while (searchContext.CurrentPage < 1)
+
+            SetNextPage(null, searchContext);
+
+            while (searchContext.CurrentPage < searchContext.MaxPage)
             {
+                
                 var page = GetSearchPage(searchContext);
 
                 using (var browsingContext = BrowsingContext.New(config))
@@ -107,11 +121,11 @@ namespace PositionTracking.Test
                     foreach (var item in elems)
                     {
                         rating++;
-                        Console.WriteLine(rating + ":");
-                        Console.WriteLine("Text:" + item);
+                        Debug.WriteLine(rating + ":");
+                        Debug.WriteLine("Text:" + item);
                         var uri = new Uri(item);
-                        Console.WriteLine("uri: " + uri);
-                        Console.WriteLine("uri.host: " + uri.Host);
+                        Debug.WriteLine("uri: " + uri);
+                        Debug.WriteLine("uri.host: " + uri.Host);
 
                         if (uri.Host.Contains(path, StringComparison.OrdinalIgnoreCase))
                             return rating;
@@ -119,12 +133,16 @@ namespace PositionTracking.Test
                     }
                     if (rating == 0)
                     {
-                        searchContext.CurrentPage++;
-                        Console.WriteLine(searchContext.CurrentPage);
+                        
                     };
+                    searchContext.CurrentPage++;
+                    Debug.WriteLine(searchContext.CurrentPage);
+                    SetNextPage(document, searchContext);
                 }
+                
+                Thread.Sleep(rnd.Next(3000, 7000));
             }
-            
+
             return 0;
         }
 
@@ -133,10 +151,9 @@ namespace PositionTracking.Test
         {
 
 
-            var rating = GetRating("Klime", "HR", "HR", "www.elipso.hr");
+            var rating = GetRating("Klime", "HR", "HR", "www.aaaa.hr");
 
-            Console.WriteLine("Rating : " + rating);
-            Console.ReadLine();
+            Debug.WriteLine("Rating : " + rating);
 
 
             //using (var client = new HttpClient()) {
@@ -179,33 +196,33 @@ namespace PositionTracking.Test
             //        //ABBOT
             //        //var document = context.OpenAsync(response).Result;
 
-            //        //Console.WriteLine(document.DocumentElement.OuterHtml);
+            //        //Debug.WriteLine(document.DocumentElement.OuterHtml);
 
             //        //var elemlist = document.All.Where(m => m.Id == "search");
             //        //var elem = document.All.Where(m => m.LocalName == "div" && m.ClassList.Contains("g"));
             //        //var elem = ParseSearchPage(document);
 
-            //        //Console.WriteLine("#search found");
+            //        //Debug.WriteLine("#search found");
 
-            //        //Console.WriteLine("");
+            //        //Debug.WriteLine("");
 
             //        //var i = 0;
 
             //        //foreach (var item in elem)
             //        //{
             //        //    i++;
-            //        //    Console.WriteLine(i+":");
-            //        //    Console.WriteLine("Text:"+item);
-            //        //    Console.WriteLine("href:"+item);
+            //        //    Debug.WriteLine(i+":");
+            //        //    Debug.WriteLine("Text:"+item);
+            //        //    Debug.WriteLine("href:"+item);
             //        //}
-            //        //Console.ReadLine();
+            //        //Debug.ReadLine();
             //    }
             //}
 
 
 
-            //Serialize it back to the console
-            //Console.WriteLine(document.DocumentElement.OuterHtml);
+            //Serialize it back to the Debug
+            //Debug.WriteLine(document.DocumentElement.OuterHtml);
 
         }
     }
