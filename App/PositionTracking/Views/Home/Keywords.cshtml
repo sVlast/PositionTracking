@@ -18,12 +18,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Keywords)
+        @foreach (var keyword in Model.Keywords)
         {
             <tr>
-                <td>@item.Value</td>
-                <td>@item.LanguageLocation</td>
-                <td>#@item.Rating</td>
+                <td>@keyword.Value</td>
+                <td>@keyword.LanguageLocation</td>
+                <td>#@keyword.Rating</td>
             </tr>
         }
 

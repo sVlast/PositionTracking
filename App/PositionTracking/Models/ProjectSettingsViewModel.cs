@@ -6,8 +6,8 @@ namespace PositionTracking.Models
         public string Domain { get; set; }
 
 
-        public ProjectSettingsViewModel()
-        {
-        }
+        public ProjectSettingsViewModel(string projectName)
+            : base (projectName)
+        { }
     }
 }

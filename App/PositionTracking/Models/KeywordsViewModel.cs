@@ -8,7 +8,9 @@ namespace PositionTracking.Models
     {
         public ICollection<Keyword> Keywords { get; set; }
 
-
+        public KeywordsViewModel(string projectName)
+            :base(projectName)
+        { }
 
         public class Keyword
         {

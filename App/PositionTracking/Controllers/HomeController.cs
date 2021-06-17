@@ -47,7 +47,7 @@ namespace PositionTracking.Controllers
                 .Where(up => up.User == user)
                 .Include(up => up.Project)
                 .ThenInclude(p => p.Keywords);
-                
+            
 
             var viewProjects = new List<ProjectsViewModel.Project>();
 
@@ -57,34 +57,52 @@ namespace PositionTracking.Controllers
                 {
                     Name = p.Project.Name,
                     NumerOfKeywords = p.Project.Keywords.Count,
-                    Role = p.PermissionType.ToString()
+                    Role = p.PermissionType.ToString(),
+                    Id = p.Project.ProjectId
                 });
             }
 
             return View(new ProjectsViewModel() { Projects = viewProjects });
         }
 
-        public IActionResult Keywords(Guid projectId)
+        public IActionResult Keywords(Guid id)
         {
-            var model = new KeywordsViewModel();
-            model.ProjectName = "Projekt";
-            model.Keywords = new KeywordsViewModel.Keyword[]
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == id)
+                .Include(p => p.Keywords)
+                .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
+                .First();
+
+
+            var viewKeywords = new List<KeywordsViewModel.Keyword>();
+
+            foreach (var k in project.Keywords)
             {
-                new KeywordsViewModel.Keyword() { Value="Hotels", LanguageLocation="HR-HR", Rating=3},
-                new KeywordsViewModel.Keyword() { Value="Pools", LanguageLocation="EN-HR", Rating=5},
-                new KeywordsViewModel.Keyword() { Value="Cars", LanguageLocation="DE-DE", Rating=1}
-            };
+                viewKeywords.Add(new KeywordsViewModel.Keyword()
+                {
+                    Value = k.Value,
+                    LanguageLocation = k.Language + '-' + k.Location,
+                    Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0
+                   
+                }); ;
+            }
 
 
-            return View(model);
+            return View(new KeywordsViewModel(project.Name) { Keywords = viewKeywords });
         }
+
+
+        //var permission = _dbContext.Model
+
+        //    var viewKeywords = new List<KeywordsViewModel.Keyword>()
+
+
 
 
         public IActionResult Members()
         {
 
-            var model = new MembersViewModel();
-            model.ProjectName = "Projekt";
+            var model = new MembersViewModel("Pro");
             model.Members = new MembersViewModel.Member[]
             {
                 new MembersViewModel.Member() {MemberName="Mihovil",Email="mihovil@miho.com",PermissionType="Admin"},
@@ -96,8 +114,8 @@ namespace PositionTracking.Controllers
 
         public IActionResult ProjectSettings()
         {
-            var model = new ProjectSettingsViewModel();
-            model.ProjectName = "Projekt";
+            var model = new ProjectSettingsViewModel("bla");
+                
 
             model.Domain = "https://www.example.com";
 

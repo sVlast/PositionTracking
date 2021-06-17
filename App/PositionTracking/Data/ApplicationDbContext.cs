@@ -19,6 +19,8 @@ namespace PositionTracking.Data
     {
         public DbSet<Project> Projects { get; set; }
 
+        public DbSet<Keyword> Keywords { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

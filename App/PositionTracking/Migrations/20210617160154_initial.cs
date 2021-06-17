@@ -166,19 +166,21 @@ namespace PositionTracking.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Keyword",
+                name: "Keywords",
                 columns: table => new
                 {
                     KeywordId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(type: "TEXT", nullable: true),
+                    Language = table.Column<string>(type: "TEXT", nullable: true),
+                    Location = table.Column<string>(type: "TEXT", nullable: true),
                     ProjectId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Keyword", x => x.KeywordId);
+                    table.PrimaryKey("PK_Keywords", x => x.KeywordId);
                     table.ForeignKey(
-                        name: "FK_Keyword_Projects_ProjectId",
+                        name: "FK_Keywords_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "ProjectId",
@@ -192,8 +194,8 @@ namespace PositionTracking.Migrations
                     UserPermissionId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(type: "TEXT", nullable: true),
-                    PermissionType = table.Column<byte>(type: "INTEGER", nullable: false),
-                    ProjectId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    ProjectId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    PermissionType = table.Column<byte>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,27 +215,6 @@ namespace PositionTracking.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "KeywordEntry",
-                columns: table => new
-                {
-                    KeywordEntryId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Language = table.Column<string>(type: "TEXT", nullable: true),
-                    Location = table.Column<string>(type: "TEXT", nullable: true),
-                    KeywordId = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_KeywordEntry", x => x.KeywordEntryId);
-                    table.ForeignKey(
-                        name: "FK_KeywordEntry_Keyword_KeywordId",
-                        column: x => x.KeywordId,
-                        principalTable: "Keyword",
-                        principalColumn: "KeywordId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "KeywordRating",
                 columns: table => new
                 {
@@ -242,16 +223,16 @@ namespace PositionTracking.Migrations
                     TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Rank = table.Column<int>(type: "INTEGER", nullable: false),
                     SearchEngine = table.Column<string>(type: "TEXT", nullable: true),
-                    KeywordEntryId = table.Column<int>(type: "INTEGER", nullable: true)
+                    KeywordId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_KeywordRating", x => x.KeywordRatingId);
                     table.ForeignKey(
-                        name: "FK_KeywordRating_KeywordEntry_KeywordEntryId",
-                        column: x => x.KeywordEntryId,
-                        principalTable: "KeywordEntry",
-                        principalColumn: "KeywordEntryId",
+                        name: "FK_KeywordRating_Keywords_KeywordId",
+                        column: x => x.KeywordId,
+                        principalTable: "Keywords",
+                        principalColumn: "KeywordId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -293,19 +274,14 @@ namespace PositionTracking.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Keyword_ProjectId",
-                table: "Keyword",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_KeywordEntry_KeywordId",
-                table: "KeywordEntry",
+                name: "IX_KeywordRating_KeywordId",
+                table: "KeywordRating",
                 column: "KeywordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_KeywordRating_KeywordEntryId",
-                table: "KeywordRating",
-                column: "KeywordEntryId");
+                name: "IX_Keywords_ProjectId",
+                table: "Keywords",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPermission_ProjectId",
@@ -345,13 +321,10 @@ namespace PositionTracking.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "KeywordEntry");
+                name: "Keywords");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Keyword");
 
             migrationBuilder.DropTable(
                 name: "Projects");

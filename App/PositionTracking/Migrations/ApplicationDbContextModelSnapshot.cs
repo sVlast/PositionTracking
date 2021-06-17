@@ -214,6 +214,12 @@ namespace PositionTracking.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Language")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("TEXT");
 
@@ -224,29 +230,7 @@ namespace PositionTracking.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Keyword");
-                });
-
-            modelBuilder.Entity("PositionTracking.Data.KeywordEntry", b =>
-                {
-                    b.Property<int>("KeywordEntryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("KeywordId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("KeywordEntryId");
-
-                    b.HasIndex("KeywordId");
-
-                    b.ToTable("KeywordEntry");
+                    b.ToTable("Keywords");
                 });
 
             modelBuilder.Entity("PositionTracking.Data.KeywordRating", b =>
@@ -255,7 +239,7 @@ namespace PositionTracking.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("KeywordEntryId")
+                    b.Property<int?>("KeywordId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Rank")
@@ -269,7 +253,7 @@ namespace PositionTracking.Migrations
 
                     b.HasKey("KeywordRatingId");
 
-                    b.HasIndex("KeywordEntryId");
+                    b.HasIndex("KeywordId");
 
                     b.ToTable("KeywordRating");
                 });
@@ -373,18 +357,11 @@ namespace PositionTracking.Migrations
                         .HasForeignKey("ProjectId");
                 });
 
-            modelBuilder.Entity("PositionTracking.Data.KeywordEntry", b =>
-                {
-                    b.HasOne("PositionTracking.Data.Keyword", null)
-                        .WithMany("Entries")
-                        .HasForeignKey("KeywordId");
-                });
-
             modelBuilder.Entity("PositionTracking.Data.KeywordRating", b =>
                 {
-                    b.HasOne("PositionTracking.Data.KeywordEntry", null)
+                    b.HasOne("PositionTracking.Data.Keyword", null)
                         .WithMany("Ratings")
-                        .HasForeignKey("KeywordEntryId");
+                        .HasForeignKey("KeywordId");
                 });
 
             modelBuilder.Entity("PositionTracking.Data.UserPermission", b =>
@@ -403,11 +380,6 @@ namespace PositionTracking.Migrations
                 });
 
             modelBuilder.Entity("PositionTracking.Data.Keyword", b =>
-                {
-                    b.Navigation("Entries");
-                });
-
-            modelBuilder.Entity("PositionTracking.Data.KeywordEntry", b =>
                 {
                     b.Navigation("Ratings");
                 });
