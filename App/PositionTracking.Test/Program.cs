@@ -9,6 +9,7 @@ using System.Web;
 using AngleSharp;
 using AngleSharp.Io;
 using AngleSharp.Dom;
+using PositionTracking.Engine;
 
 namespace PositionTracking.Test
 {
@@ -20,7 +21,10 @@ namespace PositionTracking.Test
         static void Main(string[] args)
         {
 
+            var rank = Resolver.GetRank("klime", Languages.lang_hr, Countries.HR,"www.klime.hr", ResolverType.GoogleWeb);
 
+            Console.WriteLine("Testing Rank : "+rank);
+            Console.ReadLine();
         }
     }
 }

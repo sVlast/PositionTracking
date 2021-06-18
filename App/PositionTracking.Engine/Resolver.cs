@@ -6,7 +6,7 @@ namespace PositionTracking.Engine
     public static class Resolver
     {
         
-        public static int GetRank(string keyword, string language, string location, string path,ResolverType searchEngine)
+        public static int GetRank(string keyword, Languages language, Countries location, string path,ResolverType searchEngine)
         {
             switch (searchEngine) {
                 case ResolverType.GoogleWeb:

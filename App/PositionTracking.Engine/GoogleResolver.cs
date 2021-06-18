@@ -19,20 +19,19 @@ namespace PositionTracking.Engine
         private static readonly Random _random = new Random();
 
         private readonly string _keyword;
-        private readonly string _language;
-        private readonly string _location;
+        private readonly Languages _language;
+        private readonly Countries _location;
         private readonly string _path;
 
         private string _nextPage;
 
 
-        public GoogleResolver(string keyword, string language, string location, string path)
+        public GoogleResolver(string keyword, Languages language, Countries location, string path)
         {
             _keyword = keyword;
             _language = language;
             _location = location;
             _path = path;
-
         }
 
         private static IEnumerable<string> ParseSearchPage(IDocument document)
@@ -46,7 +45,7 @@ namespace PositionTracking.Engine
         {
             if (document == null)
             {
-                _nextPage = $"https://www.google.com/search?q={HttpUtility.UrlEncode(_keyword)}&cr=country{_location}&lr=lang_{_language}&pws=0";
+                _nextPage = $"https://www.google.com/search?q={HttpUtility.UrlEncode(_keyword)}&cr=country{_location}&lr={_language}&pws=0";
             }
             else
             {
@@ -99,6 +98,7 @@ namespace PositionTracking.Engine
                         rating++;
                         Debug.WriteLine(rating + ":");
                         Debug.WriteLine("Text:" + item);
+
                         var uri = new Uri(item);
                         Debug.WriteLine("uri: " + uri);
                         Debug.WriteLine("uri.host: " + uri.Host);
@@ -115,6 +115,7 @@ namespace PositionTracking.Engine
                     };
                     pageNum++;
                     Debug.WriteLine(pageNum);
+
                     SetNextPage(document);
                 }
 
