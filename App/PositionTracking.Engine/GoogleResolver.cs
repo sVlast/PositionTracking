@@ -103,6 +103,7 @@ namespace PositionTracking.Engine
                         Debug.WriteLine("uri: " + uri);
                         Debug.WriteLine("uri.host: " + uri.Host);
 
+                        //implement better string comparison
                         if (uri.Host.IndexOf(_path, StringComparison.OrdinalIgnoreCase) >= 0)
                         {
                             return rating;
@@ -110,7 +111,7 @@ namespace PositionTracking.Engine
                     }
                     if (rating == 0)
                     {
-
+                        //todo: implement error handling
                     };
                     pageNum++;
                     Debug.WriteLine(pageNum);
