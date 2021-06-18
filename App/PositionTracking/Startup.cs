@@ -30,7 +30,11 @@ namespace PositionTracking
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            //
+
+            services.AddIdentity<IdentityUser, IdentityRole >(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
 #if DEBUG
@@ -43,6 +47,7 @@ namespace PositionTracking
                 
 #endif
             })
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

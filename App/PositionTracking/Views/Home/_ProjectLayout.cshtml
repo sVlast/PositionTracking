@@ -1,0 +1,35 @@
+﻿@model ProjectModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="row h-100">
+    <div class="col-md-3 col-lg-2">
+        <div class="sidebar-container">
+
+            <div class="sidebar-logo">@Model.ProjectName</div>
+
+            <nav>
+                <ul class="sidebar-navigation">
+
+                    <li @if (Model is KeywordsViewModel) {<text> class="active" </text> }>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Keywords">Keywords</a>
+                    </li>
+
+
+                    <li @if (Model is MembersViewModel) {<text> class="active" </text> }>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Members">Members</a>
+                    </li>
+                    <li @if (Model is ProjectSettingsViewModel) {<text> class="active" </text> }>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="ProjectSettings">Settings</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+
+    <div class="col-md-9 col-lg-10">
+        @RenderBody()
+    </div>
+</div>

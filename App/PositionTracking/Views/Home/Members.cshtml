@@ -1,0 +1,28 @@
+﻿@model MembersViewModel
+@{
+    ViewData["Title"] = "Members";
+    Layout = "_ProjectLayout";
+}
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">e-mail</th>
+            <th scope="col">Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Members)
+        {
+            <tr>
+                <td>@item.MemberName</td>
+                <td>@item.Email</td>
+                <td>#@item.PermissionType</td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

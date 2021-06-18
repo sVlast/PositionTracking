@@ -1,0 +1,39 @@
+﻿@model ProjectsViewModel
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Projects</h1>
+</div>
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Project Name</th>
+            <th scope="col">Number of Keywords</th>
+            <th scope="col">Rating Change</th>
+            <th scope="col">Users Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var project in Model.Projects)
+            {
+                <tr>
+                    <td> 
+                    <a asp-controller="Home"
+                       asp-action="Keywords"
+                       asp-route-id="@project.Id"
+                       > @project.Name</a>
+                    </td>
+
+
+                    <td>@project.NumerOfKeywords</td>
+                    <td> </td>
+                    <td>@project.Role</td>
+                </tr>
+            }
+    </tbody>
+</table>

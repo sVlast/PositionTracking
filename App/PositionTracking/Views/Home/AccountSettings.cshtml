@@ -1,0 +1,53 @@
+﻿@model AccountSettingsViewModel
+@{
+
+    Layout = "_AccountLayout";
+    ViewData["Title"] = "AccountSettings";
+}
+
+
+<div class="container-fluid">
+
+    <div class="text-center">
+        <h1 class="display-4">Account Settings</h1>
+    </div>
+
+    <br>
+
+    <h2> E-mail </h2>
+
+    <div>
+        @User.Identity.Name
+    </div>
+    <br>
+    <br />
+    <br />
+    <form>
+
+        <h4> Old Password</h4>
+        <input value="" size="25" type="text" /> <br />
+
+        <h4> New password </h4>
+        <input value="" size="25" type="text" /> <br />
+
+        <h4>Confirm New Password</h4>
+
+        <input value="" size="25" type="text" /> <br />
+        <button id="update"> Update password </button>
+    </form>
+
+
+
+
+    <br>
+    <br>
+
+    <div class="deleteAccount">
+        <h2>Delete your account</h2>
+        <h5>Deleting an account has the following effects: ...</h5>
+        <button id="delete"> Delete Account </button>
+
+    </div>
+
+</div>
+

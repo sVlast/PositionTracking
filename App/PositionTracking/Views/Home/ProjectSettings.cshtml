@@ -1,0 +1,40 @@
+﻿@model ProjectSettingsViewModel
+@{
+
+    ViewData["Title"] = "ProjectSettings";
+    Layout = "_ProjectLayout";
+}
+
+<div class="container-fluid">
+
+    <div class="text-center">
+        <h1 class="display-4">Project Settings</h1>
+    </div>
+
+    <br>
+
+    <h2> Project name</h2>
+    <div class="projectName">
+        <form>
+        <input value="@Model.ProjectName" size="30" type="text"/> 
+        
+        <br>
+
+        <h2> Change Domain </h2>
+        <input size="30" type="text" /> <br />
+        <button id="update"> Save </button>
+            </form>
+    </div>
+
+    <br>
+
+    <div class="deleteProject">
+
+        <h3>Deleting a project will have the following effects: ...</h3>
+        <button id="delete"> Delete Project </button>
+    </div>
+
+</div>
+
+
+

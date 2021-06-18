@@ -1,0 +1,32 @@
+﻿@model KeywordsViewModel
+@{
+
+    Layout = "_ProjectLayout";
+    ViewData["Title"] = "Keywords";
+
+}
+
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Keyword</th>
+            <th scope="col">Language-Location</th>
+            <th scope="col">Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var keyword in Model.Keywords)
+        {
+            <tr>
+                <td>@keyword.Value</td>
+                <td>@keyword.LanguageLocation</td>
+                <td>#@keyword.Rating</td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
