@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PositionTracking.Engine", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PositionTracking.Test", "PositionTracking.Test\PositionTracking.Test.csproj", "{15921D51-62E9-48DB-9C76-81EAE34A97F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionTracking.Data", "PositionTracking.Data\PositionTracking.Data.csproj", "{C02FECBB-8F4F-46D7-8679-8A2C4B86AAEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PositionTracking.Data", "PositionTracking.Data\PositionTracking.Data.csproj", "{C02FECBB-8F4F-46D7-8679-8A2C4B86AAEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionTracking.WebApi", "PositionTracking.WebApi\PositionTracking.WebApi.csproj", "{64719DA9-7549-4EA9-A6B0-F83F8EBC025E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C02FECBB-8F4F-46D7-8679-8A2C4B86AAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C02FECBB-8F4F-46D7-8679-8A2C4B86AAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C02FECBB-8F4F-46D7-8679-8A2C4B86AAEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64719DA9-7549-4EA9-A6B0-F83F8EBC025E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64719DA9-7549-4EA9-A6B0-F83F8EBC025E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64719DA9-7549-4EA9-A6B0-F83F8EBC025E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64719DA9-7549-4EA9-A6B0-F83F8EBC025E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
