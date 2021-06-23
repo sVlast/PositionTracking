@@ -103,7 +103,7 @@ namespace PositionTracking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignOut()
+        public new async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("SignIn");
