@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,6 +7,10 @@
 
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.15.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PositionTracking.Engine\PositionTracking.Engine.csproj" />
   </ItemGroup>
 
 </Project>
