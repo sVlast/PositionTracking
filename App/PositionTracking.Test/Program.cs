@@ -10,6 +10,7 @@ using AngleSharp;
 using AngleSharp.Io;
 using AngleSharp.Dom;
 using PositionTracking.Engine;
+using PositionTracking.Data;
 
 namespace PositionTracking.Test
 {
@@ -21,10 +22,19 @@ namespace PositionTracking.Test
         static void Main(string[] args)
         {
 
-            var rank = Resolver.GetRank("klime", Languages.lang_hr, Countries.HR,"www.klime.hr", ResolverType.GoogleWeb);
+            using (var db = new ApplicationDbContext())
+            {
+                Console.WriteLine(db.Users.Count());
+            }
 
-            Console.WriteLine("Testing Rank : "+rank);
-            Console.ReadLine();
+
+
+
+
+            //var rank = Resolver.GetRank("klime", Languages.lang_hr, Countries.HR,"www.klime.hr", ResolverType.GoogleWeb);
+
+            //Console.WriteLine("Testing Rank : "+rank);
+            //Console.ReadLine();
         }
     }
 }

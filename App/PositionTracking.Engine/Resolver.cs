@@ -1,5 +1,5 @@
 ﻿using System;
-
+using PositionTracking.Data;
 
 namespace PositionTracking.Engine
 {
@@ -16,6 +16,18 @@ namespace PositionTracking.Engine
                     throw new NotImplementedException();
             }
         }
+
+        public static void UpdateRanks(ApplicationDbContext dbContext) //connection string
+        {
+            //Dohvaćanje keyworda,Spremajne u model(internal model/PT view model)/direktno zapisivanje nakon GetRank,
+            dbContext.SaveChanges();
+        }
+
+        //getKeywords -> object
+
+        //processKeywords
+
+        //updateRanks(dbContext, state)
     }
 
 }
