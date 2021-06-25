@@ -9,8 +9,8 @@ namespace PositionTracking.Models
     {
         public ICollection<Member> Members { get; set; }
 
-        public MembersViewModel(string projectName)
-            : base(projectName)
+        public MembersViewModel(string projectName, Guid projectId)
+            : base(projectName, projectId)
         { }
 
         public class Member

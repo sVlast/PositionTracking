@@ -13,15 +13,15 @@
                 <ul class="sidebar-navigation">
 
                     <li @if (Model is KeywordsViewModel) {<text> class="active" </text> }>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Keywords">Keywords</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Keywords" asp-route-id="@Model.ProjectId">Keywords</a>
                     </li>
 
 
                     <li @if (Model is MembersViewModel) {<text> class="active" </text> }>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Members">Members</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Members" asp-route-id="@Model.ProjectId">Members</a>
                     </li>
                     <li @if (Model is ProjectSettingsViewModel) {<text> class="active" </text> }>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="ProjectSettings">Settings</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="ProjectSettings" asp-route-id="@Model.ProjectId">Settings</a>
                     </li>
                 </ul>
             </nav>
