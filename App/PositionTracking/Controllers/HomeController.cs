@@ -66,8 +66,7 @@ namespace PositionTracking.Controllers
         }
 
         public IActionResult Keywords(Guid id)
-        {
-            var project = _dbContext.Projects
+        {            var project = _dbContext.Projects
                 .Where(p => p.ProjectId == id)
                 .Include(p => p.Keywords)
                 .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
@@ -137,55 +136,28 @@ namespace PositionTracking.Controllers
                 */
         }
 
-        public IActionResult ProjectSettings()
+        public IActionResult ProjectSettings(Guid id)
         {
             var project = _dbContext.Projects
-                .Select(n => n.Name);
-
-            var projectName = new ProjectsViewModel.Project();
-            
-
-            return View(new ProjectSettingsViewModel(projectName.ToString(), Guid.Empty) { });
+            .Where(p => p.ProjectId == id)
+            .First();
 
 
+            return View(new ProjectSettingsViewModel(project.Name, project.ProjectId) { Domain = project.Paths });
 
 
-            /*
-
-            var user = _dbContext.Users
-            .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
-
-
-            var projectName = _dbContext.Projects
-                .Select(n => n.Name)
-                .Where(p => p.ProjectId = id);
-
-
-
-                return View(new ProjectSettingsViewModel() { ProjectName = projectName });
-            */
-            // var viewProjects = new ProjectSettingsViewModel("Name");
-
-
-
-
-            //   var model = new ProjectSettingsViewModel("bla");
-
-
-            //   model.Domain = "https://www.example.com";
-            // return View(new ProjectSettingsViewModel("dad") );
 
 
         }
         public IActionResult AccountSettings()
         {
-            var users = _dbContext.Users
-                .Select(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-            var viewMember = new MembersViewModel.Member();
-            viewMember.MemberName = User.Identity.Name;
+            var user = _dbContext.Users
+               .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-            return View(new MembersViewModel.Member() { MemberName = viewMember.ToString() });
+
+
+            return View(new AccountSettingsViewModel() { Email = User.Identity.Name} );
         }
 
 
