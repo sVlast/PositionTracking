@@ -4,7 +4,7 @@ namespace PositionTracking.Models
     public abstract class ProjectModel
     {
         public string ProjectName { get; }
-        public Guid ProjectId { get;}
+        public Guid ProjectId { get; }
 
 
 

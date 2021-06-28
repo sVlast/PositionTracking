@@ -15,8 +15,71 @@
             <th scope="col">Keyword</th>
             <th scope="col">Language-Location</th>
             <th scope="col">Rating</th>
+            <th>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Add Keyword
+                </button>
+            </th>
         </tr>
     </thead>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Keyword</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form asp-controller="Home" asp-action="AddKeyword">
+                    <div class="modal-body">
+
+
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Keyword:</label>
+                            <input type="text" class="form-control" id="Value">
+                        </div>
+                        <div class="form-group">
+                            <label for="languageFormControlSelect">Language:</label>
+                            <select class="form-control" id="Language">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="locationFormControlSelect">Location:</label>
+                            <select class="form-control" id="Location">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+
+                        <input type="hidden" id="projectId" value="@Model.ProjectId" />
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Keyword</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
     <tbody>
         @foreach (var keyword in Model.Keywords)
         {
@@ -24,6 +87,7 @@
                 <td>@keyword.Value</td>
                 <td>@keyword.LanguageLocation</td>
                 <td>#@keyword.Rating</td>
+                <td> </td>
             </tr>
         }
 

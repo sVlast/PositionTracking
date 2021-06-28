@@ -16,24 +16,58 @@
             <th scope="col">Number of Keywords</th>
             <th scope="col">Rating Change</th>
             <th scope="col">Users Role</th>
+            <th>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Add Project
+                </button>
+            </th>
         </tr>
     </thead>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Project</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Project Name:</label>
+                            <input type="text" class="form-control" id="ProjectName">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" >Add Project</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <tbody>
-        @foreach(var project in Model.Projects)
-            {
-                <tr>
-                    <td> 
+        @foreach (var project in Model.Projects)
+        {
+            <tr>
+                <td>
                     <a asp-controller="Home"
                        asp-action="Keywords"
-                       asp-route-id="@project.Id"
-                       > @project.Name</a>
-                    </td>
+                       asp-route-id="@project.Id"> @project.Name</a>
+                </td>
 
 
-                    <td>@project.NumerOfKeywords</td>
-                    <td> </td>
-                    <td>@project.Role</td>
-                </tr>
-            }
+                <td>@project.NumerOfKeywords</td>
+                <td> </td>
+                <td>@project.Role</td>
+                <td> </td>
+            </tr>
+        }
     </tbody>
 </table>
