@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PositionTracking.Data;
 
-namespace PositionTracking.Migrations
+namespace PositionTracking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210617160154_initial")]
-    partial class initial
+    [Migration("20210628121220_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -216,11 +216,11 @@ namespace PositionTracking.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Language")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Location")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("TEXT");
@@ -247,8 +247,8 @@ namespace PositionTracking.Migrations
                     b.Property<int>("Rank")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("SearchEngine")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("SearchEngine")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PositionTracking.Engine
+namespace PositionTracking.Data
 {
-    public enum ResolverType
+    public enum SearchEngineType
     {
         GoogleWeb,
         GoogleApi,

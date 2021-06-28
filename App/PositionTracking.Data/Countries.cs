@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PositionTracking.Engine
+namespace PositionTracking.Data
 {
     public enum Countries
     {

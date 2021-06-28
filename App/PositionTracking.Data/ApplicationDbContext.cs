@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 /*
  * 
  * MAC-OS
  * dotnet ef migrations add InitialModel
+ * 
+ * 
+ * call from PositionTracking
+ * dotnet ef migrations add InitialMigration --project ../PositionTracking.Data
  * 
  * dotnet ef database update
  * 

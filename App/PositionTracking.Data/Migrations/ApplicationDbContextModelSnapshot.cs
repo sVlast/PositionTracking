@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PositionTracking.Data;
 
-namespace PositionTracking.Migrations
+namespace PositionTracking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -214,11 +214,11 @@ namespace PositionTracking.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Language")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Location")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("TEXT");
@@ -245,8 +245,8 @@ namespace PositionTracking.Migrations
                     b.Property<int>("Rank")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("SearchEngine")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("SearchEngine")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PositionTracking.Migrations
+namespace PositionTracking.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -172,8 +172,8 @@ namespace PositionTracking.Migrations
                     KeywordId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Value = table.Column<string>(type: "TEXT", nullable: true),
-                    Language = table.Column<string>(type: "TEXT", nullable: true),
-                    Location = table.Column<string>(type: "TEXT", nullable: true),
+                    Language = table.Column<int>(type: "INTEGER", nullable: false),
+                    Location = table.Column<int>(type: "INTEGER", nullable: false),
                     ProjectId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -222,7 +222,7 @@ namespace PositionTracking.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Rank = table.Column<int>(type: "INTEGER", nullable: false),
-                    SearchEngine = table.Column<string>(type: "TEXT", nullable: true),
+                    SearchEngine = table.Column<int>(type: "INTEGER", nullable: false),
                     KeywordId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
