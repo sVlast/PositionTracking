@@ -47,7 +47,7 @@ namespace PositionTracking.Controllers
                 .Where(up => up.User == user)
                 .Include(up => up.Project)
                 .ThenInclude(p => p.Keywords);
-            
+
 
             var viewProjects = new List<ProjectsViewModel.Project>();
 
@@ -68,10 +68,10 @@ namespace PositionTracking.Controllers
         public IActionResult Keywords(Guid id)
         {
             var project = _dbContext.Projects
-                .Where(p => p.ProjectId == id)
-                .Include(p => p.Keywords)
-                .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
-                .First();
+       .Where(p => p.ProjectId == id)
+       .Include(p => p.Keywords)
+       .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
+       .First();
 
 
             var viewKeywords = new List<KeywordsViewModel.Keyword>();
@@ -83,7 +83,7 @@ namespace PositionTracking.Controllers
                     Value = k.Value,
                     LanguageLocation = k.Language.ToString() + '-' + k.Location.ToString(),
                     Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0
-                   
+
                 }); ;
             }
 
@@ -121,72 +121,79 @@ namespace PositionTracking.Controllers
             }
 
 
-            return View(new MembersViewModel(project.Name, project.ProjectId) {Members = viewMembers  });
-
-                /*
-
-            var model = new MembersViewModel("Pro");
-            model.Members = new MembersViewModel.Member[]
-            {
-                new MembersViewModel.Member() {MemberName="Mihovil",Email="mihovil@miho.com",PermissionType="Admin"},
-                new MembersViewModel.Member() {MemberName="Ivan",Email="hrvoje@miho.com",PermissionType="Edit"},
-                new MembersViewModel.Member() {MemberName="Hrvoje",Email="ivan@miho.com",PermissionType="View"}
-            };
-            return View(model);
-
-                */
-        }
-
-        public IActionResult ProjectSettings()
-        {
-            var project = _dbContext.Projects
-                .Select(n => n.Name);
-
-            var projectName = new ProjectsViewModel.Project();
-            
-
-            return View(new ProjectSettingsViewModel(projectName.ToString(), Guid.Empty) { });
-
-
-
+            return View(new MembersViewModel(project.Name, project.ProjectId) { Members = viewMembers });
 
             /*
 
-            var user = _dbContext.Users
-            .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
+        var model = new MembersViewModel("Pro");
+        model.Members = new MembersViewModel.Member[]
+        {
+            new MembersViewModel.Member() {MemberName="Mihovil",Email="mihovil@miho.com",PermissionType="Admin"},
+            new MembersViewModel.Member() {MemberName="Ivan",Email="hrvoje@miho.com",PermissionType="Edit"},
+            new MembersViewModel.Member() {MemberName="Hrvoje",Email="ivan@miho.com",PermissionType="View"}
+        };
+        return View(model);
 
-
-            var projectName = _dbContext.Projects
-                .Select(n => n.Name)
-                .Where(p => p.ProjectId = id);
-
-
-
-                return View(new ProjectSettingsViewModel() { ProjectName = projectName });
             */
-            // var viewProjects = new ProjectSettingsViewModel("Name");
+        }
+
+        public IActionResult ProjectSettings(Guid id)
+        {
+            var project = _dbContext.Projects
+            .Where(p => p.ProjectId == id)
+            .First();
 
 
+            return View(new ProjectSettingsViewModel(project.Name, project.ProjectId) { Domain = project.Paths });
 
 
-            //   var model = new ProjectSettingsViewModel("bla");
-
-
-            //   model.Domain = "https://www.example.com";
-            // return View(new ProjectSettingsViewModel("dad") );
 
 
         }
         public IActionResult AccountSettings()
         {
-            var users = _dbContext.Users
-                .Select(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-            var viewMember = new MembersViewModel.Member();
-            viewMember.MemberName = User.Identity.Name;
+            var user = _dbContext.Users
+               .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-            return View(new MembersViewModel.Member() { MemberName = viewMember.ToString() });
+
+
+            return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
+
+        [HttpPost]
+        public IActionResult AddKeyword(AddKeywordViewModel model)
+        {
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == model.ProjectId)
+                .First();
+
+            project.Keywords = new List<Keyword>()
+            { new Keyword()
+            {
+
+                Value = model.Value,
+                Language = model.Language,
+                Location = model.Location
+            }
+
+            };
+
+
+            _dbContext.SaveChanges();
+
+
+            return RedirectToAction("Keywords", new { id = model.ProjectId });  //dynamic object
+        }
+
+
+
+
+
+
+       // public IActionResult AddProject(AddProjectViewModel model) { }
+
+
 
 
 
@@ -195,5 +202,9 @@ namespace PositionTracking.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
+
     }
 }
