@@ -17,20 +17,20 @@ namespace PositionTracking.Test
             using (var db = new ApplicationDbContext())
             {
 
-                Resolver.UpdateRanks(db);
+                //Resolver.UpdateRanks(db);
             }
 
             using (var db = new ApplicationDbContext())
             {
-                foreach (var item in db.Keywords.Include(k=>k.Ratings))
-            {
-                Console.WriteLine(item.Value + " ranks: ");
-                foreach(var rating in item.Ratings)
+                foreach (var item in db.Keywords.Include(k => k.Ratings).Include(k=>k.Project))
                 {
-                    Console.WriteLine(" -- " + rating.Rank);
+                    Console.WriteLine(item.Value + " ranks: ");
+                    foreach (var rating in item.Ratings)
+                    {
+                        Console.WriteLine(" -- " + rating.Rank);
+                    }
                 }
-            }
-            Console.ReadLine();
+                Console.ReadLine();
             }
 
 

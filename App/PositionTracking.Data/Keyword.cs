@@ -12,7 +12,7 @@ namespace PositionTracking.Data
         public Languages Language { get; set; }
         public Countries Location { get; set; }
         public ICollection<KeywordRating> Ratings { get; set; }
-
+        public Project Project { get; set; }
 
         public Keyword()
         {
