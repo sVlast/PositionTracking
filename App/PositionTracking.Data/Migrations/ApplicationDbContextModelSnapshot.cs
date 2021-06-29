@@ -210,9 +210,9 @@ namespace PositionTracking.Data.Migrations
 
             modelBuilder.Entity("PositionTracking.Data.Keyword", b =>
                 {
-                    b.Property<int>("KeywordId")
+                    b.Property<Guid>("KeywordId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Language")
                         .HasColumnType("INTEGER");
@@ -235,12 +235,12 @@ namespace PositionTracking.Data.Migrations
 
             modelBuilder.Entity("PositionTracking.Data.KeywordRating", b =>
                 {
-                    b.Property<int>("KeywordRatingId")
+                    b.Property<Guid>("KeywordRatingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("KeywordId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("KeywordId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Rank")
                         .HasColumnType("INTEGER");
@@ -352,9 +352,11 @@ namespace PositionTracking.Data.Migrations
 
             modelBuilder.Entity("PositionTracking.Data.Keyword", b =>
                 {
-                    b.HasOne("PositionTracking.Data.Project", null)
+                    b.HasOne("PositionTracking.Data.Project", "Project")
                         .WithMany("Keywords")
                         .HasForeignKey("ProjectId");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("PositionTracking.Data.KeywordRating", b =>

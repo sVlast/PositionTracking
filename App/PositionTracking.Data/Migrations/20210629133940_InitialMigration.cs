@@ -169,8 +169,7 @@ namespace PositionTracking.Data.Migrations
                 name: "Keywords",
                 columns: table => new
                 {
-                    KeywordId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    KeywordId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Value = table.Column<string>(type: "TEXT", nullable: true),
                     Language = table.Column<int>(type: "INTEGER", nullable: false),
                     Location = table.Column<int>(type: "INTEGER", nullable: false),
@@ -218,12 +217,11 @@ namespace PositionTracking.Data.Migrations
                 name: "KeywordRating",
                 columns: table => new
                 {
-                    KeywordRatingId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    KeywordRatingId = table.Column<Guid>(type: "TEXT", nullable: false),
                     TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Rank = table.Column<int>(type: "INTEGER", nullable: false),
                     SearchEngine = table.Column<int>(type: "INTEGER", nullable: false),
-                    KeywordId = table.Column<int>(type: "INTEGER", nullable: true)
+                    KeywordId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

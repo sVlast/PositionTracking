@@ -82,6 +82,7 @@ namespace PositionTracking.Controllers
                 {
                     Value = k.Value,
                     LanguageLocation = k.Language.ToString() + '-' + k.Location.ToString(),
+                    Id = k.KeywordId.ToString(),
                     Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0
 
                 }); ;
@@ -90,13 +91,6 @@ namespace PositionTracking.Controllers
 
             return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords });
         }
-
-
-        //var permission = _dbContext.Model
-
-        //    var viewKeywords = new List<KeywordsViewModel.Keyword>()
-
-
 
 
         public IActionResult Members(Guid id)
@@ -123,18 +117,6 @@ namespace PositionTracking.Controllers
 
             return View(new MembersViewModel(project.Name, project.ProjectId) { Members = viewMembers });
 
-            /*
-
-        var model = new MembersViewModel("Pro");
-        model.Members = new MembersViewModel.Member[]
-        {
-            new MembersViewModel.Member() {MemberName="Mihovil",Email="mihovil@miho.com",PermissionType="Admin"},
-            new MembersViewModel.Member() {MemberName="Ivan",Email="hrvoje@miho.com",PermissionType="Edit"},
-            new MembersViewModel.Member() {MemberName="Hrvoje",Email="ivan@miho.com",PermissionType="View"}
-        };
-        return View(model);
-
-            */
         }
 
         public IActionResult ProjectSettings(Guid id)
@@ -173,8 +155,8 @@ namespace PositionTracking.Controllers
             {
 
                 Value = model.Value,
-                //Language = model.Language,
-                //Location = model.Location
+                Language = model.Language,
+                Location = model.Location
             }
 
             };
@@ -184,37 +166,73 @@ namespace PositionTracking.Controllers
 
 
             return RedirectToAction("Keywords", new { id = model.ProjectId });  //dynamic object
+
+
+
         }
 
+        [HttpPost]
+        public IActionResult DeleteKeyword(Guid id)
+        {
+            var keyword = _dbContext.Keywords
+                .Where(k => k.KeywordId == id)
+                .Include(k => k.Ratings)
+                .Include(k => k.Project)
+                .First();
 
+           
+            _dbContext.Remove(keyword);
+            _dbContext.RemoveRange(keyword.Ratings);
+      
 
-        /*
+            _dbContext.SaveChanges();
+            return RedirectToAction("Keywords", new { id = keyword.Project.ProjectId });
+        }
+
 
 
         [HttpPost]
         public IActionResult AddProject(AddProjectViewModel model)
         {
-            var project = _dbContext.Projects
-                .Where(p => p.ProjectId == model.ProjectId)
-                .First();
+            var user = _dbContext.Users
+                .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-            new Project()
+
+            _dbContext.Projects.Add(new Project(user, UserPermission.Admin)
             {
                 Name = model.ProjectName
-            }
-
-
+            });
 
 
             _dbContext.SaveChanges();
 
 
-            return RedirectToAction("Projects", new { id = model.ProjectId });  //dynamic object
+            return RedirectToAction("Projects");  //dynamic object
         }
 
-        */
+        [HttpPost]
+        public IActionResult DeleteProject(Guid id)
+        {
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == id)
+                .Include(p => p.Keywords)
+                .ThenInclude(k => k.Ratings)
+                .Include(k => k.UserPermissions)
+                .First();
+
+            _dbContext.Remove(project);
+            _dbContext.RemoveRange(project.UserPermissions);
+            _dbContext.RemoveRange(project.Keywords);
+            _dbContext.RemoveRange(project.Keywords.SelectMany(k => k.Ratings));
+            
+            
 
 
+
+
+            _dbContext.SaveChanges();
+            return RedirectToAction("Projects");
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

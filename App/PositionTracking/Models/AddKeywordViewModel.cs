@@ -1,4 +1,7 @@
 ﻿using System;
+using PositionTracking.Data;
+
+
 namespace PositionTracking.Models
 {
     public class AddKeywordViewModel
@@ -6,8 +9,8 @@ namespace PositionTracking.Models
         public Guid ProjectId { get; set; }
 
         public string Value { get; set; }
-        public string Language { get; set; }
-        public string Location { get; set; }
+        public Languages Language { get; set; }
+        public Countries Location { get; set; }
 
     }
 }

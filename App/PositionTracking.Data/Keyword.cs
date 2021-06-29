@@ -6,7 +6,7 @@ namespace PositionTracking.Data
     public class Keyword
     {
         
-        public int KeywordId { get;private set; }
+        public Guid KeywordId { get;private set; }
         public string Value { get; set; }
 
         public Languages Language { get; set; }

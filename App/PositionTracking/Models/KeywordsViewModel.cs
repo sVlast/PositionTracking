@@ -17,6 +17,7 @@ namespace PositionTracking.Models
             public string Value { get; set; }
             public string LanguageLocation { get; set; }
             public int Rating { get; set; }
+            public string Id { get; set; }
         }
        
     }

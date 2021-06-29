@@ -1,4 +1,5 @@
 ﻿@model KeywordsViewModel
+@using PositionTracking.Data
 @{
 
     Layout = "_ProjectLayout";
@@ -43,21 +44,23 @@
                         <div class="form-group">
                             <label for="languageFormControlSelect">Language:</label>
                             <select class="form-control" name="Language">
-                                <option>Croatian</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <option value="@Languages.en">English</option>
+                                <option value="@Languages.hr">Croatian</option>
+                                <option value="@Languages.bs">Bosnian</option>
+                                <option value="@Languages.sr">Serbian</option>
+                                <option value="@Languages.de">German</option>
+                                <option value="@Languages.sl">Slovenian</option>
                             </select>
+
                         </div>
                         <div class="form-group">
                             <label for="locationFormControlSelect">Location:</label>
                             <select class="form-control" name="Location">
-                                <option>dsa</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <option value="@Countries.GB">United Kingdom</option>
+                                <option value="@Countries.HR">Croatia</option>
+                                <option value="@Countries.SR">Serbia</option>
+                                <option value="@Countries.DE">Germany</option>
+                                <option value="@Countries.SL">Slovenia</option>>
                             </select>
                         </div>
 
@@ -87,7 +90,12 @@
                 <td>@keyword.Value</td>
                 <td>@keyword.LanguageLocation</td>
                 <td>#@keyword.Rating</td>
-                <td> </td>
+                <td>
+                    <form asp-controller="Home" asp-action="DeleteKeyword">
+                        <input type="hidden" value="@keyword.Id" name="id"/>
+                        <button type="submit" class="btn btn-outline-danger">Remove</button>
+                    </form>
+                </td>
             </tr>
         }
 

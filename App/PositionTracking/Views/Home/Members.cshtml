@@ -59,12 +59,12 @@
     <tbody>
         @foreach (var item in Model.Members)
         {
-            <tr>
-                <td>@item.MemberName</td>
-                <td>@item.Email</td>
-                <td>@item.PermissionType</td>
-                <td> </td>
-            </tr>
+        <tr>
+            <td>@item.MemberName</td>
+            <td>@item.Email</td>
+            <td>@item.PermissionType</td>
+            <td> <button type="button" class="btn btn-outline-danger">Remove</button></td>
+        </tr>
         }
 
 
