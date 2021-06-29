@@ -1,15 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Diagnostics;
-using System.Web;
-using AngleSharp;
-using AngleSharp.Io;
-using AngleSharp.Dom;
+﻿using Microsoft.EntityFrameworkCore;
+using PositionTracking.Data;
 using PositionTracking.Engine;
+using System;
+using System.Linq;
 
 namespace PositionTracking.Test
 {
@@ -20,11 +13,32 @@ namespace PositionTracking.Test
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Test:");
+            using (var db = new ApplicationDbContext())
+            {
 
-            var rank = Resolver.GetRank("klime", Languages.lang_hr, Countries.HR,"www.klime.hr", ResolverType.GoogleWeb);
+                //Resolver.UpdateRanks(db);
+            }
 
-            Console.WriteLine("Testing Rank : "+rank);
-            Console.ReadLine();
+            using (var db = new ApplicationDbContext())
+            {
+                foreach (var item in db.Keywords.Include(k => k.Ratings).Include(k=>k.Project))
+                {
+                    Console.WriteLine(item.Value + " ranks: ");
+                    foreach (var rating in item.Ratings)
+                    {
+                        Console.WriteLine(" -- " + rating.Rank);
+                    }
+                }
+                Console.ReadLine();
+            }
+
+
+
+            //var rank = Resolver.GetRank("klime", Languages.lang_hr, Countries.HR,"www.klime.hr", ResolverType.GoogleWeb);
+
+            //Console.WriteLine("Testing Rank : "+rank);
+            //Console.ReadLine();
         }
     }
 }

@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PositionTracking.Data\PositionTracking.Data.csproj" />
     <ProjectReference Include="..\PositionTracking.Engine\PositionTracking.Engine.csproj" />
   </ItemGroup>
 

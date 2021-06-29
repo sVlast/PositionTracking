@@ -1,4 +1,8 @@
-﻿using System;
+﻿using AngleSharp;
+using AngleSharp.Dom;
+using AngleSharp.Io;
+using PositionTracking.Data;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,9 +10,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Web;
-using AngleSharp;
-using AngleSharp.Io;
-using AngleSharp.Dom;
 
 namespace PositionTracking.Engine
 {
@@ -19,7 +20,7 @@ namespace PositionTracking.Engine
         private static readonly Random _random = new Random();
 
         private readonly string _keyword;
-        private readonly Languages _language;
+        private readonly string _language;
         private readonly Countries _location;
         private readonly string _path;
 
@@ -29,10 +30,30 @@ namespace PositionTracking.Engine
         public GoogleResolver(string keyword, Languages language, Countries location, string path)
         {
             _keyword = keyword;
-            _language = language;
+            _language = GetLang(language);
             _location = location;
             _path = path;
         }
+
+        private static string GetLang(Languages lang) 
+        { 
+            switch(lang)
+            {
+                case Languages.en:
+                    return "lang_en";
+                case Languages.bs:
+                case Languages.hr:
+                    return "lang_hr";
+                case Languages.sr:
+                    return "lang_sr";
+                case Languages.sl:
+                    return "lang_sl";
+                default:
+                    throw new NotSupportedException();
+                   
+            }
+        }
+
 
         private static IEnumerable<string> ParseSearchPage(IDocument document)
         {

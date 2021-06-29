@@ -81,7 +81,7 @@ namespace PositionTracking.Controllers
                 viewKeywords.Add(new KeywordsViewModel.Keyword()
                 {
                     Value = k.Value,
-                    LanguageLocation = k.Language + '-' + k.Location,
+                    LanguageLocation = k.Language.ToString() + '-' + k.Location.ToString(),
                     Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0
 
                 }); ;
@@ -173,8 +173,8 @@ namespace PositionTracking.Controllers
             {
 
                 Value = model.Value,
-                Language = model.Language,
-                Location = model.Location
+                //Language = model.Language,
+                //Location = model.Location
             }
 
             };
