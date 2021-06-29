@@ -4,27 +4,72 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PositionTracking.Data;
+using Microsoft.EntityFrameworkCore;
+using PositionTracking.Engine;
 
 namespace PositionTracking.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EngineControler : ControllerBase
+    public class EngineController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
 
-        private readonly ILogger<EngineControler> _logger;
+        private readonly ILogger<EngineController> _logger;
+        private readonly ApplicationDbContext _dbContext;
 
-        public EngineControler(ILogger<EngineControler> logger)
+        public EngineController(ILogger<EngineController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _dbContext = context;
         }
 
-        
-        
-        
+        [HttpGet("getinfo")]
+        public ActionResult GetInfo()
+        {
+            return new OkResult();
+        }
+
+        [HttpGet("getrank/{id}")]
+        public ActionResult<dynamic> GetRank(int id)
+        {
+            const SearchEngineType searchEngine = SearchEngineType.GoogleWeb;
+
+
+            var keyword = _dbContext.Keywords
+                .Where(k => k.KeywordId == id)
+                .Include(k => k.Project)
+                .First();
+
+            var result = 96;
+
+            //var result = Resolver.GetRank(
+            //    keyword.Value,
+            //    keyword.Language,
+            //    keyword.Location,
+            //    keyword.Project.Paths,
+            //    searchEngine);
+
+            if (result == 0)
+            {
+                return NotFound();
+            }
+
+            keyword.Ratings = new List<KeywordRating>()
+            {
+                new KeywordRating(result, searchEngine)
+            };
+
+            _dbContext.SaveChanges();
+
+            return new ActionResult<dynamic>(new
+            {
+                KeywordId = keyword.KeywordId,
+                Rating = result
+            });
+
+        }
+
     }
+
 }

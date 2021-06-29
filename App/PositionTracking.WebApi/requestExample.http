@@ -1,0 +1,5 @@
+GET https://localhost:5001/engine/getinfo HTTP/2.0
+
+###
+
+GET https://localhost:5001/engine/getrank/1 HTTP/2.0

@@ -15,7 +15,7 @@ namespace PositionTracking.Data
         /// <summary>Serbian</summary>
         sr,
         /// <summary>German</summary>
-        se,
+        de,
         /// <summary>Slovenian</summary>
         sl,
         
