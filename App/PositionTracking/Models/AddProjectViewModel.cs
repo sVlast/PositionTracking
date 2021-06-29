@@ -3,11 +3,16 @@ using PositionTracking.Data;
 
 namespace PositionTracking.Models
 {
-    public class AddProjectViewModel: ProjectModel
+    public class AddProjectViewModel
     {
+        public Guid ProjectId { get; set; }
 
-        public AddProjectViewModel(string projectName, Guid projectId)
-            : base(projectName, projectId)
-        { }
+        public string ProjectName { get; set; }
+
+        public AddProjectViewModel(string name, Guid id)
+        {
+            ProjectName = name;
+            ProjectId = id;
+        }
     }
 }

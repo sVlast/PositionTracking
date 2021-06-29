@@ -188,11 +188,31 @@ namespace PositionTracking.Controllers
 
 
 
+        /*
+
+
+        [HttpPost]
+        public IActionResult AddProject(AddProjectViewModel model)
+        {
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == model.ProjectId)
+                .First();
+
+            new Project()
+            {
+                Name = model.ProjectName
+            }
 
 
 
-       // public IActionResult AddProject(AddProjectViewModel model) { }
 
+            _dbContext.SaveChanges();
+
+
+            return RedirectToAction("Projects", new { id = model.ProjectId });  //dynamic object
+        }
+
+        */
 
 
 

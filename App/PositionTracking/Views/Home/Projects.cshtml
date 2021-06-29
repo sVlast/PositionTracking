@@ -33,18 +33,23 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form>
+
+                <form asp-controller="Home" asp-action="AddProject">
+
+                    <div class="modal-body">
+
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Project Name:</label>
                             <input type="text" class="form-control" id="ProjectName">
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" >Add Project</button>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Add Project</button>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
