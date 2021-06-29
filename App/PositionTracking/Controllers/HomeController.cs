@@ -173,8 +173,8 @@ namespace PositionTracking.Controllers
             {
 
                 Value = model.Value,
-                Language = model.Language,
-                Location = model.Location
+                //Language = model.Language,
+                //Location = model.Location
             }
 
             };

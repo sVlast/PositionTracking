@@ -23,7 +23,7 @@ namespace PositionTracking.WebApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        
         
         
     }
