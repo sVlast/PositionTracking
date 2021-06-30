@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PositionTracking.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using PositionTracking.Data;
 using PositionTracking.Engine;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PositionTracking.WebApi.Controllers
 {
@@ -31,36 +29,33 @@ namespace PositionTracking.WebApi.Controllers
         }
 
         [HttpGet("getrank/{id}")]
-        public ActionResult<dynamic> GetRank(int id)
+        public async Task<ActionResult<dynamic>> GetRank(int id)
         {
             const SearchEngineType searchEngine = SearchEngineType.GoogleWeb;
 
 
-            var keyword = _dbContext.Keywords
-                .Where(k => k.KeywordId == id)
+            var keyword = await _dbContext.Keywords
                 .Include(k => k.Project)
-                .First();
+                .FirstAsync(k => k.KeywordId == id);
+                  
 
-            var result = 96;
+            //var result = 96;
 
-            //var result = Resolver.GetRank(
-            //    keyword.Value,
-            //    keyword.Language,
-            //    keyword.Location,
-            //    keyword.Project.Paths,
-            //    searchEngine);
+            var result = await Resolver.GetRankAsync(
+                keyword.Value,
+                keyword.Language,
+                keyword.Location,
+                keyword.Project.Paths,
+                searchEngine,
+                _logger);
 
-            if (result == 0)
-            {
-                return NotFound();
-            }
 
             keyword.Ratings = new List<KeywordRating>()
             {
                 new KeywordRating(result, searchEngine)
             };
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             return new ActionResult<dynamic>(new
             {

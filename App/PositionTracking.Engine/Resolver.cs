@@ -1,33 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PositionTracking.Data;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PositionTracking.Engine
 {
     public static class Resolver
     {
         
-        public static int GetRank(string keyword, Languages language, Countries location, string path,SearchEngineType searchEngine)
+        public static Task<int> GetRankAsync(string keyword, Languages language, Countries location, string path,SearchEngineType searchEngine,ILogger logger)
         {
             switch (searchEngine) {
                 case SearchEngineType.GoogleWeb:
-                    return new GoogleResolver(keyword, language, location, path).GetRank();
+                    return new GoogleResolver(keyword, language, location, path,logger).GetRankAsync();
                    
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        public static void UpdateRanks(ApplicationDbContext dbContext) //alternatively, pass connection string
+        public static async void UpdateRanks(ApplicationDbContext dbContext,ILogger logger) //alternatively, pass connection string
         {
             const SearchEngineType searchEngine = SearchEngineType.GoogleWeb;
 
             var query = dbContext.Projects
                 .Include(p => p.Keywords);
-
-            //Console.WriteLine("Resolver:");
 
             foreach (var project in query )
             {
@@ -40,9 +39,9 @@ namespace PositionTracking.Engine
 
                     keyword.Ratings = new List<KeywordRating>()
                     {
-                        new KeywordRating(GetRank(keyword.Value, keyword.Language, keyword.Location, project.Paths, searchEngine), searchEngine)
+                        new KeywordRating( await GetRankAsync(keyword.Value, keyword.Language, keyword.Location, project.Paths, searchEngine,logger), searchEngine)
                     };
-                    dbContext.SaveChanges();
+                    await dbContext.SaveChangesAsync();
                 }
             }
 
@@ -50,8 +49,6 @@ namespace PositionTracking.Engine
             //Dohvaćanje keyworda,Spremajne u model(internal model/PT view model)/direktno zapisivanje nakon GetRank,
             //dbContext.SaveChanges();
         }
-
-
 
         //getKeywords -> object
 
