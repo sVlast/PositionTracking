@@ -8,6 +8,89 @@
 }
 
 
+<head>
+    <script type="text/javascript">function confirmDeleteModal(id) {
+            $('#deleteModal').modal();
+            $('#deleteButton').html('<a class="btn btn-danger" onclick="deleteData(' + id + ')">Delete</a>');
+        }
+        function deleteData(id) {
+            // do your stuffs with id
+            $("#successMessage").html("Record With id " + id + " Deleted successfully!");
+            $('#deleteModal').modal('hide'); // now close modal
+        }
+    </script>
+</head>
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Keyword</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Home" asp-action="AddKeyword">
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Keyword:</label>
+                        <input type="text" class="form-control" name="Value">
+                    </div>
+                    <div class="form-group">
+                        <label for="languageFormControlSelect">Language:</label>
+                        <select class="form-control" name="Language">
+                            <option value="@Languages.en">English</option>
+                            <option value="@Languages.hr">Croatian</option>
+                            <option value="@Languages.bs">Bosnian</option>
+                            <option value="@Languages.sr">Serbian</option>
+                            <option value="@Languages.de">German</option>
+                            <option value="@Languages.sl">Slovenian</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="locationFormControlSelect">Location:</label>
+                        <select class="form-control" name="Location">
+                            <option value="@Countries.GB">United Kingdom</option>
+                            <option value="@Countries.HR">Croatia</option>
+                            <option value="@Countries.SR">Serbia</option>
+                            <option value="@Countries.DE">Germany</option>
+                            <option value="@Countries.SL">Slovenia</option>>
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Keyword</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="text-right">
+    <button id="addKeyword" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add Keyword
+    </button>
+</div>
+
+
 
 
 <table class="table table-striped">
@@ -17,67 +100,14 @@
             <th scope="col">Language-Location</th>
             <th scope="col">Rating</th>
             <th>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Add Keyword
-                </button>
+
             </th>
+
         </tr>
     </thead>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Keyword</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form asp-controller="Home" asp-action="AddKeyword">
-                    <div class="modal-body">
 
 
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Keyword:</label>
-                            <input type="text" class="form-control" name="Value">
-                        </div>
-                        <div class="form-group">
-                            <label for="languageFormControlSelect">Language:</label>
-                            <select class="form-control" name="Language">
-                                <option value="@Languages.en">English</option>
-                                <option value="@Languages.hr">Croatian</option>
-                                <option value="@Languages.bs">Bosnian</option>
-                                <option value="@Languages.sr">Serbian</option>
-                                <option value="@Languages.de">German</option>
-                                <option value="@Languages.sl">Slovenian</option>
-                            </select>
-
-                        </div>
-                        <div class="form-group">
-                            <label for="locationFormControlSelect">Location:</label>
-                            <select class="form-control" name="Location">
-                                <option value="@Countries.GB">United Kingdom</option>
-                                <option value="@Countries.HR">Croatia</option>
-                                <option value="@Countries.SR">Serbia</option>
-                                <option value="@Countries.DE">Germany</option>
-                                <option value="@Countries.SL">Slovenia</option>>
-                            </select>
-                        </div>
-
-                        <input type="hidden" name="projectId" value="@Model.ProjectId" />
-
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Keyword</button>
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
 
 
@@ -86,19 +116,23 @@
     <tbody>
         @foreach (var keyword in Model.Keywords)
         {
-            <tr>
-                <td>@keyword.Value</td>
-                <td>@keyword.LanguageLocation</td>
-                <td>#@keyword.Rating</td>
-                <td>
-                    <form asp-controller="Home" asp-action="DeleteKeyword">
-                        <input type="hidden" value="@keyword.Id" name="id"/>
-                        <button type="submit" class="btn btn-outline-danger">Remove</button>
-                    </form>
-                </td>
-            </tr>
+        <tr>
+            <td>@keyword.Value</td>
+            <td>@keyword.LanguageLocation</td>
+            <td>#@keyword.Rating</td>
+            <td>
+                <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
+                    <input type="hidden" value="@keyword.Id" name="Id" />
+                    <button type="submit" class="btn btn-outline-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
         }
+
+        
 
 
     </tbody>
 </table>
+
+

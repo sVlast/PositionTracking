@@ -5,6 +5,46 @@
 }
 
 
+<div class="modal fade" id="addMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Member e-mail:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div>
+                        <label for="locationFormControlSelect">Member Role:</label>
+                        <select class="form-control" id="locationFormControlSelect">
+                            <option>Add Keyword </option>
+                            <option>Edit Keyword</option>
+                            <option>View</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="">Send Invite</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="text-right">
+    <button id="addMember" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMember">
+        Add Member
+    </button>
+</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -12,44 +52,11 @@
             <th scope="col">e-mail</th>
             <th scope="col">Role</th>
             <th>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Add Member
-                </button>
+
             </th>
         </tr>
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Member</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Member e-mail:</label>
-                                <input type="text" class="form-control" id="recipient-name">
-                            </div>
-                            <div>
-                                <label for="locationFormControlSelect">Member Role:</label>
-                                <select class="form-control" id="locationFormControlSelect">
-                                    <option>Add Keyword </option>
-                                    <option>Edit Keyword</option>
-                                    <option>View</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="">Send Invite</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
 
 
@@ -59,12 +66,12 @@
     <tbody>
         @foreach (var item in Model.Members)
         {
-        <tr>
-            <td>@item.MemberName</td>
-            <td>@item.Email</td>
-            <td>@item.PermissionType</td>
-            <td> <button type="button" class="btn btn-outline-danger">Remove</button></td>
-        </tr>
+            <tr>
+                <td>@item.MemberName</td>
+                <td>@item.Email</td>
+                <td>@item.PermissionType</td>
+                <td> <button type="button" class="btn btn-outline-danger">Remove</button></td>
+            </tr>
         }
 
 

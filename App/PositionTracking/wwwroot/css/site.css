@@ -211,3 +211,7 @@ nav.navbar {
 button.dropdownMenuButton{
 
 }
+
+button#addProject, button#addKeyword, button#addMember {
+    margin: 10px;
+}

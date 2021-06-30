@@ -46,6 +46,7 @@ namespace PositionTracking.Data
             context.Projects.Add(new Project(dino, UserPermission.Admin)
             {
                 Name = "Auto dijelovi",
+                Paths= "https://www.silux.hr",
                 Keywords = new Keyword[]
                     {
                         new Keyword
@@ -83,6 +84,7 @@ namespace PositionTracking.Data
             context.Projects.Add(new Project(sandro, UserPermission.Admin)
             {
                 Name = "Ljetovanje",
+                Paths = "crnojaje.hr",
                 Keywords = new Keyword[]
                     {
                         new Keyword

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+
     <header class="w-100">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -17,24 +18,19 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-
-
-
-                            <partial name="_LoginPartial" />
-
-
+                <partial name="_LoginPartial" />
 
             </div>
-
 
         </nav>
     </header>
 
-        <main role="main" class=" w-100">
-            <div class="container-fluid h-100">
-                @RenderBody()
-            </div>
-        </main>
+
+    <main role="main" class=" w-100">
+        <div class="container-fluid h-100">
+            @RenderBody()
+        </div>
+    </main>
 
     <footer class="border-top w-100 text-muted">
         <div class="footer container-fluid"> &copy; 2021 - PositionTracking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> </div>

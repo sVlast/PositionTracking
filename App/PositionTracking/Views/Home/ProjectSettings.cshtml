@@ -35,7 +35,10 @@
     <div class="deleteProject">
 
         <h3>Deleting a project will have the following effects: ...</h3>
-        <button type="button" class="btn btn-outline-danger" onclick="">Delete Project</button>
+        <form class="form-confirm" asp-controller="Home" asp-action="DeleteProject">
+            <input type="hidden" value="@Model.ProjectId" name="Id" />
+            <button type="submit" class="btn btn-outline-danger">Remove</button>
+        </form>
     </div>
 
 </div>
