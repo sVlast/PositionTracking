@@ -17,6 +17,8 @@ namespace PositionTracking.Engine
     {
         private const int _maxPageNum = 10;
 
+        private static DateTime _reqTimeStamp;
+        private static readonly object _reqLock = new object();
         private static readonly Random _random = new Random();
 
         private readonly string _keyword;
@@ -27,6 +29,7 @@ namespace PositionTracking.Engine
 
         private string _nextPage;
 
+        //Implement synchronizer to block incoming requests
 
         public GoogleResolver(string keyword, Languages language, Countries location, string path, ILogger logger)
         {
@@ -79,16 +82,33 @@ namespace PositionTracking.Engine
         private async Task<Stream> GetSearchPageAsync()
         {
 
-
-            using (var client = new HttpClient())
+            lock(_reqLock)
             {
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
+                var timediff = DateTime.UtcNow - _reqTimeStamp;
+                if (timediff < TimeSpan.FromSeconds(_random.Next(3000, 7000))) 
+                { 
+                    
+                }
+            }
 
-                HttpResponseMessage httpResponse = await client.GetAsync(_nextPage);
+            try
+            {
+                //synchronize this method
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
 
-                var responseStream = await httpResponse.Content.ReadAsStreamAsync();
+                    HttpResponseMessage httpResponse = await client.GetAsync(_nextPage);
 
-                return responseStream;
+                    var responseStream = await httpResponse.Content.ReadAsStreamAsync();
+                    //
+                    return responseStream;
+                }
+
+            }
+            finally
+            {
+                _reqTimeStamp = DateTime.UtcNow.Ticks;
             }
 
         }
