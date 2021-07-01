@@ -43,7 +43,7 @@ namespace PositionTracking.Data
             var dino = signInManager.UserManager.FindByEmailAsync("dino@position.com").Result;
             var sandro = signInManager.UserManager.FindByEmailAsync("sandro@position.com").Result;
 
-            context.Projects.Add(new Project(dino, UserPermission.Admin)
+            context.Projects.Add(new Project(dino, UserRole.Admin)
             {
                 Name = "Auto dijelovi",
                 Paths= "https://www.silux.hr",
@@ -81,7 +81,7 @@ namespace PositionTracking.Data
             context.SaveChanges();
 
 
-            context.Projects.Add(new Project(sandro, UserPermission.Admin)
+            context.Projects.Add(new Project(sandro, UserRole.Admin)
             {
                 Name = "Ljetovanje",
                 Paths = "crnojaje.hr",

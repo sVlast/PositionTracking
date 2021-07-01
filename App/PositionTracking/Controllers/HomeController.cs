@@ -9,11 +9,13 @@ using PositionTracking.Models;
 using Microsoft.AspNetCore.Authentication;
 using PositionTracking.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PositionTracking.Controllers
 
 {
 
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -198,9 +200,11 @@ namespace PositionTracking.Controllers
                 .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
 
-            _dbContext.Projects.Add(new Project(user, UserPermission.Admin)
+            _dbContext.Projects.Add(new Project(user, UserRole.Admin)
             {
-                Name = model.ProjectName
+                Name = model.ProjectName,
+                
+                
             });
 
 
@@ -234,6 +238,22 @@ namespace PositionTracking.Controllers
 
             _dbContext.SaveChanges();
             return RedirectToAction("Projects");
+        }
+
+        [HttpPost]
+        public IActionResult EditProject(ProjectSettingsViewModel model)
+        {
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == model.ProjectId)
+                .First();
+
+
+            project.Name = model.ProjectName;
+            project.Paths = model.Domain;
+
+            _dbContext.SaveChanges();
+
+                return View("ProjectSettings" , model);
         }
 
 

@@ -27,32 +27,40 @@ namespace PositionTracking
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-        
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddDatabaseDeveloperPageExceptionFilter();
             //
 
-            services.AddIdentity<IdentityUser, IdentityRole >(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = true;
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+           {
+               options.SignIn.RequireConfirmedAccount = true;
 #if DEBUG
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredLength = 3;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric =false;
-                
+               options.Password.RequireDigit = false;
+               options.Password.RequireLowercase = false;
+               options.Password.RequiredLength = 3;
+               options.Password.RequiredUniqueChars = 0;
+               options.Password.RequireUppercase = false;
+               options.Password.RequireNonAlphanumeric = false;
+
 #endif
-            })
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+           })
+
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/SignIn";
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

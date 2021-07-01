@@ -17,13 +17,13 @@ namespace PositionTracking.Data
         private Project()
         { }
 
-        public Project(IdentityUser user, byte permissionType)
+        public Project(IdentityUser user, UserRole permissionType)
         {
             UserPermissions = new List<UserPermission>();
             AddUserPermission(user, permissionType);
         }
 
-        public void AddUserPermission(IdentityUser user, byte permissionType)
+        public void AddUserPermission(IdentityUser user, UserRole permissionType)
         {
             ((ICollection<UserPermission>)UserPermissions).Add(new UserPermission(user, permissionType, this));
         }

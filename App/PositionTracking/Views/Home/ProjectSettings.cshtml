@@ -16,16 +16,17 @@
 
     <h2> Project name</h2>
     <div class="projectName">
-        <form>
-            <input value="@Model.ProjectName" size="30" type="text" />
+        <form class="form-confirm" asp-controller="Home" asp-action="EditProject">
+            <input value="@Model.ProjectName" name="ProjectName" size="30" type="text" />
 
             <br />
             <br />
 
             <h2> Change Domain </h2>
-            <input value="@Model.Domain" size="30" type="text" /> <br />
+            <input value="@Model.Domain" name="Domain" size="30" type="text" /> <br />
             <br />
-            <button type="button" class="btn btn-outline-primary" onclick="">Save</button>
+            <input type="hidden" value="@Model.ProjectId" name="ProjectId" />
+            <button type="submit" class="btn btn-outline-primary">Save</button>
         </form>
     </div>
 

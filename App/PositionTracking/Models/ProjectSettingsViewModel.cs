@@ -9,5 +9,9 @@ namespace PositionTracking.Models
         public ProjectSettingsViewModel(string projectName, Guid projectId)
             : base(projectName, projectId)
         { }
+
+
+        public ProjectSettingsViewModel()
+        { }
     }
 }

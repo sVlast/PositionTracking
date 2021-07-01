@@ -3,8 +3,8 @@ namespace PositionTracking.Models
 {
     public abstract class ProjectModel
     {
-        public string ProjectName { get; }
-        public Guid ProjectId { get; }
+        public string ProjectName { get; set; }
+        public Guid ProjectId { get; set; }
 
 
 
@@ -12,9 +12,10 @@ namespace PositionTracking.Models
         {
             ProjectName = name;
             ProjectId = id;
-
-
         }
+
+        protected ProjectModel()
+        { }
     }
 
  
