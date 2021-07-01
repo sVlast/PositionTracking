@@ -14,8 +14,10 @@ namespace PositionTracking.Engine
         {
             switch (searchEngine) {
                 case SearchEngineType.GoogleWeb:
-                    return new GoogleResolver(keyword, language, location, path,logger).GetRankAsync();
-                   
+                    using (var r = new GoogleResolver(keyword, language, location, path, logger))
+                        return r.GetRankAsync();
+
+
                 default:
                     throw new NotImplementedException();
             }

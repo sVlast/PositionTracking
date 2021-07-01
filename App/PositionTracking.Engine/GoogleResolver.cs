@@ -8,18 +8,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
 namespace PositionTracking.Engine
 {
-    internal sealed class GoogleResolver
+    internal sealed class GoogleResolver : IDisposable
     {
         private const int _maxPageNum = 10;
 
         private static DateTime _reqTimeStamp;
-        private static readonly object _reqLock = new object();
         private static readonly Random _random = new Random();
+        private static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1,1);
 
         private readonly string _keyword;
         private readonly string _language;
@@ -81,36 +82,36 @@ namespace PositionTracking.Engine
 
         private async Task<Stream> GetSearchPageAsync()
         {
-
-            lock(_reqLock)
-            {
-                var timediff = DateTime.UtcNow - _reqTimeStamp;
-                if (timediff < TimeSpan.FromSeconds(_random.Next(3000, 7000))) 
-                { 
-                    
-                }
-            }
+            //each call checks if there is a free slot else waits until semaphore.Release()
+            await _semaphoreSlim.WaitAsync();
 
             try
             {
-                //synchronize this method
-                using (var client = new HttpClient())
+                // calulate time diference between bettween the current and the last call to method
+                var timediff = TimeSpan.FromMilliseconds(_random.Next(3000, 7000)) - ( DateTime.UtcNow - _reqTimeStamp);
+                if (timediff > TimeSpan.Zero) 
                 {
-                    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
-
-                    HttpResponseMessage httpResponse = await client.GetAsync(_nextPage);
-
-                    var responseStream = await httpResponse.Content.ReadAsStreamAsync();
-                    //
-                    return responseStream;
+                    _logger.LogDebug("Waiting " + timediff);
+                    await Task.Delay(timediff);
                 }
-
             }
             finally
             {
-                _reqTimeStamp = DateTime.UtcNow.Ticks;
+                _reqTimeStamp = DateTime.UtcNow;
+                _semaphoreSlim.Release();
             }
 
+            //synchronize this method
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
+
+                HttpResponseMessage httpResponse = await client.GetAsync(_nextPage);
+
+                var responseStream = await httpResponse.Content.ReadAsStreamAsync();
+                //
+                return responseStream;
+            }
         }
 
         public async Task<int> GetRankAsync()
@@ -174,11 +175,14 @@ namespace PositionTracking.Engine
                     SetNextPage(document);
                 }
 
-                await Task.Delay(_random.Next(3000, 7000));
-
             }
 
             return 0;
+        }
+
+        public void Dispose()
+        {
+            _semaphoreSlim.Dispose();
         }
     }
 }
