@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PositionTracking.Data;
 using PositionTracking.Engine;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace PositionTracking.WebApi.Controllers
         }
 
         [HttpGet("getrank/{id}")]
-        public async Task<ActionResult<dynamic>> GetRank(int id)
+        public async Task<ActionResult<dynamic>> GetRank(Guid id)
         {
             const SearchEngineType searchEngine = SearchEngineType.GoogleWeb;
 
