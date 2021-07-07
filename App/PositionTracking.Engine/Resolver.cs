@@ -1,63 +1,51 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using PositionTracking.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using PositionTracking.Data;
+using System.Threading.Tasks;
+
 
 namespace PositionTracking.Engine
 {
     public static class Resolver
     {
         
-        public static int GetRank(string keyword, Languages language, Countries location, string path,SearchEngineType searchEngine)
+        public static Task<int> GetRankAsync(string keyword, Languages language, Countries location, string path,SearchEngineType searchEngine,ILogger logger)
         {
             switch (searchEngine) {
                 case SearchEngineType.GoogleWeb:
-                    return new GoogleResolver(keyword, language, location, path).GetRank();
-                   
+                    using (var r = new GoogleResolver(keyword, language, location, path, logger))
+                        return r.GetRankAsync();
+
+
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        public static void UpdateRanks(ApplicationDbContext dbContext) //alternatively, pass connection string
+        private static async Task UpdateKeywordAsync(Keyword keyword, ApplicationDbContext dbContext, ILogger logger)
         {
             const SearchEngineType searchEngine = SearchEngineType.GoogleWeb;
 
+            logger.LogDebug("Writing to database " + keyword.Value);
+            keyword.Ratings = new List<KeywordRating>()
+            {
+                new KeywordRating( await GetRankAsync(keyword.Value, keyword.Language, keyword.Location, keyword.Project.Paths, searchEngine, logger), searchEngine)
+            };
+            await dbContext.SaveChangesAsync();
+        }
+
+        public static void UpdateRanks(ApplicationDbContext dbContext,ILogger logger) //alternatively, pass connection string
+        {
             var query = dbContext.Projects
                 .Include(p => p.Keywords);
 
-            //Console.WriteLine("Resolver:");
+            Task.WaitAll(query.SelectMany(p => p.Keywords).Select(k => UpdateKeywordAsync(k, dbContext, logger)).ToArray());
 
-            foreach (var project in query )
-            {
-                Console.WriteLine("Resolver: " + project.Name);
-                var path = project.Paths;
-                foreach (var keyword in project.Keywords)
-                {
-                    Console.WriteLine("-- " + keyword.Value);
-                    //GetRank
-
-                    keyword.Ratings = new List<KeywordRating>()
-                    {
-                        new KeywordRating(GetRank(keyword.Value, keyword.Language, keyword.Location, project.Paths, searchEngine), searchEngine)
-                    };
-                    dbContext.SaveChanges();
-                }
-            }
-
-            
-            //Dohvaćanje keyworda,Spremajne u model(internal model/PT view model)/direktno zapisivanje nakon GetRank,
-            //dbContext.SaveChanges();
         }
 
-
-
-        //getKeywords -> object
-
-        //processKeywords
-
-        //updateRanks(dbContext, state)
     }
 
 }
