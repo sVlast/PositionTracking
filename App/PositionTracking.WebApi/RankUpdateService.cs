@@ -9,48 +9,50 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using PositionTracking.Engine;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PositionTracking.WebApi
 {
     public class RankUpdateService : IHostedService, IDisposable
     {
-        //interval kada Timer provjerava da li je prošlo vrijeme od zadnjeg updateRanks
-        private const int timerInterval = 5 * 60 * 1000;
-        private static readonly TimeSpan timeSpread = TimeSpan.FromMinutes(10);
         private readonly ILogger<RankUpdateService> _logger;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly Timer _timer;
         private readonly TimeSpan _updateTime;
 
-        public RankUpdateService(ILogger<RankUpdateService> logger, ApplicationDbContext context, IConfiguration configuration)
+        public RankUpdateService(ILogger<RankUpdateService> logger, IServiceScopeFactory scopeFactory, IConfiguration configuration)
         {
             _logger = logger;
-            _dbContext = context;
-            _updateTime = configuration.GetValue<TimeSpan>("Settings:RankUpdateTime");
+            _scopeFactory = scopeFactory;
+            _updateTime = configuration.GetValue<TimeSpan>("Settings:RankUpdateTimeUTC");
             _timer = new Timer(OnTimerInterval);
-
         }
+
 
         private void OnTimerInterval(object state)
         {
             try
             {
                 _logger.LogInformation("Rank update started.");
-                Resolver.UpdateRanks(_dbContext, _logger);
+                //scope otvara ApplicationDbContext samo kada se koristi umijesto za cijelo vrijme lifetime-a servisa
+                using (var scope = _scopeFactory.CreateScope())
+                    Resolver.UpdateRanks(scope.ServiceProvider.GetRequiredService<ApplicationDbContext>(), _logger);
                 _logger.LogInformation("Rank update finished.");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Update ranks failed!");
             }
 
-            //update timer
+            SetTimer();
+        }
 
+        private void SetTimer()
+        {
             var timeDiff = _updateTime - DateTime.UtcNow.TimeOfDay;
             if (timeDiff < TimeSpan.Zero)
                 timeDiff += TimeSpan.FromHours(24);
             _timer.Change(timeDiff, Timeout.InfiniteTimeSpan);
-
         }
 
         public void Dispose()
@@ -60,12 +62,7 @@ namespace PositionTracking.WebApi
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            //22 trenutno - vrijeme okidanja 1 > 
-            var timeDiff = _updateTime - DateTime.UtcNow.TimeOfDay;
-            if (timeDiff < TimeSpan.Zero)
-                timeDiff += TimeSpan.FromHours(24);
-            _timer.Change(timeDiff, Timeout.InfiniteTimeSpan);
-
+            SetTimer();
             return Task.CompletedTask;
         }
 
