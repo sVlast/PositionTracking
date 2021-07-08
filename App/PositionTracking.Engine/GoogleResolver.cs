@@ -169,6 +169,8 @@ namespace PositionTracking.Engine
                     if (rating == 0)
                     {
                         //todo: implement error handling
+                        
+                        _logger.LogError("Google parser found no matching elements : ", _path, _keyword, _language,_location); ;
                     };
                     pageNum++;
 
