@@ -11,14 +11,13 @@ namespace PositionTracking.Engine
 {
     public static class Resolver
     {
-        
-        public static Task<int> GetRankAsync(string keyword, Languages language, Countries location, string path,SearchEngineType searchEngine,ILogger logger)
-        {
-            switch (searchEngine) {
-                case SearchEngineType.GoogleWeb:
-                    using (var r = new GoogleResolver(keyword, language, location, path, logger))
-                        return r.GetRankAsync();
 
+        public static Task<int> GetRankAsync(string keyword, Languages language, Countries location, string path, SearchEngineType searchEngine, ILogger logger)
+        {
+            switch (searchEngine)
+            {
+                case SearchEngineType.GoogleWeb:
+                    return new GoogleResolver(keyword, language, location, path, logger).GetRankAsync();
 
                 default:
                     throw new NotImplementedException();
@@ -37,7 +36,7 @@ namespace PositionTracking.Engine
             await dbContext.SaveChangesAsync();
         }
 
-        public static void UpdateRanks(ApplicationDbContext dbContext,ILogger logger) //alternatively, pass connection string
+        public static void UpdateRanks(ApplicationDbContext dbContext, ILogger logger) //alternatively, pass connection string
         {
             var query = dbContext.Projects
                 .Include(p => p.Keywords);

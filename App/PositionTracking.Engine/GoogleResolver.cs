@@ -14,7 +14,7 @@ using System.Web;
 
 namespace PositionTracking.Engine
 {
-    internal sealed class GoogleResolver : IDisposable
+    internal sealed class GoogleResolver
     {
         private const int _maxPageNum = 10;
 
@@ -182,9 +182,5 @@ namespace PositionTracking.Engine
             return 0;
         }
 
-        public void Dispose()
-        {
-            _semaphoreSlim.Dispose();
-        }
     }
 }
