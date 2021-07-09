@@ -18,3 +18,19 @@ function confirmModalYesHandle()
 $("form.form-confirm").on("submit", function (e) {
     return confirm("Are you sure?");
 })
+
+
+        $('#ajax').click(function () {
+            alert('ajax');
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "https::// settings",
+                success: function (data) {
+                    alert(data){
+                        alert(data);
+                    }
+                }
+            });
+        }
+        )
