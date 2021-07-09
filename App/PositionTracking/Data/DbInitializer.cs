@@ -13,6 +13,7 @@ namespace PositionTracking.Data
             var context = (ApplicationDbContext)services.GetService(typeof(ApplicationDbContext));
             var signInManager = (SignInManager<IdentityUser>)services.GetService(typeof(SignInManager<IdentityUser>));
             //look for any keywords
+            signInManager.UserManager.PasswordHasher = new CustomPasswordHasher();
 
             if (!context.Users.Any())
             {
