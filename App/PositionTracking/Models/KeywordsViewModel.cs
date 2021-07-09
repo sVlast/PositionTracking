@@ -7,6 +7,7 @@ namespace PositionTracking.Models
     public class KeywordsViewModel : ProjectModel
     {
         public ICollection<Keyword> Keywords { get; set; }
+        public string GetRankUrl { get; set; }
 
         public KeywordsViewModel(string projectName, Guid projectId)
             :base(projectName, projectId)
@@ -18,6 +19,7 @@ namespace PositionTracking.Models
             public string LanguageLocation { get; set; }
             public int Rating { get; set; }
             public string Id { get; set; }
+            
         }
        
     }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using PositionTracking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 
 namespace PositionTracking.Controllers
 
@@ -18,15 +19,20 @@ namespace PositionTracking.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly string _getRankUrl; 
+
         private readonly ILogger<HomeController> _logger;
 
         private readonly ApplicationDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration)
         {
             _logger = logger;
             _dbContext = context;
+            _getRankUrl = configuration.GetValue<string>("RestApiSettings:GetRankUrl");
         }
+
+
 
         public IActionResult Index()
         {
@@ -85,13 +91,13 @@ namespace PositionTracking.Controllers
                     Value = k.Value,
                     LanguageLocation = k.Language.ToString() + '-' + k.Location.ToString(),
                     Id = k.KeywordId.ToString(),
-                    Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0
-
+                    Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0,
+                    
                 }); ;
             }
 
 
-            return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords });
+            return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords, GetRankUrl = _getRankUrl });
         }
 
 

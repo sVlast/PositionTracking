@@ -20,17 +20,16 @@ $("form.form-confirm").on("submit", function (e) {
 })
 
 
-        $('#ajax').click(function () {
-            alert('ajax');
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "https::// settings",
-                success: function (data) {
-                    alert(data){
-                        alert(data);
-                    }
-                }
-            });
+$('.btn-refresh').click(function (e) {
+    var id = $(this).attr("data-id");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: $("#getRankUrl") + id, //
+        success: function(data) {
+            alert(data);
         }
-        )
+    });
+});
+

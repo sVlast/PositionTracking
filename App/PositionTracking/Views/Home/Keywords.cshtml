@@ -8,7 +8,7 @@
 }
 
 
-<input id="refreshUrl" type="hidden" value="" />
+<input id="getRankUrl" type="hidden" value="@Model.GetRankUrl" />
 
 <!-- u app setingsu definirat refresh URL
 
@@ -16,6 +16,7 @@
     iuconfiguration(interface koji predstavlja appsettings file)
 
     uzimamo propertye iz settingsa
+
 
 
     kako preko jquerya procitat tu vrijednost iz htmla i zaljepoit u ajax -->
@@ -113,8 +114,10 @@
                 <td>@keyword.Value</td>
                 <td>@keyword.LanguageLocation</td>
                 <td>#@keyword.Rating</td>
+
+
                 <td>
-                    <button id="ajax" type="button" class="btn btn-outline-dark">Refresh</button>
+                    <button type="button" class="btn btn-outline-dark btn-refresh " data-id="@keyword.Id">Refresh</button>
                 </td>
 
 
