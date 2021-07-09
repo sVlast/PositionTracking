@@ -18,3 +18,18 @@ function confirmModalYesHandle()
 $("form.form-confirm").on("submit", function (e) {
     return confirm("Are you sure?");
 })
+
+
+$('.btn-refresh').click(function (e) {
+    var id = $(this).attr("data-id");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: $("#getRankUrl") + id, //
+        success: function(data) {
+            alert(data);
+        }
+    });
+});
+

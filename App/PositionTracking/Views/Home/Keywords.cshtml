@@ -8,23 +8,18 @@
 }
 
 
-<head>
-    <script type="text/javascript">function confirmDeleteModal(id) {
-            $('#deleteModal').modal();
-            $('#deleteButton').html('<a class="btn btn-danger" onclick="deleteData(' + id + ')">Delete</a>');
-        }
-        function deleteData(id) {
-            // do your stuffs with id
-            $("#successMessage").html("Record With id " + id + " Deleted successfully!");
-            $('#deleteModal').modal('hide'); // now close modal
-        }
-    </script>
-</head>
+<input id="getRankUrl" type="hidden" value="@Model.GetRankUrl" />
+
+<!-- u app setingsu definirat refresh URL
+
+    settings prosljedit u kontroler preko dependecy injection,(iconfiguration)
+    iuconfiguration(interface koji predstavlja appsettings file)
+
+    uzimamo propertye iz settingsa
 
 
 
-
-
+    kako preko jquerya procitat tu vrijednost iz htmla i zaljepoit u ajax -->
 
 
 
@@ -115,26 +110,32 @@
     <tbody>
         @foreach (var keyword in Model.Keywords)
         {
-        <tr>
-            <td>@keyword.Value</td>
-            <td>@keyword.LanguageLocation</td>
-            <td>#@keyword.Rating</td>
-            <td><button type="button" class="btn btn-outline-dark">Refresh</button></td>
+            <tr>
+                <td>@keyword.Value</td>
+                <td>@keyword.LanguageLocation</td>
+                <td>#@keyword.Rating</td>
 
 
-            <td>
-                <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
-                    <input type="hidden" value="@keyword.Id" name="Id" />
-                    <button type="submit" class="btn btn-outline-danger">Remove</button>
-                </form>
-            </td>
-        </tr>
+                <td>
+                    <button type="button" class="btn btn-outline-dark btn-refresh " data-id="@keyword.Id">Refresh</button>
+                </td>
+
+
+                <td>
+                    <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
+                        <input type="hidden" value="@keyword.Id" name="Id" />
+                        <button type="submit" class="btn btn-outline-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
         }
 
-        
+
 
 
     </tbody>
 </table>
+
+
 
 
