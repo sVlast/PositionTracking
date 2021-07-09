@@ -9,9 +9,21 @@ using System.Threading.Tasks;
 
 namespace PositionTracking.Engine
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Resolver
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="language"></param>
+        /// <param name="location"></param>
+        /// <param name="path"></param>
+        /// <param name="searchEngine"></param>
+        /// <param name="logger"></param>
+        /// <returns>Return keyword rating if succesfull,otherwise returns 0 if keyword was not found</returns>
         public static Task<int> GetRankAsync(string keyword, Languages language, Countries location, string path, SearchEngineType searchEngine, ILogger logger)
         {
             switch (searchEngine)

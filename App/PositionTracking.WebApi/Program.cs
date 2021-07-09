@@ -23,6 +23,8 @@ namespace PositionTracking.WebApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    // vrijedi iskljucivo za listener-a
+                    webBuilder.UseUrls("https://*:5003", "http://*:5002");
                 });
 
         

@@ -155,7 +155,8 @@ namespace PositionTracking.Engine
                             var uri = new Uri(item);
 
                             //implement better string comparison
-                            if (uri.Host.IndexOf(_path, StringComparison.OrdinalIgnoreCase) >= 0)
+                            //ends with
+                            if (uri.Host.Equals(_path, StringComparison.OrdinalIgnoreCase))
                             {
                                 return rating;
                             }
@@ -169,8 +170,8 @@ namespace PositionTracking.Engine
                     if (rating == 0)
                     {
                         //todo: implement error handling
-                        
                         _logger.LogError("Google parser found no matching elements : ", _path, _keyword, _language,_location); ;
+                        throw new InvalidOperationException("Parser Failed");
                     };
                     pageNum++;
 
