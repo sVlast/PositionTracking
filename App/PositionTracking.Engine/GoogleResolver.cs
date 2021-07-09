@@ -14,7 +14,7 @@ using System.Web;
 
 namespace PositionTracking.Engine
 {
-    internal sealed class GoogleResolver : IDisposable
+    internal sealed class GoogleResolver
     {
         private const int _maxPageNum = 10;
 
@@ -169,6 +169,8 @@ namespace PositionTracking.Engine
                     if (rating == 0)
                     {
                         //todo: implement error handling
+                        
+                        _logger.LogError("Google parser found no matching elements : ", _path, _keyword, _language,_location); ;
                     };
                     pageNum++;
 
@@ -180,9 +182,5 @@ namespace PositionTracking.Engine
             return 0;
         }
 
-        public void Dispose()
-        {
-            _semaphoreSlim.Dispose();
-        }
     }
 }

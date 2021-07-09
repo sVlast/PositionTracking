@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using PositionTracking.Data;
 
 namespace PositionTracking.WebApi
@@ -26,6 +27,8 @@ namespace PositionTracking.WebApi
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+
+            services.AddHostedService<RankUpdateService>();
             
         }
 
@@ -48,6 +51,7 @@ namespace PositionTracking.WebApi
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
