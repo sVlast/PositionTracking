@@ -11,3 +11,13 @@ GET https://localhost:5001/engine/getrank/769AFCA9-CEF6-4C44-BF4F-BC7368C76D8C H
 ###
 //Car parts
 GET https://localhost:5001/engine/getrank/2943FE2E-4E52-4B6B-A181-1E209E1EE889 HTTP/2.0
+
+###
+//dynamic ip
+GET  https://192.168.0.116:5001/engine/getinfo HTTP/2.0
+
+###
+
+GET https://customsearch.googleapis.com/customsearch/v1?cr=countryHR&hl=hr&lr=lang_hr&q=Ljetovanje&safe=off&searchType=searchTypeUndefined&key=dc996b6152fabdacc50ab96fd6c35887f190cb3a HTTP/1.1
+
+Accept: application/json

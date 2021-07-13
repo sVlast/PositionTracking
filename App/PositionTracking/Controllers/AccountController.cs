@@ -21,6 +21,7 @@ namespace PositionTracking.Controllers
 
         {
             _signInManager = signInManager;
+            _signInManager.UserManager.PasswordHasher = new CustomPasswordHasher();
         }
 
 
