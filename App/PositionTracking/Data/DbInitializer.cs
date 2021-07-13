@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PositionTracking.Models;
 using System;
 using System.Linq;
@@ -12,8 +13,9 @@ namespace PositionTracking.Data
 
             var context = (ApplicationDbContext)services.GetService(typeof(ApplicationDbContext));
             var signInManager = (SignInManager<IdentityUser>)services.GetService(typeof(SignInManager<IdentityUser>));
-            //look for any keywords
+            context.Database.Migrate(); // mozemo izbrisati bazu i ovo ju doda automatski
 
+            //look for any keywords
             if (!context.Users.Any())
             {
                 var result = signInManager.UserManager.CreateAsync(new IdentityUser

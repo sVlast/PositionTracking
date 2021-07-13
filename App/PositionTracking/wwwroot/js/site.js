@@ -22,14 +22,36 @@ $("form.form-confirm").on("submit", function (e) {
 
 $('.btn-refresh').click(function (e) {
     var id = $(this).attr("data-id");
+    var url = $("#getRankUrl").val() + id;
 
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: $("#getRankUrl") + id, //
-        success: function(data) {
-            alert(data);
+    var req = new XMLHttpRequest();
+
+    req.open('GET', url, true);
+    req.timeout = 60000;
+    req.responseType = 'json';
+    req.setRequestHeader("Access-Control-Allow-Origin", "https://localhost:5003");
+    req.onreadystatechange = function () {
+
+        if (req.readyState !== 4) {
+            return;
+
+        } else if (req.status === 0) {
+            alert("status 0");
+
+        } else if (req.status !== 200) {
+            alert("status " + req.status + " (" + req.statusText + ")");
+
+        } else {
+            alert("success: " + req.responseType);
+
         }
-    });
+
+    };
+
+    req.send();
+
+
+
+
 });
 
