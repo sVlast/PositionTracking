@@ -3,37 +3,36 @@ using PositionTracking.Data;
 using PositionTracking.Engine;
 using System;
 using System.Linq;
+using PositionTracking;
+
 
 namespace PositionTracking.Test
 {
-
-
     class Program
     {
-
         static void Main(string[] args)
         {
-            Console.WriteLine("Test:");
-            using (var db = new ApplicationDbContext())
-            {
+            
 
-                //Resolver.UpdateRanks(db);
-            }
+            //Console.WriteLine("Test:");
+            //using (var db = new ApplicationDbContext())
+            //{
 
-            using (var db = new ApplicationDbContext())
-            {
-                foreach (var item in db.Keywords.Include(k => k.Ratings).Include(k=>k.Project))
-                {
-                    Console.WriteLine(item.Value + " ranks: ");
-                    foreach (var rating in item.Ratings)
-                    {
-                        Console.WriteLine(" -- " + rating.Rank);
-                    }
-                }
-                Console.ReadLine();
-            }
+            //    //Resolver.UpdateRanks(db);
+            //}
 
-
+            //using (var db = new ApplicationDbContext())
+            //{
+            //    foreach (var item in db.Keywords.Include(k => k.Ratings).Include(k=>k.Project))
+            //    {
+            //        Console.WriteLine(item.Value + " ranks: ");
+            //        foreach (var rating in item.Ratings)
+            //        {
+            //            Console.WriteLine(" -- " + rating.Rank);
+            //        }
+            //    }
+            //    Console.ReadLine();
+            //}
 
             //var rank = Resolver.GetRank("klime", Languages.lang_hr, Countries.HR,"www.klime.hr", ResolverType.GoogleWeb);
 

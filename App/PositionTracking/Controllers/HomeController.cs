@@ -150,6 +150,19 @@ namespace PositionTracking.Controllers
 
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
+        [HttpPost]
+        //metoda addMemeber
+        public IActionResult AddMember(Project, MemberAccessException, Role)
+        {
+            //da li postoji user s ovim mailom
+            //ako ne postoji generate link, query string encrypt project ID
+            //sign up metoda
+            //klik na link ode na stranicu
+            //UserManager
+            //ako postoji nađi projekt ID include user permisson
+            //add user and role
+            //return view members
+        }
 
         [HttpPost]
         public IActionResult AddKeyword(AddKeywordViewModel model)

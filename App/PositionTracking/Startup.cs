@@ -52,6 +52,8 @@ namespace PositionTracking
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddScoped<EmailSender>();
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/SignIn";

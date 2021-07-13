@@ -1,16 +1,17 @@
-GET https://localhost:5001/engine/getinfo HTTP/2.0
+GET https://localhost:5003/engine/getinfo HTTP/2.0
 
 ###
 //Ljetovanje
-GET https://localhost:5001/engine/getrank/A4FE70C4-FDAC-4C92-97AF-D5DC758A5C3C HTTP/2.0
+GET https://localhost:5003/engine/getrank/B3725BEF-FE07-4983-A3BF-AE3CF42A682E HTTP/2.0
 
 ###
 //Auto dijelovi
-GET https://localhost:5001/engine/getrank/769AFCA9-CEF6-4C44-BF4F-BC7368C76D8C HTTP/2.0
+GET https://localhost:5003/engine/getrank/769AFCA9-CEF6-4C44-BF4F-BC7368C76D8C HTTP/2.0
 
 ###
 //Car parts
-GET https://localhost:5001/engine/getrank/2943FE2E-4E52-4B6B-A181-1E209E1EE889 HTTP/2.0
+GET https://localhost:5003/engine/getrank/2943FE2E-4E52-4B6B-A181-1E209E1EE889 HTTP/2.0
+
 
 ###
 //dynamic ip
