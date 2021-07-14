@@ -15,11 +15,10 @@ using Microsoft.Extensions.Configuration;
 namespace PositionTracking.Controllers
 
 {
-
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly string _getRankUrl; 
+        private readonly string _getRankUrl;
 
         private readonly ILogger<HomeController> _logger;
 
@@ -32,8 +31,6 @@ namespace PositionTracking.Controllers
             _getRankUrl = configuration.GetValue<string>("RestApiSettings:GetRankUrl");
         }
 
-
-
         public IActionResult Index()
         {
             return View();
@@ -43,7 +40,6 @@ namespace PositionTracking.Controllers
         {
             return View();
         }
-
 
         public IActionResult Projects()
         {
@@ -76,11 +72,10 @@ namespace PositionTracking.Controllers
         public IActionResult Keywords(Guid id)
         {
             var project = _dbContext.Projects
-       .Where(p => p.ProjectId == id)
-       .Include(p => p.Keywords)
-       .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
-       .First();
-
+                .Where(p => p.ProjectId == id)
+                .Include(p => p.Keywords)
+                .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
+                .First();
 
             var viewKeywords = new List<KeywordsViewModel.Keyword>();
 
@@ -92,10 +87,9 @@ namespace PositionTracking.Controllers
                     LanguageLocation = k.Language.ToString() + '-' + k.Location.ToString(),
                     Id = k.KeywordId.ToString(),
                     Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0,
-                    
+
                 }); ;
             }
-
 
             return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords, GetRankUrl = _getRankUrl });
         }
@@ -150,19 +144,20 @@ namespace PositionTracking.Controllers
 
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
-        [HttpPost]
-        //metoda addMemeber
-        public IActionResult AddMember(Project, MemberAccessException, Role)
-        {
-            //da li postoji user s ovim mailom
-            //ako ne postoji generate link, query string encrypt project ID
-            //sign up metoda
-            //klik na link ode na stranicu
-            //UserManager
-            //ako postoji nađi projekt ID include user permisson
-            //add user and role
-            //return view members
-        }
+
+        //[HttpPost]
+        ////metoda addMemeber
+        //public IActionResult AddMember(Project, MemberAccessException, Role)
+        //{
+        //    //da li postoji user s ovim mailom
+        //    //ako ne postoji generate link, query string encrypt project ID
+        //    //sign up metoda
+        //    //klik na link ode na stranicu
+        //    //UserManager
+        //    //ako postoji nađi projekt ID include user permisson
+        //    //add user and role
+        //    //return view members
+        //}
 
         [HttpPost]
         public IActionResult AddKeyword(AddKeywordViewModel model)
@@ -201,10 +196,10 @@ namespace PositionTracking.Controllers
                 .Include(k => k.Project)
                 .First();
 
-           
+
             _dbContext.Remove(keyword);
             _dbContext.RemoveRange(keyword.Ratings);
-      
+
 
             _dbContext.SaveChanges();
             return RedirectToAction("Keywords", new { id = keyword.Project.ProjectId });
@@ -222,8 +217,8 @@ namespace PositionTracking.Controllers
             _dbContext.Projects.Add(new Project(user, UserRole.Admin)
             {
                 Name = model.ProjectName,
-                
-                
+
+
             });
 
 
@@ -249,8 +244,8 @@ namespace PositionTracking.Controllers
             _dbContext.RemoveRange(project.UserPermissions);
             _dbContext.RemoveRange(project.Keywords);
             _dbContext.RemoveRange(project.Keywords.SelectMany(k => k.Ratings));
-            
-            
+
+
 
 
 
@@ -272,7 +267,7 @@ namespace PositionTracking.Controllers
 
             _dbContext.SaveChanges();
 
-                return View("ProjectSettings" , model);
+            return View("ProjectSettings", model);
         }
 
 
