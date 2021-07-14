@@ -150,6 +150,8 @@ namespace PositionTracking.Controllers
 
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
+
+        /*
         [HttpPost]
         //metoda addMemeber
         public IActionResult AddMember(Project, MemberAccessException, Role)
@@ -163,6 +165,7 @@ namespace PositionTracking.Controllers
             //add user and role
             //return view members
         }
+        */
 
         [HttpPost]
         public IActionResult AddKeyword(AddKeywordViewModel model)
@@ -187,6 +190,8 @@ namespace PositionTracking.Controllers
 
 
             return RedirectToAction("Keywords", new { id = model.ProjectId });  //dynamic object
+
+        
 
 
 
@@ -222,8 +227,7 @@ namespace PositionTracking.Controllers
             _dbContext.Projects.Add(new Project(user, UserRole.Admin)
             {
                 Name = model.ProjectName,
-                
-                
+                Paths = model.Domain
             });
 
 
