@@ -7,6 +7,7 @@ namespace PositionTracking.Models
     public class AddProjectViewModel
     {
         public string ProjectName { get; set; }
+        public string Domain { get; set; }
 
     }
 }
