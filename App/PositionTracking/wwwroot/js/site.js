@@ -3,6 +3,8 @@
 
 // Write your JavaScript code.
 
+
+
 var modalResult;   //globalna varijabla za spremanje confirmationa
 
 function showConfirmModal()
@@ -29,7 +31,6 @@ $('.btn-refresh').click(function (e) {
     req.open('GET', url, true);
     req.timeout = 60000;
     req.responseType = 'json';
-    req.setRequestHeader("Access-Control-Allow-Origin", "https://localhost:5003");
     req.onreadystatechange = function () {
 
         if (req.readyState !== 4) {
