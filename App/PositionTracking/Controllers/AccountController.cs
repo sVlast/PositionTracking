@@ -32,8 +32,8 @@ namespace PositionTracking.Controllers
             return View(new SignUpModel() { ReturnUrl = returnUrl });
         }
 
-
-
+        //dodati parametar za signup preko linka
+        //signup model proširiti s podacima
 
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

@@ -7,7 +7,6 @@
 
 }
 
-
 <input id="getRankUrl" type="hidden" value="@Model.GetRankUrl" />
 
 <!-- u app setingsu definirat refresh URL
@@ -17,12 +16,7 @@
 
     uzimamo propertye iz settingsa
 
-
-
     kako preko jquerya procitat tu vrijednost iz htmla i zaljepoit u ajax -->
-
-
-
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -35,8 +29,6 @@
             </div>
             <form asp-controller="Home" asp-action="AddKeyword">
                 <div class="modal-body">
-
-
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Keyword:</label>
                         <input type="text" class="form-control" name="Value">
@@ -65,14 +57,10 @@
                     </div>
 
                     <input type="hidden" name="projectId" value="@Model.ProjectId" />
-
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Keyword</button>
-
                 </div>
             </form>
         </div>
@@ -85,9 +73,6 @@
     </button>
 </div>
 
-
-
-
 <table class="table table-striped">
     <thead>
         <tr>
@@ -96,17 +81,8 @@
             <th scope="col">Rating</th>
             <th> </th>
             <th> </th>
-
         </tr>
     </thead>
-
-
-
-
-
-
-
-
     <tbody>
         @foreach (var keyword in Model.Keywords)
         {
@@ -114,13 +90,9 @@
                 <td>@keyword.Value</td>
                 <td>@keyword.LanguageLocation</td>
                 <td>#@keyword.Rating</td>
-
-
                 <td>
                     <button type="button" class="btn btn-outline-dark btn-refresh " data-id="@keyword.Id">Refresh</button>
                 </td>
-
-
                 <td>
                     <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
                         <input type="hidden" value="@keyword.Id" name="Id" />
@@ -129,10 +101,6 @@
                 </td>
             </tr>
         }
-
-
-
-
     </tbody>
 </table>
 

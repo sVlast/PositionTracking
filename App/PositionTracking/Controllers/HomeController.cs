@@ -52,7 +52,6 @@ namespace PositionTracking.Controllers
                 .Include(up => up.Project)
                 .ThenInclude(p => p.Keywords);
 
-
             var viewProjects = new List<ProjectsViewModel.Project>();
 
             foreach (var p in permissions)
@@ -94,7 +93,6 @@ namespace PositionTracking.Controllers
             return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords, GetRankUrl = _getRankUrl });
         }
 
-
         public IActionResult Members(Guid id)
         {
             var project = _dbContext.Projects
@@ -102,7 +100,6 @@ namespace PositionTracking.Controllers
                 .Include(p => p.UserPermissions)
                 .ThenInclude(u => u.User)
                 .First();
-
 
             var viewMembers = new List<MembersViewModel.Member>();
 
@@ -116,9 +113,7 @@ namespace PositionTracking.Controllers
                 });
             }
 
-
             return View(new MembersViewModel(project.Name, project.ProjectId) { Members = viewMembers });
-
         }
 
         public IActionResult ProjectSettings(Guid id)
@@ -127,20 +122,12 @@ namespace PositionTracking.Controllers
             .Where(p => p.ProjectId == id)
             .First();
 
-
             return View(new ProjectSettingsViewModel(project.Name, project.ProjectId) { Domain = project.Paths });
-
-
-
-
         }
         public IActionResult AccountSettings()
         {
-
             var user = _dbContext.Users
                .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
-
-
 
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
@@ -168,25 +155,16 @@ namespace PositionTracking.Controllers
 
             project.Keywords = new List<Keyword>()
             { new Keyword()
-            {
-
-                Value = model.Value,
-                Language = model.Language,
-                Location = model.Location
-            }
-
+                {
+                    Value = model.Value,
+                    Language = model.Language,
+                    Location = model.Location
+                }
             };
-
 
             _dbContext.SaveChanges();
 
-
             return RedirectToAction("Keywords", new { id = model.ProjectId });  //dynamic object
-
-        
-
-
-
         }
 
         [HttpPost]
@@ -198,16 +176,12 @@ namespace PositionTracking.Controllers
                 .Include(k => k.Project)
                 .First();
 
-
             _dbContext.Remove(keyword);
             _dbContext.RemoveRange(keyword.Ratings);
-
 
             _dbContext.SaveChanges();
             return RedirectToAction("Keywords", new { id = keyword.Project.ProjectId });
         }
-
-
 
         [HttpPost]
         public IActionResult AddProject(AddProjectViewModel model)
@@ -215,18 +189,13 @@ namespace PositionTracking.Controllers
             var user = _dbContext.Users
                 .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-
             _dbContext.Projects.Add(new Project(user, UserRole.Admin)
             {
                 Name = model.ProjectName,
                 Paths = model.Domain
             });
 
-
-
-
             _dbContext.SaveChanges();
-
 
             return RedirectToAction("Projects");  //dynamic object
         }
@@ -245,13 +214,8 @@ namespace PositionTracking.Controllers
             _dbContext.RemoveRange(project.UserPermissions);
             _dbContext.RemoveRange(project.Keywords);
             _dbContext.RemoveRange(project.Keywords.SelectMany(k => k.Ratings));
-
-
-
-
-
-
             _dbContext.SaveChanges();
+
             return RedirectToAction("Projects");
         }
 
@@ -262,7 +226,6 @@ namespace PositionTracking.Controllers
                 .Where(p => p.ProjectId == model.ProjectId)
                 .First();
 
-
             project.Name = model.ProjectName;
             project.Paths = model.Domain;
 
@@ -271,15 +234,10 @@ namespace PositionTracking.Controllers
             return View("ProjectSettings", model);
         }
 
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
-
-
     }
 }

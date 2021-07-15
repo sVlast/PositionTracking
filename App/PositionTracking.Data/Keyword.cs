@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-    
+
 namespace PositionTracking.Data
 {
     public class Keyword

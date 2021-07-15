@@ -25,7 +25,6 @@ namespace PositionTracking
 
                 //mailSender.SendAsync("sandro.vlastelica@gmail.com", "Test -PT","This is a test message").Wait();
             }
-
 #endif
             host.Run();
         }
