@@ -4,7 +4,7 @@ using PositionTracking.Engine;
 using System;
 using System.Linq;
 using PositionTracking;
-
+using System.Security.Cryptography;
 
 namespace PositionTracking.Test
 {
@@ -12,7 +12,32 @@ namespace PositionTracking.Test
     {
         static void Main(string[] args)
         {
-            
+            var tst = new EncryptDecryptService();
+
+            var key = "YX6kyXKjxQp3BeYGsCgYoookMPjVSE685xtJy5A8KHVMuso3cq5y4YfHCNMXmtnx";
+
+            Aes aes = Aes.Create();
+
+            KeySizes[] ks = aes.LegalKeySizes;
+            foreach (KeySizes item in ks)
+            {
+                Console.WriteLine("Legal min key size = " + item.MinSize);
+                Console.WriteLine("Legal max key size = " + item.MaxSize);
+                //Output
+                // Legal min key size = 128
+                // Legal max key size = 256
+            }
+
+            var str = "sandro@position.com";
+            Console.WriteLine($"Encrypting : {str}");
+            var encryptedString = EncryptDecryptService.EncryptString(key, str);
+            Console.WriteLine($"encrypted string = {encryptedString}");
+
+            var decryptedString = EncryptDecryptService.DecryptString(key, encryptedString);
+            Console.WriteLine($"decrypted string = {decryptedString}");
+
+            Console.ReadKey();
+
 
             //Console.WriteLine("Test:");
             //using (var db = new ApplicationDbContext())

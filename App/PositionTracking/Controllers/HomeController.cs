@@ -24,11 +24,14 @@ namespace PositionTracking.Controllers
 
         private readonly ApplicationDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration)
+        private readonly EmailSender _emailSender;
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration,EmailSender emailSender)
         {
             _logger = logger;
             _dbContext = context;
-            _getRankUrl = configuration.GetValue<string>("RestApiSettings:GetRankUrl");
+            _getRankUrl = configuration.GetValue<string>("Settings:GetRankUrl");
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -132,19 +135,52 @@ namespace PositionTracking.Controllers
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
 
-        //[HttpPost]
-        ////metoda addMemeber
-        //public IActionResult AddMember(Project, MemberAccessException, Role)
-        //{
-        //    //da li postoji user s ovim mailom
-        //    //ako ne postoji generate link, query string encrypt project ID
-        //    //sign up metoda
-        //    //klik na link ode na stranicu
-        //    //UserManager
-        //    //ako postoji nađi projekt ID include user permisson
-        //    //add user and role
-        //    //return view members
-        //}
+        
+
+        [HttpPost]
+        //metoda addMemeber - Project, MemberAccessException, Role
+        public IActionResult AddMember(AddMemberViewModel model)
+        {
+
+            var user = _dbContext.Users
+                .FirstOrDefault(u => u.NormalizedEmail == model.MemberEmail.ToUpper());
+
+            var project = _dbContext.Projects
+            .Where(p => p.ProjectId == model.ProjectId)
+            .Include(p => p.UserPermissions)
+            .ThenInclude(u=>u.User)
+            .First();
+
+            if(user != null)
+            {
+                var permission = project.UserPermissions.FirstOrDefault(u => u.User == user);
+                if (permission == null)
+                {
+                    project.AddUserPermission(user, model.UserRole);
+                }
+                else
+                {
+                    permission.PermissionType = model.UserRole;
+                }
+                _dbContext.SaveChanges();
+                
+            }
+            else
+            {
+
+            }
+
+            //da li postoji user s ovim mailom
+            //ako ne postoji generate link, query string encrypt project ID
+            //sign up metoda
+            //klik na link ode na stranicu - projecId ,role Enum, email - enkriptiran
+            //UserManager
+            //ako postoji nađi projekt ID include user permisson
+            //add user and role
+            //return view members
+
+            return RedirectToAction("Members", new { id = model.ProjectId});
+        }
 
         [HttpPost]
         public IActionResult AddKeyword(AddKeywordViewModel model)

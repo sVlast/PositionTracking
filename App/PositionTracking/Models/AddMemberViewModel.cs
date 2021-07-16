@@ -8,8 +8,8 @@ namespace PositionTracking.Models
 {
     public class AddMemberViewModel
     {
-        public string MemberName { get; set; }
-        public UserRole userRole { get; set; }
-
+        public string MemberEmail { get; set; }
+        public UserRole UserRole { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }
