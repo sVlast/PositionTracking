@@ -21,11 +21,10 @@ namespace PositionTracking
                 var services = scope.ServiceProvider;
                 Data.DbInitializer.Initialize(services);
 
-                var mailSender = services.GetRequiredService<EmailSender>();
+                //var mailSender = services.GetRequiredService<EmailSender>();
 
                 //mailSender.SendAsync("sandro.vlastelica@gmail.com", "Test -PT","This is a test message").Wait();
             }
-
 #endif
             host.Run();
         }

@@ -6,9 +6,6 @@ namespace PositionTracking.Data
 {
     public class UserPermission
     {
-
-
-
         public int UserPermissionId { get; private set; }
         public IdentityUser User { get; private set; }
         public Project Project { get; set; }

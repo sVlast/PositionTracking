@@ -11,31 +11,28 @@ using PositionTracking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace PositionTracking.Controllers
 
 {
-
-    [AllowCrossSite]
-
+    [Authorize]
     public class HomeController : Controller
     {
-
         private readonly string _getRankUrl;
 
         private readonly ILogger<HomeController> _logger;
 
         private readonly ApplicationDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration)
+        private readonly EmailSender _emailSender;
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration,EmailSender emailSender)
         {
             _logger = logger;
             _dbContext = context;
-            _getRankUrl = configuration.GetValue<string>("RestApiSettings:GetRankUrl");
+            _getRankUrl = configuration.GetValue<string>("Settings:GetRankUrl");
+            _emailSender = emailSender;
         }
-
-
 
         public IActionResult Index()
         {
@@ -47,7 +44,6 @@ namespace PositionTracking.Controllers
             return View();
         }
 
-
         public IActionResult Projects()
         {
             var user = _dbContext.Users
@@ -58,7 +54,6 @@ namespace PositionTracking.Controllers
                 .Where(up => up.User == user)
                 .Include(up => up.Project)
                 .ThenInclude(p => p.Keywords);
-
 
             var viewProjects = new List<ProjectsViewModel.Project>();
 
@@ -79,11 +74,10 @@ namespace PositionTracking.Controllers
         public IActionResult Keywords(Guid id)
         {
             var project = _dbContext.Projects
-       .Where(p => p.ProjectId == id)
-       .Include(p => p.Keywords)
-       .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
-       .First();
-
+                .Where(p => p.ProjectId == id)
+                .Include(p => p.Keywords)
+                .ThenInclude(k => k.Ratings.OrderByDescending(r => r.TimeStamp).Take(1))
+                .First();
 
             var viewKeywords = new List<KeywordsViewModel.Keyword>();
 
@@ -99,10 +93,8 @@ namespace PositionTracking.Controllers
                 }); ;
             }
 
-
             return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords, GetRankUrl = _getRankUrl });
         }
-
 
         public IActionResult Members(Guid id)
         {
@@ -111,7 +103,6 @@ namespace PositionTracking.Controllers
                 .Include(p => p.UserPermissions)
                 .ThenInclude(u => u.User)
                 .First();
-
 
             var viewMembers = new List<MembersViewModel.Member>();
 
@@ -125,9 +116,7 @@ namespace PositionTracking.Controllers
                 });
             }
 
-
             return View(new MembersViewModel(project.Name, project.ProjectId) { Members = viewMembers });
-
         }
 
         public IActionResult ProjectSettings(Guid id)
@@ -136,39 +125,62 @@ namespace PositionTracking.Controllers
             .Where(p => p.ProjectId == id)
             .First();
 
-
             return View(new ProjectSettingsViewModel(project.Name, project.ProjectId) { Domain = project.Paths });
-
-
-
-
         }
         public IActionResult AccountSettings()
         {
-
             var user = _dbContext.Users
                .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
-
-
 
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
 
-        /*
+        
+
         [HttpPost]
-        //metoda addMemeber
-        public IActionResult AddMember(Project, MemberAccessException, Role)
+        //metoda addMemeber - Project, MemberAccessException, Role
+        public IActionResult AddMember(AddMemberViewModel model)
         {
+
+            var user = _dbContext.Users
+                .FirstOrDefault(u => u.NormalizedEmail == model.MemberEmail.ToUpper());
+
+            var project = _dbContext.Projects
+            .Where(p => p.ProjectId == model.ProjectId)
+            .Include(p => p.UserPermissions)
+            .ThenInclude(u=>u.User)
+            .First();
+
+            if(user != null)
+            {
+                var permission = project.UserPermissions.FirstOrDefault(u => u.User == user);
+                if (permission == null)
+                {
+                    project.AddUserPermission(user, model.UserRole);
+                }
+                else
+                {
+                    permission.PermissionType = model.UserRole;
+                }
+                _dbContext.SaveChanges();
+                
+            }
+            else
+            {
+
+            }
+
             //da li postoji user s ovim mailom
             //ako ne postoji generate link, query string encrypt project ID
             //sign up metoda
-            //klik na link ode na stranicu
+            //klik na link ode na stranicu - projecId ,role Enum, email - enkriptiran
             //UserManager
             //ako postoji nađi projekt ID include user permisson
             //add user and role
             //return view members
+
+            return RedirectToAction("Members", new { id = model.ProjectId});
         }
-        */
 
         [HttpPost]
         public IActionResult AddKeyword(AddKeywordViewModel model)
@@ -179,25 +191,16 @@ namespace PositionTracking.Controllers
 
             project.Keywords = new List<Keyword>()
             { new Keyword()
-            {
-
-                Value = model.Value,
-                Language = model.Language,
-                Location = model.Location
-            }
-
+                {
+                    Value = model.Value,
+                    Language = model.Language,
+                    Location = model.Location
+                }
             };
-
 
             _dbContext.SaveChanges();
 
-
             return RedirectToAction("Keywords", new { id = model.ProjectId });  //dynamic object
-
-
-
-
-
         }
 
         [HttpPost]
@@ -209,16 +212,12 @@ namespace PositionTracking.Controllers
                 .Include(k => k.Project)
                 .First();
 
-
             _dbContext.Remove(keyword);
             _dbContext.RemoveRange(keyword.Ratings);
-
 
             _dbContext.SaveChanges();
             return RedirectToAction("Keywords", new { id = keyword.Project.ProjectId });
         }
-
-
 
         [HttpPost]
         public IActionResult AddProject(AddProjectViewModel model)
@@ -226,18 +225,13 @@ namespace PositionTracking.Controllers
             var user = _dbContext.Users
                 .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
 
-
             _dbContext.Projects.Add(new Project(user, UserRole.Admin)
             {
                 Name = model.ProjectName,
                 Paths = model.Domain
             });
 
-
-
-
             _dbContext.SaveChanges();
-
 
             return RedirectToAction("Projects");  //dynamic object
         }
@@ -256,13 +250,8 @@ namespace PositionTracking.Controllers
             _dbContext.RemoveRange(project.UserPermissions);
             _dbContext.RemoveRange(project.Keywords);
             _dbContext.RemoveRange(project.Keywords.SelectMany(k => k.Ratings));
-
-
-
-
-
-
             _dbContext.SaveChanges();
+
             return RedirectToAction("Projects");
         }
 
@@ -273,7 +262,6 @@ namespace PositionTracking.Controllers
                 .Where(p => p.ProjectId == model.ProjectId)
                 .First();
 
-
             project.Name = model.ProjectName;
             project.Paths = model.Domain;
 
@@ -282,15 +270,10 @@ namespace PositionTracking.Controllers
             return View("ProjectSettings", model);
         }
 
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
-
-
     }
 }
