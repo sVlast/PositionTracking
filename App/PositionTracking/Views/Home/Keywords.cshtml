@@ -91,7 +91,10 @@
                 <td>@keyword.LanguageLocation</td>
                 <td>#@keyword.Rating</td>
                 <td>
-                    <button type="button" class="btn btn-outline-dark btn-refresh " data-id="@keyword.Id">Refresh</button>
+                    <button type="button" class="btn btn-outline-dark btn-refresh spinner" data-id="@keyword.Id">
+                        <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                    Refresh
+                    </button>
                 </td>
                 <td>
                     <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">

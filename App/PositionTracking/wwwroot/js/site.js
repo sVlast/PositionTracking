@@ -24,6 +24,7 @@ $("form.form-confirm").on("submit", function (e) {
 
 $('.btn-refresh').click(function (e) {
     var btn = $(this);
+    var btnText = btn.text;
     var id = btn.attr("data-id");
     var url = $("#getRankUrl").val() + id;
 
@@ -53,12 +54,16 @@ $('.btn-refresh').click(function (e) {
         }
         finally {
             btn.removeAttr('disabled');
+            btn.addClass("spinner")
+            btn.text(btnText);
         }
 
 
     };
 
-btn.attr('disabled', 'disabled');
+    btn.attr('disabled', 'disabled');
+    btn.text("");
+    btn.removeClass("spinner");
 
     req.send();
 

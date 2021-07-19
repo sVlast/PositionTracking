@@ -227,3 +227,7 @@ button[disabled] {
     background-color: #cccccc;
     color: #666666;
 }
+
+.spinner>span{
+    display:none;
+}
