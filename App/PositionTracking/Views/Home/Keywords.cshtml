@@ -110,24 +110,26 @@
     <tbody>
         @foreach (var keyword in Model.Keywords)
         {
-            <tr>
-                <td>@keyword.Value</td>
-                <td>@keyword.LanguageLocation</td>
-                <td>#@keyword.Rating</td>
+        <tr>
+            <td>@keyword.Value</td>
+            <td>@keyword.LanguageLocation</td>
+            <td>#@keyword.Rating</td>
 
 
-                <td>
-                    <button type="button" class="btn btn-outline-dark btn-refresh " data-id="@keyword.Id">Refresh</button>
-                </td>
+            <td>
+                <button type="button" class="btn btn-outline-dark btn-refresh " data-id="@keyword.Id">Refresh
+                    <span class="sr-only">Loading...</span>
+                </button>
+            </td>
 
 
-                <td>
-                    <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
-                        <input type="hidden" value="@keyword.Id" name="Id" />
-                        <button type="submit" class="btn btn-outline-danger">Remove</button>
-                    </form>
-                </td>
-            </tr>
+            <td>
+                <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
+                    <input type="hidden" value="@keyword.Id" name="Id" />
+                    <button type="submit" class="btn btn-outline-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
         }
 
 

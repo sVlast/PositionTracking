@@ -23,31 +23,42 @@ $("form.form-confirm").on("submit", function (e) {
 
 
 $('.btn-refresh').click(function (e) {
-    var id = $(this).attr("data-id");
+    var btn = $(this);
+    var id = btn.attr("data-id");
     var url = $("#getRankUrl").val() + id;
 
     var req = new XMLHttpRequest();
+
 
     req.open('GET', url, true);
     req.timeout = 60000;
     req.responseType = 'json';
     req.onreadystatechange = function () {
 
-        if (req.readyState !== 4) {
-            return;
+        try {
 
-        } else if (req.status === 0) {
-            alert("status 0");
+            if (req.readyState !== 4) {
+                return;
 
-        } else if (req.status !== 200) {
-            alert("status " + req.status + " (" + req.statusText + ")");
+            } else if (req.status === 0) {
+                alert("status 0");
 
-        } else {
-            alert("success: " + req.responseType);
+            } else if (req.status !== 200) {
+                alert("status " + req.status + " (" + req.statusText + ")");
 
+            } else {
+                alert("success: " + req.responseType); 
+
+            }
+        }
+        finally {
+            btn.removeAttr('disabled');
         }
 
+
     };
+
+btn.attr('disabled', 'disabled');
 
     req.send();
 

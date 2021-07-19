@@ -11,15 +11,18 @@ using PositionTracking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace PositionTracking.Controllers
 
 {
 
-    [Authorize]
+    [AllowCrossSite]
+
     public class HomeController : Controller
     {
-        private readonly string _getRankUrl; 
+
+        private readonly string _getRankUrl;
 
         private readonly ILogger<HomeController> _logger;
 
@@ -92,7 +95,7 @@ namespace PositionTracking.Controllers
                     LanguageLocation = k.Language.ToString() + '-' + k.Location.ToString(),
                     Id = k.KeywordId.ToString(),
                     Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0,
-                    
+
                 }); ;
             }
 
@@ -191,7 +194,7 @@ namespace PositionTracking.Controllers
 
             return RedirectToAction("Keywords", new { id = model.ProjectId });  //dynamic object
 
-        
+
 
 
 
@@ -206,10 +209,10 @@ namespace PositionTracking.Controllers
                 .Include(k => k.Project)
                 .First();
 
-           
+
             _dbContext.Remove(keyword);
             _dbContext.RemoveRange(keyword.Ratings);
-      
+
 
             _dbContext.SaveChanges();
             return RedirectToAction("Keywords", new { id = keyword.Project.ProjectId });
@@ -253,8 +256,8 @@ namespace PositionTracking.Controllers
             _dbContext.RemoveRange(project.UserPermissions);
             _dbContext.RemoveRange(project.Keywords);
             _dbContext.RemoveRange(project.Keywords.SelectMany(k => k.Ratings));
-            
-            
+
+
 
 
 
@@ -276,7 +279,7 @@ namespace PositionTracking.Controllers
 
             _dbContext.SaveChanges();
 
-                return View("ProjectSettings" , model);
+            return View("ProjectSettings", model);
         }
 
 
