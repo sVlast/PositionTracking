@@ -18,7 +18,6 @@ namespace PositionTracking.Models
             public string MemberName { get; set; }
             public string Email { get; set; }
             public string PermissionType { get; set; }
-
         }
 
     }

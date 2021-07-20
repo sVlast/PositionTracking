@@ -142,10 +142,7 @@ namespace PositionTracking.Controllers
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
 
-        
-
         [HttpPost]
-        //metoda addMemeber - Project, MemberAccessException, Role
         public async Task<IActionResult> AddMember(AddMemberViewModel model)
         {
             
@@ -184,16 +181,26 @@ namespace PositionTracking.Controllers
                 await _emailSender.SendAsync(model.MemberEmail,title,message);
             }
 
-            //da li postoji user s ovim mailom
-            //ako ne postoji generate link, query string encrypt project ID
-            //sign up metoda
-            //klik na link ode na stranicu - projecId ,role Enum, email - enkriptiran
-            //UserManager
-            //ako postoji nađi projekt ID include user permisson
-            //add user and role
-            //return view members
-
             return RedirectToAction("Members", new { id = model.ProjectId});
+        }
+        [HttpPost]
+        public IActionResult RemoveMember(string memberEmail,Guid projectId)
+        {
+            var project = _dbContext.Projects
+            .Where(p => p.ProjectId == projectId)
+            .Include(p => p.UserPermissions)
+            .ThenInclude(u => u.User)
+            .First();
+
+            var permission = project.UserPermissions.First(p => p.User.Email == memberEmail);
+
+            _dbContext.Remove(permission);
+            _dbContext.SaveChanges();
+
+            if(User.Identity.Name.Equals(memberEmail,StringComparison.OrdinalIgnoreCase))
+                return RedirectToAction(nameof(Projects));
+            else
+                return RedirectToAction(nameof(Members), new { id = projectId });
         }
 
         [HttpPost]

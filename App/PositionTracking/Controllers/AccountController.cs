@@ -87,7 +87,6 @@ namespace PositionTracking.Controllers
                          var project = _dbContext.Projects
                         .Where(p => p.ProjectId == projectId)
                         .Include(p => p.UserPermissions)
-                        //.ThenInclude(u => u.User)
                         .First();
 
                         project.AddUserPermission(user,userRole);
