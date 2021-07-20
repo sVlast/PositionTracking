@@ -24,7 +24,6 @@ $("form.form-confirm").on("submit", function (e) {
 
 $('.btn-refresh').click(function (e) {
     var btn = $(this);
-    var btnText = btn.text;
     var id = btn.attr("data-id");
     var url = $("#getRankUrl").val() + id;
 
@@ -48,23 +47,24 @@ $('.btn-refresh').click(function (e) {
                 alert("status " + req.status + " (" + req.statusText + ")");
 
             } else {
-                alert("success: " + req.responseType); 
+                alert("success: " + req.responseType);
+                 
 
             }
         }
         finally {
             btn.removeAttr('disabled');
-            btn.addClass("spinner")
-            btn.text(btnText);
+            btn.find(".spinner-icon").hide();
+            btn.find(".spinner-text").show();
         }
+        //parent td tr i naci trecu kolonu i promjeniti trenutni broj sa # i brojem kojeg sandro salje
 
 
     };
 
     btn.attr('disabled', 'disabled');
-    btn.text("");
-    btn.removeClass("spinner");
-
+    btn.find(".spinner-icon").show();
+    btn.find(".spinner-text").hide();
     req.send();
 
 

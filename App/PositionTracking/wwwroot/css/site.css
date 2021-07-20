@@ -228,6 +228,13 @@ button[disabled] {
     color: #666666;
 }
 
-.spinner>span{
-    display:none;
+.btn-spinner .spinner-icon {
+    display: none;
+    height:1.5rem;
+    width:1.5rem;
+    margin:auto;
+
+}
+.btn-spinner{
+    width:80px;
 }
