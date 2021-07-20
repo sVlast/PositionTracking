@@ -215,3 +215,26 @@ button.dropdownMenuButton{
 button#addProject, button#addKeyword, button#addMember {
     margin: 10px;
 }
+
+
+button.disabled {
+    pointer-events: none;
+}
+
+button:disabled,
+button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+
+.btn-spinner .spinner-icon {
+    display: none;
+    height:1.5rem;
+    width:1.5rem;
+    margin:auto;
+
+}
+.btn-spinner{
+    width:80px;
+}

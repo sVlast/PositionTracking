@@ -12,15 +12,16 @@ using System.Threading.Tasks;
 
 
 
-
 namespace PositionTracking.WebApi.Controllers
 {
+    [AllowCrossSite]
+
     [ApiController]
     [Route("[controller]")]
     public class EngineController : ControllerBase
     {
 
-        private readonly ILogger<EngineController> _logger;
+    private readonly ILogger<EngineController> _logger;
         private readonly ApplicationDbContext _dbContext;
 
         public EngineController(ILogger<EngineController> logger, ApplicationDbContext context)
