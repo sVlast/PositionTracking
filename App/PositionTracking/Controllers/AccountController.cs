@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PositionTracking.Data;
 using PositionTracking.Extensions;
 using PositionTracking.Models;
 
@@ -16,24 +18,31 @@ namespace PositionTracking.Controllers
     public class AccountController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly EncryptDecryptService _encryptDecryptService;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(SignInManager<IdentityUser> signInManager)
+        public AccountController(SignInManager<IdentityUser> signInManager, EncryptDecryptService encryptDecryptService, ApplicationDbContext dbContext,ILogger<AccountController> logger)
 
         {
             _signInManager = signInManager;
             _signInManager.UserManager.PasswordHasher = new CustomPasswordHasher();
+            _encryptDecryptService = encryptDecryptService;
+            _dbContext = dbContext;
+            _logger = logger;
         }
-
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult SignUp(string returnUrl)
+        public IActionResult SignUp(string returnUrl, [FromQuery] string t, [FromQuery] string e)
         {
-            return View(new SignUpModel() { ReturnUrl = returnUrl });
+            return View(new SignUpModel()
+            {
+                ReturnUrl = returnUrl,
+                Email = e,
+                Token = t
+            });
         }
-
-        //dodati parametar za signup preko linka
-        //signup model proširiti s podacima
 
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -49,6 +58,18 @@ namespace PositionTracking.Controllers
 
                 else
                 {
+                    string decryptedParam;
+                    try
+                    {
+                        decryptedParam = _encryptDecryptService.DecryptString(model.Token, model.Email);
+                    }
+                    catch (System.Security.Cryptography.CryptographicException)
+                    {
+                        _logger.LogError("Invalid Token");
+                        ModelState.AddModelError(nameof(SignUpModel.Token), "Invalid Token.");
+                        return View(model);
+                    }
+
                     var user = new IdentityUser(model.Email) { Email = model.Email, EmailConfirmed = true };
                     var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
 
@@ -58,16 +79,27 @@ namespace PositionTracking.Controllers
                     }
                     else
                     {
+                        
+                        var param = decryptedParam.Split("|");
+                        Guid projectId = Guid.Parse(param[0]);
+                        UserRole userRole = Enum.Parse<UserRole>(param[1]);
 
-                        return View(nameof(SignIn));
+                         var project = _dbContext.Projects
+                        .Where(p => p.ProjectId == projectId)
+                        .Include(p => p.UserPermissions)
+                        //.ThenInclude(u => u.User)
+                        .First();
+
+                        project.AddUserPermission(user,userRole);
+
+                        _dbContext.SaveChanges();
+                        
+                        return RedirectToAction(nameof(SignIn));
                     }
                 }
 
             return View(model);
         }
-
-
-
 
         [AllowAnonymous]
         [HttpGet]
@@ -75,7 +107,6 @@ namespace PositionTracking.Controllers
         {
             return View(new SignInModel() { ReturnUrl = returnUrl });
         }
-
 
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -109,9 +140,5 @@ namespace PositionTracking.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("SignIn");
         }
-
-
-
-
     }
 }

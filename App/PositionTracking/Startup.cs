@@ -53,6 +53,7 @@ namespace PositionTracking
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<EmailSender>();
+            services.AddScoped<EncryptDecryptService>();
 
             services.ConfigureApplicationCookie(options =>
             {

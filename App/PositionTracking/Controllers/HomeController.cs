@@ -11,6 +11,8 @@ using PositionTracking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using System.Web;
 
 namespace PositionTracking.Controllers
 
@@ -19,19 +21,20 @@ namespace PositionTracking.Controllers
     public class HomeController : Controller
     {
         private readonly string _getRankUrl;
-
         private readonly ILogger<HomeController> _logger;
-
         private readonly ApplicationDbContext _dbContext;
-
         private readonly EmailSender _emailSender;
-
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration,EmailSender emailSender)
+        private readonly EncryptDecryptService _encryptDecryptService;
+        private readonly UserManager<IdentityUser> _userManager;
+        //iService collection
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration,EmailSender emailSender,EncryptDecryptService encryptDecryptService,UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _dbContext = context;
             _getRankUrl = configuration.GetValue<string>("Settings:GetRankUrl");
             _emailSender = emailSender;
+            _encryptDecryptService = encryptDecryptService;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -44,10 +47,14 @@ namespace PositionTracking.Controllers
             return View();
         }
 
-        public IActionResult Projects()
+        private Task<IdentityUser> GetCurrentUserAsync()
         {
-            var user = _dbContext.Users
-                .First(u => u.NormalizedEmail == User.Identity.Name.ToUpper());
+            return _userManager.GetUserAsync(User);
+        }
+
+        public async Task<IActionResult> Projects()
+        {
+            var user =await GetCurrentUserAsync();
 
             var permissions = _dbContext.Projects
                 .SelectMany(p => p.UserPermissions)
@@ -139,9 +146,9 @@ namespace PositionTracking.Controllers
 
         [HttpPost]
         //metoda addMemeber - Project, MemberAccessException, Role
-        public IActionResult AddMember(AddMemberViewModel model)
+        public async Task<IActionResult> AddMember(AddMemberViewModel model)
         {
-
+            
             var user = _dbContext.Users
                 .FirstOrDefault(u => u.NormalizedEmail == model.MemberEmail.ToUpper());
 
@@ -167,7 +174,14 @@ namespace PositionTracking.Controllers
             }
             else
             {
-
+                user = await GetCurrentUserAsync();
+                var encryptedLinkParam = _encryptDecryptService.EncryptString($"{project.ProjectId}|{(int)model.UserRole}", model.MemberEmail);
+                var message = $"Hello, \n" +
+                    $"you have been invited to participate in managing position tracking for {project.Name} by {user.UserName} \n" +
+                    $"Before you can acces it you need to sign-up by clicking on the following link: \n" +
+                    $"https://localhost:5001/account/signup?t={ HttpUtility.UrlEncode(encryptedLinkParam) }&&e={HttpUtility.UrlEncode(model.MemberEmail)} \n";
+                var title = $"Invitation to {project.Name} on Position Tracking from {user.UserName}";
+                await _emailSender.SendAsync(model.MemberEmail,title,message);
             }
 
             //da li postoji user s ovim mailom

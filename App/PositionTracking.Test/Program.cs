@@ -14,19 +14,7 @@ namespace PositionTracking.Test
         {
             var tst = new EncryptDecryptService();
 
-            var key = "YX6kyXKjxQp3BeYGsCgYoookMPjVSE685xtJy5A8KHVMuso3cq5y4YfHCNMXmtnx";
-
-            Aes aes = Aes.Create();
-
-            KeySizes[] ks = aes.LegalKeySizes;
-            foreach (KeySizes item in ks)
-            {
-                Console.WriteLine("Legal min key size = " + item.MinSize);
-                Console.WriteLine("Legal max key size = " + item.MaxSize);
-                //Output
-                // Legal min key size = 128
-                // Legal max key size = 256
-            }
+            var key = "mysmallkey1234551298765134567890";
 
             var str = "sandro@position.com";
             Console.WriteLine($"Encrypting : {str}");
