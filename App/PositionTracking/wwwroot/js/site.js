@@ -22,9 +22,16 @@ $("form.form-confirm").on("submit", function (e) {
 })
 
 
+var parentElem = $("b").parents()
+    .map(function () {
+        return this.tagNam;
+    })
+
+
 $('.btn-refresh').click(function (e) {
     var btn = $(this);
     var id = btn.attr("data-id");
+    var rating = btn.attr("data-rating");
     var url = $("#getRankUrl").val() + id;
 
     var req = new XMLHttpRequest();
@@ -48,7 +55,9 @@ $('.btn-refresh').click(function (e) {
 
             } else {
                 alert("success: " + req.responseType);
-                 
+                var rating = req.response.rating;
+                $("#" + btn.parent().parent().find("td")[2]).text(rating);
+
 
             }
         }
@@ -57,9 +66,6 @@ $('.btn-refresh').click(function (e) {
             btn.find(".spinner-icon").hide();
             btn.find(".spinner-text").show();
         }
-        //parent td tr i naci trecu kolonu i promjeniti trenutni broj sa # i brojem kojeg sandro salje
-
-
     };
 
     btn.attr('disabled', 'disabled');
@@ -67,8 +73,15 @@ $('.btn-refresh').click(function (e) {
     btn.find(".spinner-text").hide();
     req.send();
 
-
-
-
 });
 
+
+
+ //var id = btn.attr("data-id");
+
+/*
+
+$.getJSON() //Load a JSON with GET method.
+load():     //Load a piece of html into a container DOM.
+
+*/
