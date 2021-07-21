@@ -60,19 +60,23 @@
     </thead>
     <tbody>
         @foreach (var item in Model.Members)
-        {
-            <tr>
-                <td>@item.MemberName</td>
-                <td>@item.Email</td>
-                <td>@item.PermissionType</td>
-                <td> 
-                     <form class="form-confirm" asp-controller="Home" asp-action="RemoveMember">
-                         <input type="hidden" value="@item.Email" name="memberEmail" />
-                         <input type="hidden" value="@Model.ProjectId" name="projectId" />
-                         <button type="submit" class="btn btn-outline-danger">Remove</button>
-                     </form>
-                </td>
-            </tr>
-        }
+            {
+                <tr>
+                    <td>@item.MemberName</td>
+                    <td>@item.Email</td>
+                    <td>@item.PermissionType</td>
+                    <td> 
+                        @if (Model.Members.Count > 1)
+                        {
+                         <form class="form-confirm" asp-controller="Home" asp-action="RemoveMember">
+                             <input type="hidden" value="@item.Email" name="memberEmail" />
+                             <input type="hidden" value="@Model.ProjectId" name="projectId" />
+                             <button type="submit" class="btn btn-outline-danger">Remove</button>
+                         </form>
+                        }
+                    </td>
+                </tr>
+            }
+        
     </tbody>
 </table>

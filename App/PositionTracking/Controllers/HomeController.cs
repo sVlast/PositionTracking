@@ -186,17 +186,24 @@ namespace PositionTracking.Controllers
         [HttpPost]
         public IActionResult RemoveMember(string memberEmail,Guid projectId)
         {
+            //if (_dbContext.Projects.Where(p=> p.ProjectId == projectId).Include(p=>p.UserPermissions).ThenInclude(u=>u.User).Count() == 1)
+            //{
+
+            //}
+
             var project = _dbContext.Projects
             .Where(p => p.ProjectId == projectId)
             .Include(p => p.UserPermissions)
             .ThenInclude(u => u.User)
             .First();
 
+
             var permission = project.UserPermissions.First(p => p.User.Email == memberEmail);
 
             _dbContext.Remove(permission);
             _dbContext.SaveChanges();
 
+            //possible future conflict if User Name value changes from email
             if(User.Identity.Name.Equals(memberEmail,StringComparison.OrdinalIgnoreCase))
                 return RedirectToAction(nameof(Projects));
             else
