@@ -56,7 +56,7 @@ $('.btn-refresh').click(function (e) {
             } else {
                 alert("success: " + req.responseType);
                 var rating = req.response.rating;
-                $("#" + btn.parent().parent().find("td")[2]).text(rating);
+                $(btn.parent().parent().find("td")[2]).text("#" + rating);
 
 
             }
