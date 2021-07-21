@@ -23,7 +23,7 @@
                     <div>
                         <label for="locationFormControlSelect">Member Role:</label>
                         <select class="form-control" id="locationFormControlSelect" name="UserRole">
-                            @foreach (var role in (UserRole[])Enum.GetValues(typeof(UserRole)))
+                            @foreach (var role in Enum.GetValues<UserRole>())
                             {
                                 <option>@role</option>
                             }
