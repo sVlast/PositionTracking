@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PositionTracking.Data;
 using PositionTracking.Extensions;
@@ -22,14 +23,14 @@ namespace PositionTracking.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(SignInManager<IdentityUser> signInManager, EncryptDecryptService encryptDecryptService, ApplicationDbContext dbContext,ILogger<AccountController> logger)
+        public AccountController(IServiceProvider services)
 
         {
-            _signInManager = signInManager;
+            _signInManager = services.GetRequiredService<SignInManager<IdentityUser>>();
             _signInManager.UserManager.PasswordHasher = new CustomPasswordHasher();
-            _encryptDecryptService = encryptDecryptService;
-            _dbContext = dbContext;
-            _logger = logger;
+            _encryptDecryptService = services.GetRequiredService<EncryptDecryptService>();
+            _dbContext = services.GetRequiredService<ApplicationDbContext>();
+            _logger = services.GetRequiredService<ILogger<AccountController>>();
         }
 
         [AllowAnonymous]

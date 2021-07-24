@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PositionTracking.Controllers
 
@@ -27,14 +28,14 @@ namespace PositionTracking.Controllers
         private readonly EncryptDecryptService _encryptDecryptService;
         private readonly UserManager<IdentityUser> _userManager;
         //iService collection
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration,EmailSender emailSender,EncryptDecryptService encryptDecryptService,UserManager<IdentityUser> userManager)
+        public HomeController(IServiceProvider services)
         {
-            _logger = logger;
-            _dbContext = context;
-            _getRankUrl = configuration.GetValue<string>("Settings:GetRankUrl");
-            _emailSender = emailSender;
-            _encryptDecryptService = encryptDecryptService;
-            _userManager = userManager;
+            _logger = services.GetRequiredService<ILogger<HomeController>>();
+            _dbContext = services.GetRequiredService<ApplicationDbContext>();
+            _getRankUrl = services.GetRequiredService<IConfiguration>().GetValue<string>("Settings:GetRankUrl");
+            _emailSender = services.GetRequiredService<EmailSender>();
+            _encryptDecryptService = services.GetRequiredService<EncryptDecryptService>();
+            _userManager = services.GetRequiredService<UserManager<IdentityUser>>();
         }
 
         public IActionResult Index()
