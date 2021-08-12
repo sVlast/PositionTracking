@@ -19,11 +19,19 @@
 
   <ItemGroup>
     <Folder Include="Views\Account\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Home\prazno.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PositionTracking.Data\PositionTracking.Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\" />
+    <None Remove="Translations.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Translations.csv" />
   </ItemGroup>
 </Project>
