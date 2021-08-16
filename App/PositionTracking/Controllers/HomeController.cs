@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using System.Web;
+using System.Collections;
 
 namespace PositionTracking.Controllers
 
@@ -26,8 +27,9 @@ namespace PositionTracking.Controllers
         private readonly EmailSender _emailSender;
         private readonly EncryptDecryptService _encryptDecryptService;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly LanguageDictionary _dictionary;
         //iService collection
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration,EmailSender emailSender,EncryptDecryptService encryptDecryptService,UserManager<IdentityUser> userManager)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration,EmailSender emailSender,EncryptDecryptService encryptDecryptService,UserManager<IdentityUser> userManager, LanguageDictionary dictionary)
         {
             _logger = logger;
             _dbContext = context;
@@ -35,6 +37,7 @@ namespace PositionTracking.Controllers
             _emailSender = emailSender;
             _encryptDecryptService = encryptDecryptService;
             _userManager = userManager;
+            _dictionary = dictionary;
         }
 
         public IActionResult Index()
@@ -75,7 +78,7 @@ namespace PositionTracking.Controllers
                 });
             }
 
-            return View(new ProjectsViewModel() { Projects = viewProjects });
+            return View(new ProjectsViewModel() { Projects = viewProjects, Dictionary = _dictionary });
         }
 
         public IActionResult Keywords(Guid id)
@@ -141,6 +144,8 @@ namespace PositionTracking.Controllers
 
             return View(new AccountSettingsViewModel() { Email = User.Identity.Name });
         }
+
+        
 
         [HttpPost]
         public async Task<IActionResult> AddMember(AddMemberViewModel model)

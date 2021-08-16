@@ -13,17 +13,14 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <h6 class="dropdown-header">@User.Identity.Name</h6>
-                    <div class="dropdown-divider"></div>
-
-
+                        <div class="dropdown-divider"></div>
                     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AccountSettings">Settings</a>
-
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-item">
-                        <form class="form-inline" asp-controller="Account" asp-action="SignOut">
-                            <button type="submit" class="nav-link btn btn-link text-dark p-0">Logout</button>
-                        </form>
-                    </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item">
+                            <form class="form-inline" asp-controller="Account" asp-action="SignOut">
+                                <button type="submit" class="nav-link btn btn-link text-dark p-0">Logout</button>
+                            </form>
+                        </div>
                 </div>
             </div>
 

@@ -4,24 +4,29 @@ using System.IO;
 using System.Linq;
 using System.Globalization;
 using PositionTracking.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace PositionTracking
 {
     public class LanguageDictionary
     {
-        private readonly string _filePath;
+        private readonly string _dictionaryPath;
         private Dictionary<Languages, int> _languageIndexes;
 
         private Dictionary<string, string[]> _translations;
 
+        
 
-        public LanguageDictionary(string filePath)
+
+        public LanguageDictionary(IConfiguration c)
         {
+            var settings = c.GetSection("Settings");
 
-            _filePath = filePath;
+            _dictionaryPath = settings.GetValue<string>("DictionaryPath");
+
             Load();
 
-                }
+        }
 
 
         private void LoadHeader(string[] values)
@@ -41,7 +46,7 @@ namespace PositionTracking
             _languageIndexes = new Dictionary<Languages, int>();
             _translations = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
 
-            using (var reader = new StreamReader(_filePath))
+            using (var reader = new StreamReader(_dictionaryPath))
             {
                 var firstLine = true;
 
@@ -52,7 +57,7 @@ namespace PositionTracking
                     if (line == null)
                         continue;
 
-                    var values = line.Split(",");
+                    var values = line.Split(";");
                     if (firstLine)
                     {
                         LoadHeader(values);
@@ -75,12 +80,6 @@ namespace PositionTracking
             var index = _languageIndexes[language];
             return _translations[value][index];
 
-
-
-
-
-
-            
         }
 
     }
