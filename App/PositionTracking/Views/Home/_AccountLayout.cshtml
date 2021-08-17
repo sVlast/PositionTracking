@@ -1,6 +1,8 @@
-﻿@{
+﻿@inject LanguageDictionary _dictionary
+@{
     Layout = "_Layout";
 }
+
 
 <div class="row h-100">
     <div class="col-md-3 col-lg-2">
@@ -13,7 +15,7 @@
 
                     <li></li>
 
-                    <li @if (Model is AccountSettingsViewModel) {<text> class="active" </text> }>
+                    <li @if (Model is AccountSettingsViewModel) {<text> class="active" </text>}>
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AccountSettings">Settings</a>
                     </li>
 

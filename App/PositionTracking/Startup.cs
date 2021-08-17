@@ -54,6 +54,7 @@ namespace PositionTracking
 
             services.AddScoped<EmailSender>();
             services.AddScoped<EncryptDecryptService>();
+            services.AddSingleton<LanguageDictionary>();  //dizajn pattern u kojem instanciram jednom i vrijedi za svaki drugi poziv(vrijedi zauvijek)
 
             services.ConfigureApplicationCookie(options =>
             {

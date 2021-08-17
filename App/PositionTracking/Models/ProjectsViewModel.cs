@@ -8,7 +8,7 @@ namespace PositionTracking.Models
     {
         public ICollection<Project> Projects { get; set; }
 
-
+        public LanguageDictionary Dictionary { get; set; }
 
         public class Project
         {

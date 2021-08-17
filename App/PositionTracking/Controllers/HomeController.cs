@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections;
 
 namespace PositionTracking.Controllers
 
@@ -27,6 +28,7 @@ namespace PositionTracking.Controllers
         private readonly EmailSender _emailSender;
         private readonly EncryptDecryptService _encryptDecryptService;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly LanguageDictionary _dictionary;
         //iService collection
         public HomeController(IServiceProvider services)
         {
@@ -36,6 +38,7 @@ namespace PositionTracking.Controllers
             _emailSender = services.GetRequiredService<EmailSender>();
             _encryptDecryptService = services.GetRequiredService<EncryptDecryptService>();
             _userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            _dictionary = services.GetRequiredService<LanguageDictionary>();
         }
 
         public IActionResult Index()
@@ -76,7 +79,7 @@ namespace PositionTracking.Controllers
                 });
             }
 
-            return View(new ProjectsViewModel() { Projects = viewProjects });
+            return View(new ProjectsViewModel() { Projects = viewProjects, Dictionary = _dictionary });
         }
 
         public IActionResult Keywords(Guid id)

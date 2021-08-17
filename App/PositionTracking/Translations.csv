@@ -1,0 +1,54 @@
+en;hr
+EMAIL;EMAIL
+PASSWORD;ZAPORKA
+REMEMBER ME;ZAPAMTI PRIJAVU
+SIGN IN;PRIJAVI SE
+Projects;Projekti
+Project Name;Ime projekta
+Number of keywords;Broj ključnih riječi
+Rating Change;Promjena Ratinga
+Users Role;Korisnikova Rola
+Add Project;Dodaj Projekt
+Project Domain;Domena projekta
+Close;Zatvori
+Keywords;Ključne riječi
+Keyword;Ključna riječ
+Language-Location;Jezik-Lokacija
+Rating;Rejting
+Refresh;Osvježi
+Remove;Obriši
+Add Keyword;Dodaj ključnu riječ
+Language;Jezik
+English;Engleski
+Croatian;Hrvatski
+Bosnian;Bosanski
+Serbian;Srpski
+German;Njemački
+Slovenian;Slovenski
+Location;Lokacija
+United Kingdom;Ujedinjeno Kraljestvo
+Croatia;Hrvatska
+Serbia;Srbija
+Germany;Njemačka
+Slovenia;Slovenija
+Members;Članovi
+Name;Ime
+e-mail;e-mail
+Role;Prava
+Add Member;Dodaj Korisnika
+Member e-mail;Korisnikov e-mail
+Member Role;Korisnikova prava
+Settings;Postavke
+Project Settings;Postavke Projekta
+Change Domain;Promjeni Domenu
+Save;Spremi
+View;Pregled
+Edit;Uređivanje
+Add;Dodavanje
+Admin;Admin
+Account Settings;Postavke Računa
+Old Password;Stara lozinka
+New Password;Nova lozinka
+Confirm New Password;Potvrdi novu lozinku
+Delete your account;Obriši račun
+Logout;Odjavi se

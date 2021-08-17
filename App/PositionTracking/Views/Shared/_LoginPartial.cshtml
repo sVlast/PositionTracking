@@ -3,6 +3,13 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
+    <li><select>
+        <option>English</option>
+        <option>Croatian</option>
+        </select>
+    </li>
+
+
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
@@ -13,17 +20,14 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <h6 class="dropdown-header">@User.Identity.Name</h6>
-                    <div class="dropdown-divider"></div>
-
-
+                        <div class="dropdown-divider"></div>
                     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AccountSettings">Settings</a>
-
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-item">
-                        <form class="form-inline" asp-controller="Account" asp-action="SignOut">
-                            <button type="submit" class="nav-link btn btn-link text-dark p-0">Logout</button>
-                        </form>
-                    </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item">
+                            <form class="form-inline" asp-controller="Account" asp-action="SignOut">
+                                <button type="submit" class="nav-link btn btn-link text-dark p-0">Logout</button>
+                            </form>
+                        </div>
                 </div>
             </div>
 
@@ -36,9 +40,6 @@
     {
 
         <li class="nav-item">
-
-
-
             <a class="nav-link text-dark" asp-controller="Account" asp-action="SignIn">Login</a>
         </li>
     }
