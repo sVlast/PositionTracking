@@ -107,6 +107,20 @@ namespace PositionTracking.Controllers
             return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords, GetRankUrl = _getRankUrl });
         }
 
+        public IActionResult KeywordDetail(Guid id)
+        {
+            var keyword = _dbContext.Keywords
+                .Include(p=> p.Project)
+                .Where(p => p.KeywordId == id)
+                .First();
+
+            var title = keyword.Value + " (" + keyword.Language.ToString() + "-" + keyword.Location.ToString() + ")";
+
+
+
+            return View(new KeywordDetailViewModel(keyword.Project.Name, keyword.Project.ProjectId) { Title = title, KeywordId = keyword.KeywordId });
+        }
+
         public IActionResult Members(Guid id)
         {
             var project = _dbContext.Projects

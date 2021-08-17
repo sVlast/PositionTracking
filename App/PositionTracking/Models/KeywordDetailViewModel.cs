@@ -1,16 +1,15 @@
 ﻿using System;
 namespace PositionTracking.Models
 {
-    public class KeywordDetailViewModel
+    public class KeywordDetailViewModel:ProjectModel
     {
 
         public string Title { get; set; }
-        public string Id { get; set; }
+        public Guid KeywordId { get; set; }
 
+        public KeywordDetailViewModel(string projectName, Guid projectId)
+           : base(projectName, projectId)
+        { }
 
-        public KeywordDetailViewModel()
-        {
-
-        }
     }
 }
