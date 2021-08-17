@@ -3,6 +3,13 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
+    <li><select>
+        <option>English</option>
+        <option>Croatian</option>
+        </select>
+    </li>
+
+
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
