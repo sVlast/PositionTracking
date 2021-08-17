@@ -1,0 +1,112 @@
+﻿@model KeywordsViewModel
+@using PositionTracking.Data
+@using PositionTracking.Extensions
+@{
+
+    Layout = "_ProjectLayout";
+    ViewData["Title"] = "Keywords";
+
+}
+
+<input id="getRankUrl" type="hidden" value="@Model.GetRankUrl" />
+
+<!-- u app setingsu definirat refresh URL
+
+    settings prosljedit u kontroler preko dependecy injection,(iconfiguration)
+    iuconfiguration(interface koji predstavlja appsettings file)
+
+    uzimamo propertye iz settingsa
+
+    kako preko jquerya procitat tu vrijednost iz htmla i zaljepit u ajax -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Keyword</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Home" asp-action="AddKeyword">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Keyword:</label>
+                        <input type="text" class="form-control" name="Value">
+                    </div>
+                    <div class="form-group">
+                        <label for="languageFormControlSelect">Language:</label>
+                        <select class="form-control" name="Language">
+                            @foreach (var language in Enum.GetValues<Languages>())
+                            {
+                                <option value="@language">@language.GetDisplayName()</option>
+                            }
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="locationFormControlSelect">Location:</label>
+                        <select class="form-control" name="Location">
+                            @foreach (var country in Enum.GetValues<Countries>())
+                            {
+                                <option value="@country">@country.GetDisplayName()</option>
+                            }
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Keyword</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="text-right">
+    <button id="addKeyword" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add Keyword
+    </button>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Keyword</th>
+            <th scope="col">Language-Location</th>
+            <th scope="col">Rating</th>
+            <th> </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var keyword in Model.Keywords)
+        {
+            <tr>
+                <td>@keyword.Value</td>
+                <td>@keyword.LanguageLocation</td>
+                <td>#@keyword.Rating</td>
+                <td>
+                    <button type="button" class="btn btn-outline-dark btn-refresh btn-spinner" data-id="@keyword.Id">
+                        <span class="spinner-icon spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                        <span class="spinner-text">
+                            Refresh
+                        </span>
+                    </button>
+                </td>
+                <td>
+                    <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
+                        <input type="hidden" value="@keyword.Id" name="Id" />
+                        <button type="submit" class="btn btn-outline-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

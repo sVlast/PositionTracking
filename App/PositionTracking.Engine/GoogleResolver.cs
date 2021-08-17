@@ -87,7 +87,7 @@ namespace PositionTracking.Engine
 
             try
             {
-                // calulate time diference between bettween the current and the last call to method
+                // calulate time diference bettween the current and the last call to method
                 var timediff = TimeSpan.FromMilliseconds(_random.Next(3000, 7000)) - ( DateTime.UtcNow - _reqTimeStamp);
                 if (timediff > TimeSpan.Zero) 
                 {
