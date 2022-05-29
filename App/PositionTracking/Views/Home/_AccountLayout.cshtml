@@ -16,7 +16,7 @@
                     <li></li>
 
                     <li @if (Model is AccountSettingsViewModel) {<text> class="active" </text>}>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AccountSettings">Settings</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AccountSettings">@_dictionary.Translate("Settings", PositionTracking.Data.Languages.hr)</a>
                     </li>
 
                 </ul>

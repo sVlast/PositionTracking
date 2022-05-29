@@ -53,7 +53,8 @@ namespace PositionTracking
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    
+                    Console.WriteLine(line);
+
                     if (line == null)
                         continue;
 
@@ -68,12 +69,15 @@ namespace PositionTracking
                         _translations.Add(values[0], values);
                     }
                 }
-                    
+                
+                
+
             }
+            
 
         }
         public string Translate(string value, Languages language)
-        {
+        { 
             if (language == Languages.en)
                 return value;
 

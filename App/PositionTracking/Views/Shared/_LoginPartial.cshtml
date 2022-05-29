@@ -1,11 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject LanguageDictionary _dictionary
 
-<ul class="navbar-nav">
-    <li><select>
-        <option>English</option>
-        <option>Croatian</option>
+<ul class="navbar-nav" id="lang">
+    <li>
+        <select>
+            <option id="english">English</option>
+            <option id="croatian">Croatian</option>
         </select>
     </li>
 
@@ -16,18 +18,18 @@
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    Account
+                    @_dictionary.Translate("Account", PositionTracking.Data.Languages.hr)
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <h6 class="dropdown-header">@User.Identity.Name</h6>
-                        <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AccountSettings">Settings</a>
-                        <div class="dropdown-divider"></div>
-                        <div class="dropdown-item">
-                            <form class="form-inline" asp-controller="Account" asp-action="SignOut">
-                                <button type="submit" class="nav-link btn btn-link text-dark p-0">Logout</button>
-                            </form>
-                        </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AccountSettings">@_dictionary.Translate("Settings", PositionTracking.Data.Languages.hr)</a>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item">
+                        <form class="form-inline" asp-controller="Account" asp-action="SignOut">
+                            <button type="submit" class="nav-link btn btn-link text-dark p-0">@_dictionary.Translate("Logout", PositionTracking.Data.Languages.hr)</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -40,7 +42,7 @@
     {
 
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="SignIn">Login</a>
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="SignIn">@_dictionary.Translate("Login", PositionTracking.Data.Languages.hr)</a>
         </li>
     }
 </ul>

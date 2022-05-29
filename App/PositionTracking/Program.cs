@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -8,12 +10,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+
 namespace PositionTracking
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
+
             var host = CreateHostBuilder(args).Build();
 #if DEBUG
             using (var scope = host.Services.CreateScope())
@@ -25,6 +30,7 @@ namespace PositionTracking
 
                 //mailSender.SendAsync("sandro.vlastelica@gmail.com", "Test -PT","This is a test message").Wait();
             }
+
 #endif
             host.Run();
         }
@@ -36,4 +42,8 @@ namespace PositionTracking
                     webBuilder.UseStartup<Startup>();
                 });
     }
+
+
+
+
 }

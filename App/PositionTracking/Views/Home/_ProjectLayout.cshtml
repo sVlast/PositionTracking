@@ -3,6 +3,7 @@
 @{
     Layout = "_Layout";
 }
+@inject LanguageDictionary _dictionary
 
 <div class="row h-100">
     <div class="col-md-3 col-lg-2">
@@ -14,15 +15,15 @@
                 <ul class="sidebar-navigation">
 
                     <li @if (Model is KeywordsViewModel) {<text> class="active" </text> }>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Keywords" asp-route-id="@Model.ProjectId">Keywords</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Keywords" asp-route-id="@Model.ProjectId">@_dictionary.Translate("Keywords", PositionTracking.Data.Languages.hr)</a>
                     </li>
 
 
                     <li @if (Model is MembersViewModel) {<text> class="active" </text> }>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Members" asp-route-id="@Model.ProjectId">Members</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Members" asp-route-id="@Model.ProjectId">@_dictionary.Translate("Members", PositionTracking.Data.Languages.hr)</a>
                     </li>
                     <li @if (Model is ProjectSettingsViewModel) {<text> class="active" </text> }>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="ProjectSettings" asp-route-id="@Model.ProjectId">Settings</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="ProjectSettings" asp-route-id="@Model.ProjectId">@_dictionary.Translate("Settings", PositionTracking.Data.Languages.hr)</a>
                     </li>
                 </ul>
             </nav>

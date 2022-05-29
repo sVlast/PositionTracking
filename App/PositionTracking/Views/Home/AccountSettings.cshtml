@@ -4,13 +4,15 @@
     Layout = "_AccountLayout";
     ViewData["Title"] = "AccountSettings";
 }
+@inject LanguageDictionary _dictionary
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 
 <div class="container-fluid">
 
     <div class="text-center">
-        <h1 class="display-4">Account Settings</h1>
+        <h1 class="display-4">@_dictionary.Translate("Account Settings", PositionTracking.Data.Languages.hr)</h1>
     </div>
 
     <br>
@@ -25,21 +27,21 @@
     <br />
     <br />
     <form>
-        <label for="languageFormControlSelect">Language:</label>
+        <label for="languageFormControlSelect">@_dictionary.Translate("Language", PositionTracking.Data.Languages.hr):</label>
         <button type="submit" class="nav-link btn btn-link text-dark p-0">EN</button>
         <button type="submit" class="nav-link btn btn-link text-dark p-0">HR</button>
 
 
-        <h4> Old Password</h4>
+        <h4> @_dictionary.Translate("Old Password", PositionTracking.Data.Languages.hr):</h4>
         <input value="" size="25" type="text" /> <br />
 
-        <h4> New password </h4>
+        <h4> @_dictionary.Translate("New Password", PositionTracking.Data.Languages.hr): </h4>
         <input value="" size="25" type="text" /> <br />
 
-        <h4>Confirm New Password</h4>
+        <h4>@_dictionary.Translate("Confirm New Password", PositionTracking.Data.Languages.hr):</h4>
 
         <input value="" size="25" type="text" /> <br /> <br />
-        <button type="button" class="btn btn-outline-primary">Update Password</button>
+        <button type="button" class="btn btn-outline-primary">@_dictionary.Translate("Update Password", PositionTracking.Data.Languages.hr)</button>
     </form>
 
 
@@ -49,9 +51,9 @@
     <br>
 
     <div class="deleteAccount">
-        <h2>Delete your account</h2>
+        <h2>@_dictionary.Translate("Delete your account", PositionTracking.Data.Languages.hr)</h2>
         <h5>Deleting an account has the following effects: ...</h5>
-        <button type="button" class="btn btn-outline-danger">Delete Account</button>
+        <button type="button" class="btn btn-outline-danger">@_dictionary.Translate("Delete Account", PositionTracking.Data.Languages.hr)</button>
 
     </div>
 

@@ -4,9 +4,11 @@
 @{
 
     Layout = "_ProjectLayout";
-    ViewData["Title"] = "Keywords";
+    ViewData["Title"] = _dictionary.Translate("Keywords", PositionTracking.Data.Languages.hr);;
 
 }
+@inject LanguageDictionary _dictionary
+
 
 <input id="getRankUrl" type="hidden" value="@Model.GetRankUrl" />
 
@@ -23,7 +25,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Keyword</h5>
+                <h5 class="modal-title" id="exampleModalLabel">@_dictionary.Translate("Add Keyword", PositionTracking.Data.Languages.hr)</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -31,11 +33,11 @@
             <form asp-controller="Home" asp-action="AddKeyword">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Keyword:</label>
+                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Keyword", PositionTracking.Data.Languages.hr)</label>
                         <input type="text" class="form-control" name="Value">
                     </div>
                     <div class="form-group">
-                        <label for="languageFormControlSelect">Language:</label>
+                        <label for="languageFormControlSelect">@_dictionary.Translate("Language", PositionTracking.Data.Languages.hr)</label>
                         <select class="form-control" name="Language">
                             @foreach (var language in Enum.GetValues<Languages>())
                             {
@@ -45,7 +47,7 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="locationFormControlSelect">Location:</label>
+                        <label for="locationFormControlSelect">@_dictionary.Translate("Location", PositionTracking.Data.Languages.hr):</label>
                         <select class="form-control" name="Location">
                             @foreach (var country in Enum.GetValues<Countries>())
                             {
@@ -57,8 +59,8 @@
                     <input type="hidden" name="projectId" value="@Model.ProjectId" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Keyword</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@_dictionary.Translate("Close", PositionTracking.Data.Languages.hr)</button>
+                    <button type="submit" class="btn btn-primary">@_dictionary.Translate("Add Keyword", PositionTracking.Data.Languages.hr)</button>
                 </div>
             </form>
         </div>
@@ -67,16 +69,16 @@
 
 <div class="text-right">
     <button id="addKeyword" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add Keyword
+        @_dictionary.Translate("Add Keyword", PositionTracking.Data.Languages.hr)
     </button>
 </div>
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">Keyword</th>
-            <th scope="col">Language-Location</th>
-            <th scope="col">Rating</th>
+            <th scope="col">@_dictionary.Translate("Keyword", PositionTracking.Data.Languages.hr)</th>
+            <th scope="col">@_dictionary.Translate("Language-Location", PositionTracking.Data.Languages.hr)</th>
+            <th scope="col">@_dictionary.Translate("Rating", PositionTracking.Data.Languages.hr)</th>
             <th> </th>
             <th> </th>
         </tr>
@@ -96,14 +98,14 @@
                 <button type="button" class="btn btn-outline-dark btn-refresh btn-spinner" data-id="@keyword.Id">
                     <span class="spinner-icon spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                     <span class="spinner-text">
-                        Refresh
+                        @_dictionary.Translate("Refresh", PositionTracking.Data.Languages.hr)
                     </span>
                 </button>
             </td>
             <td>
                 <form class="form-confirm" asp-controller="Home" asp-action="DeleteKeyword">
                     <input type="hidden" value="@keyword.Id" name="Id" />
-                    <button type="submit" class="btn btn-outline-danger">Remove</button>
+                    <button type="submit" class="btn btn-outline-danger">@_dictionary.Translate("Remove", PositionTracking.Data.Languages.hr)</button>
                 </form>
             </td>
         </tr>

@@ -41,6 +41,8 @@ namespace PositionTracking.Controllers
             _dictionary = services.GetRequiredService<LanguageDictionary>();
         }
 
+
+
         public IActionResult Index()
         {
             return View();
