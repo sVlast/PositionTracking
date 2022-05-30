@@ -315,6 +315,18 @@ namespace PositionTracking.Controllers
 
             return View("ProjectSettings", model);
         }
+        [HttpPost]
+        public IActionResult ChangeLanguage(Languages Language)
+        {
+            //
+            Console.WriteLine("before " + BaseViewModel.language);
+            BaseViewModel.setLanguage(Language); 
+            Console.WriteLine("lang " + Language);
+            Console.WriteLine("after " + BaseViewModel.language);
+
+            return RedirectToAction("Projects");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

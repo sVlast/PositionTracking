@@ -1,14 +1,39 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using PositionTracking.Data
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject LanguageDictionary _dictionary
 
+@{
+    var langOptions = new SelectList(Enum.GetValues(typeof (Languages)), "Lang", "lang");
+    var langOptions1 = new SelectList(new[] { "en", "hr" },"lang");
+}
+
 <ul class="navbar-nav" id="lang">
     <li>
-        <select>
-            <option id="english">English</option>
-            <option id="croatian">Croatian</option>
+        <form id="LanguageForm" runat="server" asp-controller='Home' asp-action='ChangeLanguage'>
+        @*<asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack ="true" OnSelectedIndexChanged ="ChangeLanguage">
+        <asp:ListItem Text ="Please Select" Value = ""></asp:ListItem> 
+        <asp:ListItem Text ="English" Value ="@PositionTracking.Data.Languages.en"></asp:ListItem> 
+        <asp:ListItem Text ="Croatian" Value ="@PositionTracking.Data.Languages.hr"></asp:ListItem> 
+        </asp:DropDownList>*@
+        @*<select name="lang">
+            <option id="english" value='@PositionTracking.Data.Languages.hr'>English</option>
+            <option id="croatian" value='@PositionTracking.Data.Languages.hr'>Croatian</option>
         </select>
+        <button type="submit">submit language</button>*@
+        </form>
+
+        @using (Html.BeginForm("ChangeLanguage", "Home", FormMethod.Post, new { id = "LanguageForm" })){
+
+          @Html.DropDownList(
+            "Language", 
+           langOptions1, 
+            "--Select language--",
+            new{onChange = "this.form.submit()"}
+            )
+        } 
+        
     </li>
 
 

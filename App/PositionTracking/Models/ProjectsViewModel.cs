@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PositionTracking.Models
 {
-    public class ProjectsViewModel
+    public class ProjectsViewModel : BaseViewModel
     {
         public ICollection<Project> Projects { get; set; }
 
