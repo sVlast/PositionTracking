@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using PositionTracking.Data;
+using PositionTracking.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using PositionTracking.Models;
-using Microsoft.AspNetCore.Authentication;
-using PositionTracking.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections;
 
 namespace PositionTracking.Controllers
 
@@ -30,7 +28,7 @@ namespace PositionTracking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly LanguageDictionary _dictionary;
         //iService collection
-        public HomeController(IServiceProvider services)
+        public HomeController(IServiceProvider services) 
         {
             _logger = services.GetRequiredService<ILogger<HomeController>>();
             _dbContext = services.GetRequiredService<ApplicationDbContext>();
@@ -60,7 +58,7 @@ namespace PositionTracking.Controllers
 
         public async Task<IActionResult> Projects()
         {
-            var user =await GetCurrentUserAsync();
+            var user = await GetCurrentUserAsync();
 
             var permissions = _dbContext.Projects
                 .SelectMany(p => p.UserPermissions)
@@ -112,7 +110,7 @@ namespace PositionTracking.Controllers
         public IActionResult KeywordDetail(Guid id)
         {
             var keyword = _dbContext.Keywords
-                .Include(p=> p.Project)
+                .Include(p => p.Project)
                 .Where(p => p.KeywordId == id)
                 .First();
 
@@ -165,17 +163,17 @@ namespace PositionTracking.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMember(AddMemberViewModel model)
         {
-            
+
             var user = _dbContext.Users
                 .FirstOrDefault(u => u.NormalizedEmail == model.MemberEmail.ToUpper());
 
             var project = _dbContext.Projects
             .Where(p => p.ProjectId == model.ProjectId)
             .Include(p => p.UserPermissions)
-            .ThenInclude(u=>u.User)
+            .ThenInclude(u => u.User)
             .First();
 
-            if(user != null)
+            if (user != null)
             {
                 var permission = project.UserPermissions.FirstOrDefault(u => u.User == user);
                 if (permission == null)
@@ -187,7 +185,7 @@ namespace PositionTracking.Controllers
                     permission.PermissionType = model.UserRole;
                 }
                 _dbContext.SaveChanges();
-                
+
             }
             else
             {
@@ -198,13 +196,13 @@ namespace PositionTracking.Controllers
                     $"Before you can acces it you need to sign-up by clicking on the following link: \n" +
                     $"https://localhost:5001/account/signup?t={ HttpUtility.UrlEncode(encryptedLinkParam) }&&e={HttpUtility.UrlEncode(model.MemberEmail)} \n";
                 var title = $"Invitation to {project.Name} on Position Tracking from {user.UserName}";
-                await _emailSender.SendAsync(model.MemberEmail,title,message);
+                await _emailSender.SendAsync(model.MemberEmail, title, message);
             }
 
-            return RedirectToAction("Members", new { id = model.ProjectId});
+            return RedirectToAction("Members", new { id = model.ProjectId });
         }
         [HttpPost]
-        public IActionResult RemoveMember(string memberEmail,Guid projectId)
+        public IActionResult RemoveMember(string memberEmail, Guid projectId)
         {
             //if (_dbContext.Projects.Where(p=> p.ProjectId == projectId).Include(p=>p.UserPermissions).ThenInclude(u=>u.User).Count() == 1)
             //{
@@ -224,7 +222,7 @@ namespace PositionTracking.Controllers
             _dbContext.SaveChanges();
 
             //possible future conflict if User Name value changes from email
-            if(User.Identity.Name.Equals(memberEmail,StringComparison.OrdinalIgnoreCase))
+            if (User.Identity.Name.Equals(memberEmail, StringComparison.OrdinalIgnoreCase))
                 return RedirectToAction(nameof(Projects));
             else
                 return RedirectToAction(nameof(Members), new { id = projectId });

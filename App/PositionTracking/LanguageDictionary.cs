@@ -53,7 +53,6 @@ namespace PositionTracking
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    Console.WriteLine(line);
 
                     if (line == null)
                         continue;
