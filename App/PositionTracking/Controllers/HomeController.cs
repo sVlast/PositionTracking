@@ -28,7 +28,7 @@ namespace PositionTracking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly LanguageDictionary _dictionary;
         //iService collection
-        public HomeController(IServiceProvider services) 
+        public HomeController(IServiceProvider services)
         {
             _logger = services.GetRequiredService<ILogger<HomeController>>();
             _dbContext = services.GetRequiredService<ApplicationDbContext>();
@@ -316,15 +316,11 @@ namespace PositionTracking.Controllers
             return View("ProjectSettings", model);
         }
         [HttpPost]
-        public IActionResult ChangeLanguage(Languages Language)
+        public IActionResult ChangeLanguage(Languages language, string viewPath)
         {
-            //
-            Console.WriteLine("before " + BaseViewModel.language);
-            BaseViewModel.setLanguage(Language); 
-            Console.WriteLine("lang " + Language);
-            Console.WriteLine("after " + BaseViewModel.language);
+            Response.Cookies.Append("Lang", language.ToString(), new Microsoft.AspNetCore.Http.CookieOptions() { Expires = DateTime.UtcNow.AddDays(30) });
 
-            return RedirectToAction("Projects");
+            return Redirect(viewPath);
         }
 
 

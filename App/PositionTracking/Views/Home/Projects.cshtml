@@ -1,8 +1,10 @@
 ﻿@model ProjectsViewModel
 @inject LanguageDictionary _dictionary
+@using PositionTracking.Data
 
 @{
-    ViewData["Title"] = _dictionary.Translate("Projects",@BaseViewModel.language);
+    Languages language = Context.GetLanguage();
+    ViewData["Title"] = _dictionary.Translate("Projects",language);
 }
 
 
@@ -11,7 +13,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> @_dictionary.Translate("Add Project",@BaseViewModel.language) </h5>
+                <h5 class="modal-title" id="exampleModalLabel"> @_dictionary.Translate("Add Project",language) </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -22,16 +24,16 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Project name", @BaseViewModel.language)</label>
+                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Project name", language)</label>
                         <input type="text" class="form-control" name="ProjectName">
-                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Project Domain", @BaseViewModel.language)</label>
+                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Project Domain", language)</label>
                         <input type="text" class="form-control" name="Domain">
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@_dictionary.Translate("Close", @BaseViewModel.language)</button>
-                    <button type="submit" class="btn btn-primary">@_dictionary.Translate("Add Project", @BaseViewModel.language)</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@_dictionary.Translate("Close", language)</button>
+                    <button type="submit" class="btn btn-primary">@_dictionary.Translate("Add Project", language)</button>
                 </div>
 
             </form>
@@ -50,7 +52,7 @@
 
 <div class="text-right">
     <button id="addProject" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectModal">
-        @_dictionary.Translate("Add Project", @BaseViewModel.language)
+        @_dictionary.Translate("Add Project", language)
     </button>
 </div>
 
@@ -60,12 +62,12 @@
     <thead>
         <tr>
             <th scope="col">@{
-                _dictionary.Translate("Project Name", @BaseViewModel.language);
+                _dictionary.Translate("Project Name", language);
                     }
             </th>
-            <th scope="col">@_dictionary.Translate("Number of Keywords", @BaseViewModel.language)</th>
-            <th scope="col">@_dictionary.Translate("Rating Change",@BaseViewModel.language)</th>
-            <th scope="col">@_dictionary.Translate("Users Role", @BaseViewModel.language)</th>
+            <th scope="col">@_dictionary.Translate("Number of Keywords", language)</th>
+            <th scope="col">@_dictionary.Translate("Rating Change",language)</th>
+            <th scope="col">@_dictionary.Translate("Users Role", language)</th>
         </tr>
     </thead>
 
