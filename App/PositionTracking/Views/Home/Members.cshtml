@@ -1,7 +1,8 @@
 ﻿@model MembersViewModel
 @using PositionTracking.Data
 @{
-    ViewData["Title"] = "Members";
+    Languages language = Context.GetLanguage();
+    ViewData["Title"] = _dictionary.Translate("Members", language);
     Layout = "_ProjectLayout";
 }
 @inject LanguageDictionary _dictionary
@@ -10,7 +11,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">@_dictionary.Translate("Add Member", PositionTracking.Data.Languages.hr)</h5>
+                <h5 class="modal-title" id="exampleModalLabel">@_dictionary.Translate("Add Member", language)</h5>
                 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -19,11 +20,11 @@
             <div class="modal-body">
                 <form asp-controller="Home" asp-action="AddMember">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Member e-mail", PositionTracking.Data.Languages.hr):</label>
+                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Member e-mail", language):</label>
                         <input type="text" class="form-control" id="recipient-name" name="MemberEmail">
                     </div>
                     <div>
-                        <label for="locationFormControlSelect">@_dictionary.Translate("Member Role", PositionTracking.Data.Languages.hr):</label>
+                        <label for="locationFormControlSelect">@_dictionary.Translate("Member Role", language):</label>
                         <select class="form-control" id="locationFormControlSelect" name="UserRole">
                             @foreach (var role in Enum.GetValues<UserRole>())
                             {
@@ -44,16 +45,16 @@
 
 <div class="text-right">
     <button id="addMember" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMember">
-        @_dictionary.Translate("Add Member", PositionTracking.Data.Languages.hr)
+        @_dictionary.Translate("Add Member", language)
     </button>
 </div>
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">@_dictionary.Translate("Name", PositionTracking.Data.Languages.hr)</th>
-            <th scope="col">@_dictionary.Translate("e-mail", PositionTracking.Data.Languages.hr)</th>
-            <th scope="col">@_dictionary.Translate("Role", PositionTracking.Data.Languages.hr)</th>
+            <th scope="col">@_dictionary.Translate("Name", language)</th>
+            <th scope="col">@_dictionary.Translate("e-mail", language)</th>
+            <th scope="col">@_dictionary.Translate("Role", language)</th>
             <th>
 
             </th>
@@ -73,7 +74,7 @@
                         <form class="form-confirm" asp-controller="Home" asp-action="RemoveMember">
                             <input type="hidden" value="@item.Email" name="memberEmail" />
                             <input type="hidden" value="@Model.ProjectId" name="projectId" />
-                            <button type="submit" class="btn btn-outline-danger">@_dictionary.Translate("Remove", PositionTracking.Data.Languages.hr)</button>
+                            <button type="submit" class="btn btn-outline-danger">@_dictionary.Translate("Remove", language)</button>
                         </form>
                     }
                 </td>

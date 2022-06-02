@@ -1,5 +1,8 @@
 ﻿@inject LanguageDictionary _dictionary
+@using PositionTracking.Data
+@using PositionTracking.Extensions
 @{
+    Languages language = Context.GetLanguage();
     Layout = "_Layout";
 }
 
@@ -16,7 +19,7 @@
                     <li></li>
 
                     <li @if (Model is AccountSettingsViewModel) {<text> class="active" </text>}>
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AccountSettings">@_dictionary.Translate("Settings", PositionTracking.Data.Languages.hr)</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AccountSettings">@_dictionary.Translate("Settings", language)</a>
                     </li>
 
                 </ul>

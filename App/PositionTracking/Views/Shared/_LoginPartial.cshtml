@@ -1,10 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PositionTracking.Data
+@using PositionTracking.Extensions
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject LanguageDictionary _dictionary
 
 @{
+    Languages language = Context.GetLanguage();
     //Refactor langOptions to use Enum Languages
     //var langOptions = new SelectList(Enum.GetValues(typeof (Languages)), "Lang", "lang");
     var langOptions = new SelectList(new[] { "en", "hr" },"lang");
@@ -31,16 +33,16 @@
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    @_dictionary.Translate("Account", PositionTracking.Data.Languages.hr)
+                    @_dictionary.Translate("Account", language)
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <h6 class="dropdown-header">@User.Identity.Name</h6>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AccountSettings">@_dictionary.Translate("Settings", PositionTracking.Data.Languages.hr)</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AccountSettings">@_dictionary.Translate("Settings", language)</a>
                     <div class="dropdown-divider"></div>
                     <div class="dropdown-item">
                         <form class="form-inline" asp-controller="Account" asp-action="SignOut">
-                            <button type="submit" class="nav-link btn btn-link text-dark p-0">@_dictionary.Translate("Logout", PositionTracking.Data.Languages.hr)</button>
+                            <button type="submit" class="nav-link btn btn-link text-dark p-0">@_dictionary.Translate("Logout", language)</button>
                         </form>
                     </div>
                 </div>
@@ -55,7 +57,7 @@
     {
 
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="SignIn">@_dictionary.Translate("Login", PositionTracking.Data.Languages.hr)</a>
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="SignIn">@_dictionary.Translate("Login", language)</a>
         </li>
     }
 </ul>

@@ -1,8 +1,10 @@
 ﻿@model AccountSettingsViewModel
+@using PositionTracking.Extensions
+@using PositionTracking.Data
 @{
-
+    Languages language = Context.GetLanguage();
     Layout = "_AccountLayout";
-    ViewData["Title"] = "AccountSettings";
+    ViewData["Title"] = _dictionary.Translate("Account Settings", language); ;
 }
 @inject LanguageDictionary _dictionary
 
@@ -12,7 +14,7 @@
 <div class="container-fluid">
 
     <div class="text-center">
-        <h1 class="display-4">@_dictionary.Translate("Account Settings", PositionTracking.Data.Languages.hr)</h1>
+        <h1 class="display-4">@_dictionary.Translate("Account Settings", language)</h1>
     </div>
 
     <br>
@@ -27,21 +29,21 @@
     <br />
     <br />
     <form>
-        <label for="languageFormControlSelect">@_dictionary.Translate("Language", PositionTracking.Data.Languages.hr):</label>
+        <label for="languageFormControlSelect">@_dictionary.Translate("Language", language):</label>
         <button type="submit" class="nav-link btn btn-link text-dark p-0">EN</button>
         <button type="submit" class="nav-link btn btn-link text-dark p-0">HR</button>
 
 
-        <h4> @_dictionary.Translate("Old Password", PositionTracking.Data.Languages.hr):</h4>
+        <h4> @_dictionary.Translate("Old Password", language):</h4>
         <input value="" size="25" type="text" /> <br />
 
-        <h4> @_dictionary.Translate("New Password", PositionTracking.Data.Languages.hr): </h4>
+        <h4> @_dictionary.Translate("New Password", language): </h4>
         <input value="" size="25" type="text" /> <br />
 
-        <h4>@_dictionary.Translate("Confirm New Password", PositionTracking.Data.Languages.hr):</h4>
+        <h4>@_dictionary.Translate("Confirm New Password", language):</h4>
 
         <input value="" size="25" type="text" /> <br /> <br />
-        <button type="button" class="btn btn-outline-primary">@_dictionary.Translate("Update Password", PositionTracking.Data.Languages.hr)</button>
+        <button type="button" class="btn btn-outline-primary">@_dictionary.Translate("Update Password", language)</button>
     </form>
 
 
@@ -51,9 +53,9 @@
     <br>
 
     <div class="deleteAccount">
-        <h2>@_dictionary.Translate("Delete your account", PositionTracking.Data.Languages.hr)</h2>
+        <h2>@_dictionary.Translate("Delete your account", language)</h2>
         <h5>Deleting an account has the following effects: ...</h5>
-        <button type="button" class="btn btn-outline-danger">@_dictionary.Translate("Delete Account", PositionTracking.Data.Languages.hr)</button>
+        <button type="button" class="btn btn-outline-danger">@_dictionary.Translate("Delete Account", language)</button>
 
     </div>
 
