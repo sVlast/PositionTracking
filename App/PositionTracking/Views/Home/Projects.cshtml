@@ -7,8 +7,6 @@
     ViewData["Title"] = _dictionary.Translate("Projects",language);
 }
 
-
-
 <div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="addProjectModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -41,7 +39,6 @@
     </div>
 </div>
 
-
 <div class="text-center">
         <h1 class="display-4">
 
@@ -56,8 +53,6 @@
     </button>
 </div>
 
-
-
 <table class="table table-striped">
     <thead>
         <tr>
@@ -70,12 +65,6 @@
             <th scope="col">@_dictionary.Translate("Users Role", language)</th>
         </tr>
     </thead>
-
-
-
-
-
-
     <tbody>
         @foreach (var project in Model.Projects)
         {
@@ -85,12 +74,9 @@
                        asp-action="Keywords"
                        asp-route-id="@project.Id"> @project.Name</a>
                 </td>
-
-
                 <td>@project.NumerOfKeywords</td>
                 <td> </td>
                 <td>@project.Role</td>
-
             </tr>
         }
     </tbody>
