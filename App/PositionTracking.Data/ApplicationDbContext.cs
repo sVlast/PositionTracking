@@ -23,6 +23,8 @@ namespace PositionTracking.Data
 
         public DbSet<Keyword> Keywords { get; set; }
 
+        public DbSet<UserPermission> UserPermission { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

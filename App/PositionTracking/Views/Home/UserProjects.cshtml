@@ -1,0 +1,57 @@
+﻿@model UserProjectsViewModel
+@inject LanguageDictionary _dictionary
+@using PositionTracking
+@using PositionTracking.Data
+@using PositionTracking.Extensions
+@using PositionTracking.Models
+@{
+    Languages language = Context.GetLanguage();
+    //ViewData["Title"] = _dictionary.Translate("UserProjects",language);
+    ViewData["Title"] = "UserProjects";
+}
+
+<div class="text-center">
+    <h1 class="display-4">
+        @ViewData["Title"]
+    </h1>
+</div>
+
+@*<div class="text-right">
+    <button id="addProject" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProjectModal">
+        @_dictionary.Translate("Add Project", language)
+    </button>
+</div>*@
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th scope="col">
+                @{
+                _dictionary.Translate("Project Name", language);
+                }
+            </th>
+            <th scope="col">@_dictionary.Translate("User", language)</th>
+            <th scope="col">@_dictionary.Translate("Project",language)</th>
+            <th scope="col">@_dictionary.Translate("Permission", language)</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userPermission in Model.UserPermissions)
+        {
+        <tr>
+            <td></td>
+            <td>
+                <a asp-controller="Home"
+                   asp-action="Keywords"
+                   asp-route-id="@userPermission.Project"> @userPermission.Project</a>
+            </td>
+            <td>@userPermission.User</td>
+            <td>@userPermission.Project </td>
+            <td>@userPermission.Permission</td>
+
+        </tr>
+        }
+    </tbody>
+</table>

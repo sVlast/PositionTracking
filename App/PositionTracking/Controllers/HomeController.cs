@@ -82,6 +82,26 @@ namespace PositionTracking.Controllers
             return View(new ProjectsViewModel() { Projects = viewProjects, Dictionary = _dictionary });
         }
 
+        public IActionResult UserProjects()
+        {
+            //var projects = _dbContext.Projects.ToList();
+            var permissions = _dbContext.UserPermission.Include(p => p.Project).Include(p => p.User);
+            var viewUserPermission = new List<UserProjectsViewModel.UserPermission>();
+
+            foreach(var p in permissions)
+            {
+                viewUserPermission.Add(new UserProjectsViewModel.UserPermission()
+                {
+                    Id = p.UserPermissionId,
+                    Permission = $"permission {p.PermissionType}",
+                    Project = p.Project.Name,
+                    User = $"test {p.User.UserName}"
+
+                });
+            }
+            return View(new UserProjectsViewModel { UserPermissions = viewUserPermission});
+        }
+
         public IActionResult Keywords(Guid id)
         {
             var project = _dbContext.Projects
@@ -101,7 +121,7 @@ namespace PositionTracking.Controllers
                     Id = k.KeywordId.ToString(),
                     Rating = k.Ratings.FirstOrDefault()?.Rank ?? 0,
 
-                }); ;
+                });
             }
 
             return View(new KeywordsViewModel(project.Name, project.ProjectId) { Keywords = viewKeywords, GetRankUrl = _getRankUrl });
@@ -115,9 +135,6 @@ namespace PositionTracking.Controllers
                 .First();
 
             var title = keyword.Value + " (" + keyword.Language.ToString() + "-" + keyword.Location.ToString() + ")";
-
-
-
             return View(new KeywordDetailViewModel(keyword.Project.Name, keyword.Project.ProjectId) { Title = title, KeywordId = keyword.KeywordId });
         }
 
