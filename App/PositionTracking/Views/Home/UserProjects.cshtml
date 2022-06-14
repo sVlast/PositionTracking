@@ -7,7 +7,7 @@
 @{
     Languages language = Context.GetLanguage();
     //ViewData["Title"] = _dictionary.Translate("UserProjects",language);
-    ViewData["Title"] = "UserProjects";
+    ViewData["Title"] = "User Projects Permissions";
 }
 
 <div class="text-center">
@@ -26,15 +26,22 @@
     <thead>
         <tr>
             <th></th>
+            <th scope="col">@_dictionary.Translate("Project Name", language)</th>
             <th scope="col">
-                @{
-                _dictionary.Translate("Project Name", language);
-                }
+                <a asp-controller="Home" asp-action="UserProjects" asp-route-sortOrder="@ViewData["userSortParam"]">
+                    @_dictionary.Translate("User", language)
+                </a>
             </th>
-            <th scope="col">@_dictionary.Translate("User", language)</th>
-            <th scope="col">@_dictionary.Translate("Project",language)</th>
-            <th scope="col">@_dictionary.Translate("Permission", language)</th>
-            
+            <th scope="col">
+                <a asp-controller="Home" asp-action="UserProjects" asp-route-sortOrder="@ViewData["projectSortParam"]">
+                    @_dictionary.Translate("Project", language)
+                </a>
+            </th>
+            <th scope="col">
+                <a asp-controller="Home" asp-action="UserProjects" asp-route-sortOrder="@ViewData["permissionSortParam"]">
+                    @_dictionary.Translate("Permission", language)
+                </a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -44,8 +51,8 @@
             <td></td>
             <td>
                 <a asp-controller="Home"
-                   asp-action="Keywords"
-                   asp-route-id="@userPermission.Project"> @userPermission.Project</a>
+                   asp-action="Project"
+                   asp-route-id="@userPermission.Project">@userPermission.Project</a>
             </td>
             <td>@userPermission.User</td>
             <td>@userPermission.Project </td>
