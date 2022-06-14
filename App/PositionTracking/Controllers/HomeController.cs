@@ -82,46 +82,42 @@ namespace PositionTracking.Controllers
             return View(new ProjectsViewModel() { Projects = viewProjects, Dictionary = _dictionary });
         }
 
-        public IActionResult UserProjects(string sortOrder)
+        public IActionResult UserProjects(string sortOrder,string searchString)
         {
             ViewData["userSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["projectSortParam"] = sortOrder == "Project" ? "project_desc" : "Project";
             ViewData["permissionSortParam"] = sortOrder == "Permission" ? "permission_desc" : "Permission";
+            ViewData["CurrentFilter"] = searchString;
+
 
             var permissions = _dbContext.UserPermission.Include(p => p.Project).Include(p => p.User).AsEnumerable();
 
-            switch (sortOrder)
+            if (!String.IsNullOrEmpty(searchString))
             {
-                case "name_desc":
-                    permissions = permissions.OrderByDescending(p => p.User.UserName);
-                    break;
-                case "Project":
-                    permissions = permissions.OrderBy(p => p.Project.Name);
-                    break;
-                case "project_desc":
-                    permissions = permissions.OrderByDescending(p => p.Project.Name);
-                    break;
-                case "Permission":
-                    permissions = permissions.OrderBy(p => p.PermissionType);
-                    break;
-                case "permission_desc":
-                    permissions = permissions.OrderByDescending(p => p.PermissionType);
-                    break;
-                default:
-                    permissions = permissions.OrderBy(p => p.User.UserName);
-                    break;
+                permissions = permissions.Where(p => p.User.UserName.Contains(searchString));
             }
+
+            permissions = sortOrder switch
+            {
+                "name_desc" => permissions.OrderByDescending(p => p.User.UserName),
+                "Project" => permissions.OrderBy(p => p.Project.Name),
+                "project_desc" => permissions.OrderByDescending(p => p.Project.Name),
+                "Permission" => permissions.OrderBy(p => p.PermissionType),
+                "permission_desc" => permissions.OrderByDescending(p => p.PermissionType),
+                _ => permissions.OrderBy(p => p.User.UserName),
+            };
 
             var viewUserPermission =
             (from p in permissions
              select new UserProjectsViewModel.UserPermission()
              {
                  Id = p.UserPermissionId,
-                 Permission = $"{p.PermissionType}",
+                 Permission = p.PermissionType.ToString(),
                  Project = p.Project.Name,
-                 User = $"{p.User.UserName}"
+                 User = p.User.UserName
 
              }).ToList();
+
             return View(new UserProjectsViewModel { UserPermissions = viewUserPermission });
         }
 
