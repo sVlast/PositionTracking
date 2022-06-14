@@ -62,7 +62,7 @@ namespace PositionTracking
             });
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
 
