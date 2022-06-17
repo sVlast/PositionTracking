@@ -12,7 +12,7 @@ namespace PositionTracking.Data
         public ICollection<Keyword> Keywords { get; set; }
         public IEnumerable<UserPermission> UserPermissions { get; private set; }
 
-        //public byte[] ProjectIcon { get; set; }
+        public byte[] ProjectImage { get; set; }
 
         private Project()
         { }
