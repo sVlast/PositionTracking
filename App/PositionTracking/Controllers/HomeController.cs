@@ -186,7 +186,18 @@ namespace PositionTracking.Controllers
             .Where(p => p.ProjectId == id)
             .First();
 
-            return View(new ProjectSettingsViewModel(project.Name, project.ProjectId) { Domain = project.Paths });
+            string ImageUrl;
+
+            if (project.ProjectImage != null)
+            {
+                ImageUrl = "data:image;base64," + Convert.ToBase64String(project.ProjectImage);
+            }
+            else
+            {
+                ImageUrl = "";
+            }
+
+            return View(new ProjectSettingsViewModel(project.Name, project.ProjectId,ImageUrl) { Domain = project.Paths });
         }
         public IActionResult AccountSettings()
         {

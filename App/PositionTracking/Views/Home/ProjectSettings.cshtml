@@ -15,8 +15,11 @@
         <h1 class="display-4">@_dictionary.Translate("Project Settings", language)</h1>
     </div>
 
+    <div>
+        <h2> @_dictionary.Translate("Project Image", language)</h2>
+    </div>
     <br>
-    <img src />
+    <img src="@Model.ProjectImage" runat="server" width="300" />
     <br>
 
 
@@ -39,13 +42,13 @@
     <br />
 
     <div>
-        <h2> @_dictionary.Translate("Project Image", language)</h2>
+        <h2> @_dictionary.Translate("Upload Project Image", language)</h2>
     </div>
     @using (Html.BeginForm("UploadProjectImage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <input type="file" name="files" id="ImageData" onchange="fileCheck(this);" />
         <button type="submit" class="btn btn-outline-primary">@_dictionary.Translate("Save", language)</button>
-        <input type="hidden" name="projectId" value="@Model.ProjectId"/>
+        <input type="hidden" name="projectId" value="@Model.ProjectId" />
     }
     <br />
 
