@@ -16,6 +16,8 @@
     </div>
 
     <br>
+    <img src />
+    <br>
 
 
     <h2> @_dictionary.Translate("Project name", language)</h2>
@@ -35,6 +37,16 @@
     </div>
 
     <br />
+
+    <div>
+        <h2> @_dictionary.Translate("Project Image", language)</h2>
+    </div>
+    @using (Html.BeginForm("UploadProjectImage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="file" name="files" id="ImageData" onchange="fileCheck(this);" />
+        <button type="submit" class="btn btn-outline-primary">@_dictionary.Translate("Save", language)</button>
+        <input type="hidden" name="projectId" value="@Model.ProjectId"/>
+    }
     <br />
 
     <div class="deleteProject">

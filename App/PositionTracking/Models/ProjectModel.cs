@@ -6,8 +6,6 @@ namespace PositionTracking.Models
         public string ProjectName { get; set; }
         public Guid ProjectId { get; set; }
 
-
-
         public ProjectModel(string name, Guid id)
         {
             ProjectName = name;

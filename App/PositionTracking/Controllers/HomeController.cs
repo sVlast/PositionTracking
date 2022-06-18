@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using PositionTracking.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -38,8 +40,6 @@ namespace PositionTracking.Controllers
             _userManager = services.GetRequiredService<UserManager<IdentityUser>>();
             _dictionary = services.GetRequiredService<LanguageDictionary>();
         }
-
-
 
         public IActionResult Index()
         {
@@ -351,12 +351,52 @@ namespace PositionTracking.Controllers
 
             return View("ProjectSettings", model);
         }
+
         [HttpPost]
         public IActionResult ChangeLanguage(Languages language, string viewPath)
         {
             Response.Cookies.Append("Lang", language.ToString(), new Microsoft.AspNetCore.Http.CookieOptions() { Expires = DateTime.UtcNow.AddDays(30) });
 
             return Redirect(viewPath);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadProjectImage(List<IFormFile> files,Guid projectId)
+        {
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == projectId)
+                .First();
+            long size = files.Sum(f => f.Length);
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        formFile.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        //string s = Convert.ToBase64String(fileBytes);
+                        // act on the Base64 data
+                        project.ProjectImage = fileBytes;
+                        try
+                        {
+                            var res = await _dbContext.SaveChangesAsync();
+                            if (res != 0)
+                            {
+                                break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex.Message);
+                            return BadRequest(new { count = files.Count, size, projectId });
+                        }
+                    }
+
+                }
+            }
+            return Ok(new { count = files.Count, size, projectId });
         }
 
 
