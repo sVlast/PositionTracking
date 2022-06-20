@@ -387,8 +387,6 @@ namespace PositionTracking.Controllers
                     {
                         formFile.CopyTo(ms);
                         var fileBytes = ms.ToArray();
-                        //string s = Convert.ToBase64String(fileBytes);
-                        // act on the Base64 data
                         project.ProjectImage = fileBytes;
                         try
                         {
@@ -407,7 +405,7 @@ namespace PositionTracking.Controllers
 
                 }
             }
-            return Ok(new { count = files.Count, size, projectId });
+            return RedirectToAction("ProjectSettings",new {id = projectId});
         }
 
 
