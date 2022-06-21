@@ -67,6 +67,70 @@
     </div>
 </div>
 
+
+
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Keyword</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Home" asp-action="EditKeyword">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">@_dictionary.Translate("Keyword", language)</label>
+                        <input type="text" class="form-control" name="Value" placeholder="New Value">
+                    </div>
+                    <div class="form-group">
+                        <label for="languageFormControlSelect">@_dictionary.Translate("Language", language)</label>
+                        <select class="form-control" name="Language">
+                            @foreach (var value in Enum.GetValues<Languages>())
+                            {
+                                <option value="@language">@language.GetDisplayName()</option>
+                            }
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="locationFormControlSelect">@_dictionary.Translate("Location", language):</label>
+                        <select class="form-control" name="Location">
+                            @foreach (var country in Enum.GetValues<Countries>())
+                            {
+                                <option value="@country">@country.GetDisplayName()</option>
+                            }
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="Id" value="3242" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@_dictionary.Translate("Close", language)</button>
+                    <button type="submit" class="btn btn-primary">Edit Keyword</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="text-right">
     <button id="addKeyword" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
         @_dictionary.Translate("Add Keyword", language)
@@ -107,6 +171,11 @@
                     <input type="hidden" value="@keyword.Id" name="Id" />
                     <button type="submit" class="btn btn-outline-danger">@_dictionary.Translate("Remove", language)</button>
                 </form>
+            </td>
+            <td>
+                <button id="editKeyword" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2" onclick="@ViewBag.keywordId=keyword.Id">
+                    edit Keyword
+                </button>
             </td>
         </tr>
         }
