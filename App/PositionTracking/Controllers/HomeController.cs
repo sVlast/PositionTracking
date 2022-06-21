@@ -147,18 +147,24 @@ namespace PositionTracking.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditKeyword(EditKeywordModel model)
+        public async Task<IActionResult> EditKeyword(EditKeywordModel model)
         {
             var keyword = _dbContext.Keywords
-                .Where(p => p.KeywordId == model.Id)
+                .Where(k => k.KeywordId == model.Id)
+                .Include(k=>k.Project)
                 .FirstOrDefault();
+
+            if(keyword == null)
+            {
+                return BadRequest(new {message= "No keyword found!"});
+            }
 
             keyword.Value = model.Value;
             keyword.Language = model.Language;
             keyword.Location = model.Location;
 
-            _dbContext.SaveChanges();
-            return RedirectToAction("Keywords", model);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Keywords",new { id = keyword.Project.ProjectId});
         }
 
 
