@@ -11,7 +11,7 @@ namespace PositionTracking
         {
             using (SHA256 mysHA256 = SHA256.Create())
             {
-                byte[] hashValue = mysHA256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] hashValue = mysHA256.ComputeHash(Encoding.UTF8.GetBytes(password + user.Email));
                 
                 return Convert.ToBase64String(hashValue);
             }
