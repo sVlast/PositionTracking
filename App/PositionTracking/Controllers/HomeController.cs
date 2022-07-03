@@ -120,9 +120,21 @@ namespace PositionTracking.Controllers
 
             return View(new UserProjectsViewModel { UserPermissions = viewUserPermission });
         }
-
-        public IActionResult Keywords(Guid id)
+        public async Task<IActionResult> KeywordsAsync(Guid id)
         {
+            var user = await GetCurrentUserAsync();
+
+            var userPermission = _dbContext.UserPermission
+                .Where(u => u.Project.ProjectId == id & u.User.Id == user.Id)
+                .FirstOrDefault();
+
+            if (userPermission == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+                
+
             var project = _dbContext.Projects
                 .Where(p => p.ProjectId == id)
                 .Include(p => p.Keywords)
