@@ -1,17 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PositionTracking.Data;
 using PositionTracking.Engine;
-using System;
-using System.Linq;
-using PositionTracking;
-using System.Security.Cryptography;
 
 namespace PositionTracking.Test
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
+            var loggerFactory = (ILoggerFactory)new LoggerFactory();
+            var logger = loggerFactory.CreateLogger<Program>();
+
+            Console.WriteLine(string.Join('-', args));
+
             var tst = new EncryptDecryptService();
 
             var key = "mysmallkey1234551298765134567890";
@@ -24,33 +28,37 @@ namespace PositionTracking.Test
             var decryptedString = EncryptDecryptService.DecryptString(key, encryptedString);
             Console.WriteLine($"decrypted string = {decryptedString}");
 
-            Console.ReadKey();
+            string Keyword;
+            string Domain;
 
+            try
+            {
+                Console.WriteLine("Test:");
 
-            //Console.WriteLine("Test:");
-            //using (var db = new ApplicationDbContext())
-            //{
+                if(args.Length == 2)
+                {
+                    Keyword = args[0];
+                    Domain = args[1];
+                }
+                else
+                {
+                    Console.WriteLine("Argumenst not provided, using default keyword and domain for testing");
+                    Keyword = "klime";
+                    Domain = "www.klime.hr";
+                }
 
-            //    //Resolver.UpdateRanks(db);
-            //}
+                var rank = await Resolver.GetRankAsync(Keyword, Languages.hr, Countries.HR, Domain, SearchEngineType.GoogleWeb,null);
 
-            //using (var db = new ApplicationDbContext())
-            //{
-            //    foreach (var item in db.Keywords.Include(k => k.Ratings).Include(k=>k.Project))
-            //    {
-            //        Console.WriteLine(item.Value + " ranks: ");
-            //        foreach (var rating in item.Ratings)
-            //        {
-            //            Console.WriteLine(" -- " + rating.Rank);
-            //        }
-            //    }
-            //    Console.ReadLine();
-            //}
+                return 1;
 
-            //var rank = Resolver.GetRank("klime", Languages.lang_hr, Countries.HR,"www.klime.hr", ResolverType.GoogleWeb);
-
-            //Console.WriteLine("Testing Rank : "+rank);
-            //Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Testing failed");
+                Console.WriteLine("Error: ",e);
+                logger.LogError("Error while testing parser!", e) ;
+                return -1;
+            }
         }
     }
 }

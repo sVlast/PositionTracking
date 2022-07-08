@@ -58,6 +58,9 @@ namespace PositionTracking.Controllers
 
         public async Task<IActionResult> Projects()
         {
+
+            
+
             var user = await GetCurrentUserAsync();
 
             var permissions = _dbContext.Projects
@@ -314,8 +317,49 @@ namespace PositionTracking.Controllers
         public IActionResult AddKeyword(AddKeywordViewModel model)
         {
             var project = _dbContext.Projects
-                .Where(p => p.ProjectId == model.ProjectId)
-                .First();
+                    .Where(p => p.ProjectId == model.ProjectId)
+                    .First();
+
+            using (Process myProcess = new Process())
+                {
+            try
+            {
+                    myProcess.StartInfo.FileName = "dotnet";
+                    myProcess.StartInfo.Arguments = $"../PositionTracking.Test/Publish/PositionTracking.Test.dll {model.Value} {project.Paths}";
+                    myProcess.StartInfo.CreateNoWindow = true;
+                    myProcess.StartInfo.UseShellExecute = false;
+                    //myProcess.StartInfo.RedirectStandardInput = true;
+                    myProcess.StartInfo.RedirectStandardOutput = true;
+                    myProcess.StartInfo.RedirectStandardError = true;
+                    myProcess.OutputDataReceived += (sender, data) => Console.WriteLine(data.Data);
+                    myProcess.ErrorDataReceived += (sender, data) => Console.WriteLine(data.Data);
+
+                    Console.WriteLine("starting process: PositionTracking.Test");
+                    myProcess.Start();
+
+                    myProcess.BeginOutputReadLine();
+                    myProcess.BeginErrorReadLine();
+                    myProcess.WaitForExit();
+                    Console.WriteLine($"exit process");
+                    int ExitCode = myProcess.ExitCode;
+                    if (ExitCode >= 1)
+                    {
+                        Console.WriteLine($"Testing sucessful - Rank: {ExitCode}");
+                    }
+                    if(ExitCode == 0) {
+                        Console.WriteLine("Testing undetermined: keyword out of range.");
+                    }
+                    if (ExitCode < 0)
+                    {
+                        Console.WriteLine("Testing unsucessful.");
+                    }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine($"Error while running testing process: {"test"}");
+            }
+                }
 
             project.Keywords = new List<Keyword>()
             { new Keyword()
@@ -442,7 +486,6 @@ namespace PositionTracking.Controllers
             }
             return RedirectToAction("ProjectSettings",new {id = projectId});
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
