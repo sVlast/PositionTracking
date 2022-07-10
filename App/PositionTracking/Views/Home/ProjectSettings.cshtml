@@ -42,7 +42,7 @@
     <br />
 
     <div>
-        <h2> @_dictionary.Translate("Upload Project Image", language)</h2>
+        <h2>@_dictionary.Translate("Upload Project Image", language)</h2>
     </div>
     @using (Html.BeginForm("UploadProjectImage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -50,6 +50,19 @@
         <button type="submit" class="btn btn-outline-primary">@_dictionary.Translate("Save", language)</button>
         <input type="hidden" name="projectId" value="@Model.ProjectId" />
     }
+    <br />
+    <div>
+        <h2>@_dictionary.Translate("Capture website screeshot", language)</h2>
+    </div>
+
+    <a asp-controller="Home" asp-action="WebsiteImage" asp-route-id="@Model.ProjectId">
+        <button type="button" class="btn btn-outline-primary">
+            @_dictionary.Translate("Get screenshot", language)
+            Get website screenshot
+        </button>
+    </a>
+
+    <br />
     <br />
 
     <div class="deleteProject">

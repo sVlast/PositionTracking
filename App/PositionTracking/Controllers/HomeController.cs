@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -58,8 +59,6 @@ namespace PositionTracking.Controllers
 
         public async Task<IActionResult> Projects()
         {
-
-            
 
             var user = await GetCurrentUserAsync();
 
@@ -222,7 +221,7 @@ namespace PositionTracking.Controllers
 
 
 
-            public IActionResult KeywordDetail(Guid id)
+        public IActionResult KeywordDetail(Guid id)
         {
             var keyword = _dbContext.Keywords
                 .Include(p => p.Project)
@@ -489,7 +488,7 @@ namespace PositionTracking.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> UploadProjectImage(List<IFormFile> files,Guid projectId)
+        public async Task<IActionResult> UploadProjectImage(List<IFormFile> files,Guid projectId)
         {
             var project = _dbContext.Projects
                 .Where(p => p.ProjectId == projectId)
@@ -523,6 +522,30 @@ namespace PositionTracking.Controllers
                 }
             }
             return RedirectToAction("ProjectSettings",new {id = projectId});
+        }
+
+        public async Task<IActionResult> WebsiteImageAsync(Guid Id)
+        {
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == Id)
+                .First();
+
+            string redirectUrl;
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5003");
+                HttpResponseMessage response = await client.GetAsync($"/engine/getscreenshot/{project.ProjectId}").ConfigureAwait(true);
+                if (response.IsSuccessStatusCode)
+                {
+                    redirectUrl = await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    return RedirectToAction("Projects");
+                }
+            }
+
+            return new RedirectResult(redirectUrl);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

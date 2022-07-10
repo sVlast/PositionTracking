@@ -21,6 +21,7 @@ namespace PositionTracking.Engine
         private static DateTime _reqTimeStamp;
         private static readonly Random _random = new Random();
         private static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1,1);
+        private static int _processNumber = 0;
 
         private readonly string _keyword;
         private readonly string _language;
@@ -116,6 +117,8 @@ namespace PositionTracking.Engine
 
         public async Task<int> GetRankAsync()
         {
+            _processNumber += 1;
+            Console.WriteLine($"Starting process number: {_processNumber}");
             //var searchContext = new SearchContext(keyword, language, location, path);
             var config = Configuration.Default;
             int rating = 0;
@@ -158,6 +161,8 @@ namespace PositionTracking.Engine
                             //ends with
                             if (uri.Host.Equals(_path, StringComparison.OrdinalIgnoreCase))
                             {
+                                _processNumber -= 1;
+                                Console.WriteLine($"Exiting process number: {_processNumber}");
                                 return rating;
                             }
                         }
@@ -180,6 +185,8 @@ namespace PositionTracking.Engine
 
             }
 
+            _processNumber -= 1;
+            Console.WriteLine($"Exiting process number: {_processNumber}");
             return 0;
         }
 

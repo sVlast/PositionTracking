@@ -49,7 +49,7 @@ namespace PositionTracking.Test
 
                 var rank = await Resolver.GetRankAsync(Keyword, Languages.hr, Countries.HR, Domain, SearchEngineType.GoogleWeb,null);
 
-                return 1;
+                return rank;
 
             }
             catch (Exception e)
