@@ -26,6 +26,11 @@
                     <li @if (Model is ProjectSettingsViewModel) {<text> class="active" </text> }>
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="ProjectSettings" asp-route-id="@Model.ProjectId">@_dictionary.Translate("Settings", language)</a>
                     </li>
+                    <li
+                        @if (Model is KeywordTableViewModel) {<text> class="active" </text> }>
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="KeywordTable" asp-route-id="@Model.ProjectId"> Keyword Table</a>
+
+                    </li>
                 </ul>
             </nav>
 

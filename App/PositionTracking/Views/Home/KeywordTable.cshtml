@@ -1,0 +1,56 @@
+﻿@model KeywordTableViewModel
+@inject LanguageDictionary _dictionary
+@using PositionTracking
+@using PositionTracking.Data
+@using PositionTracking.Extensions
+@using PositionTracking.Models
+@{
+    Languages language = Context.GetLanguage();
+    //ViewData["Title"] = _dictionary.Translate("UserProjects",language);
+    ViewData["Title"] = "Keyword Table";
+    Layout = "_ProjectLayout";
+}
+
+@inject LanguageDictionary _dictionary
+
+<div class="text-center">
+    <h1 class="display-4">
+        @ViewData["Title"]
+    </h1>
+</div>
+
+
+        @foreach (var keyword in Model.keywords)
+        {
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Keyword</th>
+            <th>Language</th>
+            <th>Location</th>
+            <th>
+                <a>
+                   Keyword rating
+                </a>
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rating in keyword.Ratings)
+        {
+        <tr>
+            <td>@rating.SearchEngine</td>
+            <td>@rating.Rank</td>
+            <td>@rating.TimeStamp</td>
+            <td>
+               6
+            </td>
+            
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+        }

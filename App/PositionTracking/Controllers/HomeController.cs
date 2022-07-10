@@ -85,6 +85,44 @@ namespace PositionTracking.Controllers
             return View(new ProjectsViewModel() { Projects = viewProjects, Dictionary = _dictionary });
         }
 
+        public IActionResult KeywordTable(Guid id)
+        {
+            var viewKeywords = new List<KeywordTableViewModel.Keyword>();
+
+            var project = _dbContext.Projects
+                .Where(p => p.ProjectId == id)
+                .Include(p => p.Keywords)
+                .ThenInclude(k=> k.Ratings)
+                .First();
+
+
+            foreach (var k in project.Keywords)
+            {
+                var viewRatings = new List<KeywordTableViewModel.KeywordRating>();
+                foreach (var r in k.Ratings)
+                {
+                    viewRatings.Add(new KeywordTableViewModel.KeywordRating()
+                    {
+                        KeywordRatingId = r.KeywordRatingId,
+                        Rank = r.Rank,
+                        SearchEngine = SearchEngineType.GoogleWeb,
+                        TimeStamp = r.TimeStamp.ToString()
+                    }
+                    );   
+                }
+
+                viewKeywords.Add(new KeywordTableViewModel.Keyword()
+                {
+                    Id = k.KeywordId.ToString(),
+                    Language = k.Language.ToString(),
+                    Location = k.Location.ToString(),
+                    Value = k.Value,
+                });
+            };
+
+            return View(new KeywordTableViewModel(project.Name,id) { ProjectId = project.ProjectId, ProjectName = project.Name, keywords = viewKeywords });
+        }
+
         public IActionResult UserProjects(string sortOrder,string searchString)
         {
             ViewData["userSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -162,10 +200,10 @@ namespace PositionTracking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditKeyword(EditKeywordModel model)
+        public async Task<IActionResult> EditKeyword(Keyword model)
         {
             var keyword = _dbContext.Keywords
-                .Where(k => k.KeywordId == model.Id)
+                .Where(k => k.KeywordId == model.KeywordId)
                 .Include(k=>k.Project)
                 .FirstOrDefault();
 
