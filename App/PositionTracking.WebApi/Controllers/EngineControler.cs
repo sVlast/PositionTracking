@@ -14,9 +14,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 
-
-
-
 namespace PositionTracking.WebApi.Controllers
 {
     [AllowCrossSite]
@@ -83,6 +80,13 @@ namespace PositionTracking.WebApi.Controllers
         public async Task<ActionResult<string>> GetWebsiteScreenshot(Guid projectId)
         {
             var project = _dbContext.Projects.Where(p => p.ProjectId == projectId).First();
+
+            if(project.webisteScreenshotUrl != null)
+            {
+                return project.webisteScreenshotUrl;
+            }
+
+
             var url = "https://shot.screenshotapi.net";
             var queryParams = new Dictionary<string, string>()
             {
@@ -105,6 +109,10 @@ namespace PositionTracking.WebApi.Controllers
                 {
                     data = await response.Content.ReadAsStringAsync();
                     responseJSON = JsonConvert.DeserializeObject<ScreenshotAPIData>(data);
+
+                    project.webisteScreenshotUrl = responseJSON.screenshotUrl;
+                    await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+
                 }
                 else
                 {

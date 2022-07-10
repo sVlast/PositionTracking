@@ -11,6 +11,7 @@ namespace PositionTracking.Data
         public string Paths { get; set; } //odvajati patheve sa Space
         public ICollection<Keyword> Keywords { get; set; }
         public IEnumerable<UserPermission> UserPermissions { get; private set; }
+        public string webisteScreenshotUrl { get; set; }
 
         public byte[] ProjectImage { get; set; }
 
