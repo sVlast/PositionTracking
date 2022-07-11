@@ -25,7 +25,6 @@ namespace PositionTracking.WebApi.Controllers
 
         private readonly ILogger<EngineController> _logger;
         private readonly ApplicationDbContext _dbContext;
-        private static readonly string Screenshot_api_key = "6A8H5YG-MXZ4RHM-PW3X3KG-NB1KVTS";
 
         public EngineController(ILogger<EngineController> logger, ApplicationDbContext context)
         {
@@ -86,42 +85,11 @@ namespace PositionTracking.WebApi.Controllers
                 return project.webisteScreenshotUrl;
             }
 
+            var ScrenshotApi = new ScreenshotApiHandler();
 
-            var url = "https://shot.screenshotapi.net";
-            var queryParams = new Dictionary<string, string>()
-            {
-                {"token",Screenshot_api_key },
-                {"file_type","png" },
-                {"url",$"https://{project.Paths}" }
-            };
-            
-            var parameters = QueryHelpers.AddQueryString("/screenshot", queryParams);
-            string data;
-            ScreenshotAPIData responseJSON;
+            var WebsiteScreenshotUrl = await ScrenshotApi.getScreenshot(project, _dbContext);
 
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-
-                Console.WriteLine($"QUERY PARAMS:  {parameters}");
-                HttpResponseMessage response = await client.GetAsync(parameters).ConfigureAwait(false);
-                if (response.IsSuccessStatusCode)
-                {
-                    data = await response.Content.ReadAsStringAsync();
-                    responseJSON = JsonConvert.DeserializeObject<ScreenshotAPIData>(data);
-
-                    project.webisteScreenshotUrl = responseJSON.screenshotUrl;
-                    await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-
-                }
-                else
-                {
-                    data = "no response";
-                    return "no response";
-                }
-            }
-
-            return responseJSON.screenshotUrl;
+            return WebsiteScreenshotUrl;
         }
         
 
