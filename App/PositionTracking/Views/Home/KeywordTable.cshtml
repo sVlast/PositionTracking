@@ -8,7 +8,7 @@
     Languages language = Context.GetLanguage();
     //ViewData["Title"] = _dictionary.Translate("UserProjects",language);
     ViewData["Title"] = "Keyword Table";
-    Layout = "_ProjectLayout";
+    
 }
 
 @inject LanguageDictionary _dictionary
@@ -17,22 +17,26 @@
     <h1 class="display-4">
         @ViewData["Title"]
     </h1>
+    <a asp-controller="Home"
+       asp-action=""
+       asp-route-id="">
+    <button id="addProject" type="button" class="btn btn-primary" >
+        Generate PDF
+    </button>
+    </a>
 </div>
 
 
         @foreach (var keyword in Model.keywords)
-        {
+         {
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Keyword</th>
+            <th>Keyword: @keyword.Value</th>
+            <th>Rank</th>
+            <th>Date</th>
             <th>Language</th>
             <th>Location</th>
-            <th>
-                <a>
-                   Keyword rating
-                </a>
-            </th>
 
         </tr>
     </thead>
@@ -43,9 +47,8 @@
             <td>@rating.SearchEngine</td>
             <td>@rating.Rank</td>
             <td>@rating.TimeStamp</td>
-            <td>
-               6
-            </td>
+            <td>@keyword.Language</td>
+            <td>@keyword.Location</td>
             
             </tr>
         }

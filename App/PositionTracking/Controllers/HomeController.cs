@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PositionTracking.Data;
+using PositionTracking.Extensions;
 using PositionTracking.Models;
 using System;
 using System.Collections.Generic;
@@ -116,10 +117,18 @@ namespace PositionTracking.Controllers
                     Language = k.Language.ToString(),
                     Location = k.Location.ToString(),
                     Value = k.Value,
+                    Ratings = viewRatings
                 });
             };
 
-            return View(new KeywordTableViewModel(project.Name,id) { ProjectId = project.ProjectId, ProjectName = project.Name, keywords = viewKeywords });
+            IronPdf.Installation.LinuxAndDockerDependenciesAutoConfig = true;
+
+            var html = this.RenderViewAsync("KeywordTable", new KeywordTableViewModel(project.Name, id) { ProjectId = project.ProjectId, ProjectName = project.Name, keywords = viewKeywords });
+            var ironPdfRender = new IronPdf.ChromePdfRenderer();
+            using var pdfDoc = ironPdfRender.RenderHtmlAsPdf(html.Result);
+            return File(pdfDoc.Stream.ToArray(), "application/pdf");
+
+            //return View(new KeywordTableViewModel(project.Name,id) { ProjectId = project.ProjectId, ProjectName = project.Name, keywords = viewKeywords });
         }
 
         public IActionResult UserProjects(string sortOrder,string searchString)

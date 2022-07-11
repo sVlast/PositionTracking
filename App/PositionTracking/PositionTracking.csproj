@@ -16,6 +16,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.17" />
+    <PackageReference Include="IronPdf" Version="2022.7.6986" />
+    <PackageReference Include="IronPdf.Native.Chrome.MacOS" Version="2022.7.6922" />
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="6.0.5.128" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +35,9 @@
     <None Remove="Resources\" />
     <None Remove="Translations.csv" />
     <None Remove="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
+    <None Remove="IronPdf" />
+    <None Remove="IronPdf.Native.Chrome.MacOS" />
+    <None Remove="runtime.osx.10.10-x64.CoreCompat.System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Translations.csv" />
