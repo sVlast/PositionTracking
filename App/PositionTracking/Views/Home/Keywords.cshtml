@@ -41,7 +41,7 @@
                         <select class="form-control" name="Language">
                             @foreach (var value in Enum.GetValues<Languages>())
                             {
-                                <option value="@language">@language.GetDisplayName()</option>
+                                <option value="@value">@value.GetDisplayName()</option>
                             }
                         </select>
 
